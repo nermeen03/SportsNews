@@ -7,13 +7,18 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
 
-
+    @IBAction func ToFav(_ sender: Any) {
+        let story = UIStoryboard.init(name: "Fav", bundle: nil)
+        let fav = story.instantiateViewController(identifier: "Fav")
+        navigationController?.present(fav, animated: true, completion: nil)
+    }
+    
 }
 
