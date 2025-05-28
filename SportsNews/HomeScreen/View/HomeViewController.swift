@@ -12,6 +12,8 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        let network = NetworkServices()
+        network.getTeamsAndPlayers()
     }
 
     @IBAction func ToFav(_ sender: Any) {
