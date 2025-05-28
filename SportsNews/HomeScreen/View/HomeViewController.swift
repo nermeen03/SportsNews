@@ -13,7 +13,8 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         let network = NetworkServices()
-        network.getTeamsAndPlayers()
+//        network.getTeamsAndPlayers()
+        network.getAllFootballLeagues()
     }
 
     @IBAction func ToFav(_ sender: Any) {
