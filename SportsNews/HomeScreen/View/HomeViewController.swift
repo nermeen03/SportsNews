@@ -15,6 +15,7 @@ class HomeViewController: UIViewController {
         let network = NetworkServices()
 //        network.getTeamsAndPlayers()
         network.getAllFootballLeagues()
+        network.getFixtures(leagueKey: 152)
     }
 
     @IBAction func ToFav(_ sender: Any) {
