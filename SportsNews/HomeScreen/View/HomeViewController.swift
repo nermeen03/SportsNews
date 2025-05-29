@@ -28,9 +28,29 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         navigationController?.navigationBar.prefersLargeTitles = true
         // Do any additional setup after loading the view.
         let network = NetworkServices()
-//        network.getTeamsAndPlayers()
-        network.getAllFootballLeagues()
-        network.getFixtures(leagueKey: 152)
+        let todayDate = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        
+        let today = formatter.string(from: todayDate)
+        print(today)
+        
+        let calendar = Calendar.current
+        
+        guard let futureDate = calendar.date(byAdding: .day, value: 20, to: todayDate) else{return}
+        let future = formatter.string(from: futureDate)
+        print(future)
+
+        guard let pastDate = calendar.date(byAdding: .day, value: -20, to: todayDate) else{return}
+        let past = formatter.string(from: pastDate)
+        print(past)
+        
+        // football, basketball, cricket, tennis
+        
+        network.getAllSportLeagues(sportName: "cricket")
+        network.getFixtures(sportName: "cricket", leagueKey: 96, fromData: past, toData: today)
+        network.getFixtures(sportName: "cricket", leagueKey: 96, fromData: today, toData: future)
+        network.getTeamsAndPlayers(sportName: "cricket", leagueId: 96)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

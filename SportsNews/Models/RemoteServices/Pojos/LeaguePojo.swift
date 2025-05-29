@@ -7,14 +7,14 @@
 
 struct LeaguesResult : Decodable{
     let success : Int
-    let result : [League]
+    let result : [League]?
 }
 
 struct League: Codable {
     let leagueKey: Int
     let leagueName: String
-    let countryKey: Int
-    let countryName: String
+    let countryKey: Int?
+    let countryName: String?
     let leagueLogo: String?
     let countryLogo: String?
 

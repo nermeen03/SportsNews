@@ -7,7 +7,7 @@
 
 struct FixturesResult : Decodable {
     let success : Int
-    let result : [Fixture]
+    let result : [Fixture]?
 }
 
 struct Fixture: Codable {
