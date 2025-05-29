@@ -7,26 +7,45 @@
 
 import Foundation
 
-struct TeamResult : Decodable{
+struct TeamResult : Codable{
     var success : Int
-    var result : [TeamPojo]
+    var result : [TeamPojo]?
 }
 
-struct TeamPojo : Decodable{
-    var team_key : Int
-    var team_name : String
-    var team_logo : String
+struct TeamPojo : Codable{
+    var teamKey : Int
+    var teamName : String
+    var teamLogo : String
     var players : [PlayerPojo]
     var coaches : [CoachPojo]
+    
+    enum CodingKeys: String, CodingKey{
+        case teamKey = "team_key"
+        case teamName = "team_name"
+        case teamLogo = "team_logo"
+        case players
+        case coaches
+    }
 }
 
-struct PlayerPojo : Decodable {
-    var player_name : String
-    var player_image : String?
-    var player_type : String?
+struct PlayerPojo : Codable {
+    var playerName : String
+    var playerImage : String?
+    var playerType : String?
+    
+    enum CodingKeys: String, CodingKey{
+        case playerName = "player_name"
+        case playerImage = "player_image"
+        case playerType = "player_type"
+    }
 }
 
-struct CoachPojo : Decodable{
-    var coach_name : String
-    var coach_country : String?
+struct CoachPojo : Codable{
+    var coachName : String
+    var coachCountry : String?
+    
+    enum CodingKeys: String, CodingKey{
+        case coachName = "coach_name"
+        case coachCountry = "coach_country"
+    }
 }
