@@ -23,23 +23,22 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Yv6-hY-Cfw">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="200"/>
                             </imageView>
-                            <view clipsSubviews="YES" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G6I-Cf-AMf">
-                                <rect key="frame" x="0.0" y="160" width="160" height="40"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G6I-Cf-AMf">
+                                <rect key="frame" x="0.0" y="150" width="160" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1cJ-kh-u1P">
-                                        <rect key="frame" x="47.333333333333336" y="6.3333333333333446" width="65.333333333333314" height="27.666666666666671"/>
+                                        <rect key="frame" x="47.333333333333336" y="11.333333333333345" width="65.333333333333314" height="27.666666666666671"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <viewLayoutGuide key="safeArea" id="Wt5-c8-z56"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.54615752551020413" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="2Ip-8F-R40"/>
+                                    <constraint firstAttribute="height" constant="50" id="2Ip-8F-R40"/>
                                     <constraint firstItem="1cJ-kh-u1P" firstAttribute="centerY" secondItem="G6I-Cf-AMf" secondAttribute="centerY" id="VTX-jM-Dp6"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="WjT-No-nk4"/>
                                     <constraint firstItem="1cJ-kh-u1P" firstAttribute="centerX" secondItem="G6I-Cf-AMf" secondAttribute="centerX" id="gqR-L7-H1q"/>
                                 </constraints>
                             </view>

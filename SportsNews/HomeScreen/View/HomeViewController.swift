@@ -10,11 +10,11 @@ import UIKit
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var collectionView: UICollectionView!
-    let images: [UIImage] = [
-            UIImage(named: "football")!,
-            UIImage(named: "football")!,
-            UIImage(named: "football")!,
-            UIImage(named: "football")!
+    let images: [(UIImage,String)] = [
+            (UIImage(named: "football")!, "Football"),
+            (UIImage(named: "basketball")!, "Basketball"),
+            (UIImage(named: "tennis")!, "Tennis"),
+            (UIImage(named: "cricket")!, "Cricket")
         ]
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +44,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let contentHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
         let collectionHeight = collectionView.bounds.height
 
-        let inset = max((collectionHeight - contentHeight) / 4, 0)
+        let inset = max((collectionHeight - contentHeight) / 3, 0)
         collectionView.contentInset.top = inset
 //        collectionView.contentInset.bottom = inset
     }
@@ -54,7 +54,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardImageCell.identifier, for: indexPath) as! CardImageCell
-                cell.configure(with: images[indexPath.item],and: "Football")
+        cell.configure(with: images[indexPath.item].0,and: images[indexPath.item].1)
                 return cell
     }
     
@@ -67,7 +67,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let totalSpacing = spacing * (itemsPerRow + 1)
         let width = (collectionView.bounds.width - totalSpacing) / itemsPerRow
 
-        return CGSize(width: width, height: width * 1.2)
+        return CGSize(width: width, height: width * 1.3)
     }
 
     func collectionView(_ collectionView: UICollectionView,
