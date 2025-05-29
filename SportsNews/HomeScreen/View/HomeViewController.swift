@@ -7,21 +7,85 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
-
+class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    let images: [UIImage] = [
+            UIImage(named: "football")!,
+            UIImage(named: "football")!,
+            UIImage(named: "football")!,
+            UIImage(named: "football")!
+        ]
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionView.register(UINib(nibName: "CardImageCell", bundle: nil), forCellWithReuseIdentifier: CardImageCell.identifier)
+        collectionView.backgroundColor = .clear
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        self.navigationItem.title = "Sports News"
+        navigationController?.navigationBar.prefersLargeTitles = true
         // Do any additional setup after loading the view.
         let network = NetworkServices()
 //        network.getTeamsAndPlayers()
         network.getAllFootballLeagues()
         network.getFixtures(leagueKey: 152)
     }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        centerCollectionContent()
+    }
+    func centerCollectionContent() {
+        guard collectionView.collectionViewLayout is UICollectionViewFlowLayout else { return }
 
-    @IBAction func ToFav(_ sender: Any) {
-        let story = UIStoryboard.init(name: "Fav", bundle: nil)
-        let fav = story.instantiateViewController(identifier: "Fav")
-        navigationController?.present(fav, animated: true, completion: nil)
+        collectionView.layoutIfNeeded()
+
+        let contentHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
+        let collectionHeight = collectionView.bounds.height
+
+        let inset = max((collectionHeight - contentHeight) / 4, 0)
+        collectionView.contentInset.top = inset
+//        collectionView.contentInset.bottom = inset
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        images.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardImageCell.identifier, for: indexPath) as! CardImageCell
+                cell.configure(with: images[indexPath.item],and: "Football")
+                return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        let itemsPerRow: CGFloat = 2
+        let spacing: CGFloat = 16
+        let totalSpacing = spacing * (itemsPerRow + 1)
+        let width = (collectionView.bounds.width - totalSpacing) / itemsPerRow
+
+        return CGSize(width: width, height: width * 1.2)
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
     }
     
 }
