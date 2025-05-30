@@ -50,7 +50,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         network.getAllSportLeagues(sportName: "cricket")
         network.getFixtures(sportName: "cricket", leagueKey: 96, fromData: past, toData: today)
         network.getFixtures(sportName: "cricket", leagueKey: 96, fromData: today, toData: future)
-        network.getTeamsAndPlayers(sportName: "cricket", leagueId: 96)
+        network.getTeamsAndPlayers(sportName: "cricket", leagueId: 96){_ in 
+            
+        }
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

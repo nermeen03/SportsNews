@@ -13,7 +13,7 @@ class NetworkServices {
     private let url = "https://apiv2.allsportsapi.com/"
     
     
-    func getTeamsAndPlayers(sportName:String, leagueId : Int) {
+    func getTeamsAndPlayers(sportName:String, leagueId : Int, handler:@escaping ([TeamPojo])->Void) {
                 
         let url = self.url + "\(sportName)//?&met=Teams&leagueId=\(leagueId)&APIkey=\(key)"
         AF.request(url).responseDecodable(of: TeamResult.self) { response in
@@ -25,6 +25,7 @@ class NetworkServices {
                         }
                         print("Data received: \(result[0].players)")
                         print("Data received: \(result[0].coaches)")
+                        handler(result)
                         
                     case .failure(let error):
                         print("Error: \(error)")
