@@ -8,18 +8,27 @@
 import UIKit
 import Kingfisher
 class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    @IBOutlet weak var containerView: UIView!
     
     @IBOutlet weak var teamName: UILabel!
     @IBOutlet weak var teamLogo: UIImageView!
     @IBOutlet weak var tableView: UITableView!
+    var indicator:UIActivityIndicatorView?
     var team : TeamPojo?
     override func viewDidLoad() {
         super.viewDidLoad()
         let network = NetworkServices()
+        containerView.isHidden = true
+        indicator = UIActivityIndicatorView()
+        indicator?.center = view.center
+        view.addSubview(indicator!)
+        indicator?.startAnimating()
         network.getTeamsAndPlayers(sportName: "football", leagueId: 152){
             [weak self] teams in
-            self?.team = teams[2]
+            self?.team = teams[1]
             DispatchQueue.main.async {
+                self?.indicator?.stopAnimating()
+                self?.containerView.isHidden = false
                 self?.tableView.reloadData()
                 self?.teamName.text = self?.team?.teamName
                 if let string = self?.team?.teamLogo {
@@ -29,6 +38,7 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             }
         }
+        
         let nib = UINib(nibName: "TeamsTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "playercell")
         tableView.delegate = self
@@ -61,6 +71,7 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         switch indexPath.section {
         case 0:
             cell.playerName.text = team?.coaches[indexPath.item].coachName
+            cell.playerImage.image = UIImage(named:"player_placeholder")
             return cell
         case 1:
             player = team?.players.filter{$0.playerType == "Goalkeepers"}[indexPath.item]
@@ -77,7 +88,11 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         default:
             cell.playerName.text = "null"
         }
-        cell.playerName.text = player?.playerName
+        var number = player?.playerNumber
+        if number == "" {
+            number = "99"
+        }
+        cell.playerName.text = "\(number ?? "99") - \( player?.playerName ?? "nil")"
         if let string = player?.playerImage {
             if let url = URL(string: string){
                 cell.playerImage.kf.setImage(with: url,placeholder: UIImage(named: "player_placeholder"))

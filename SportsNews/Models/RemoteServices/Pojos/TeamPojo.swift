@@ -32,11 +32,12 @@ struct PlayerPojo : Codable {
     var playerName : String
     var playerImage : String?
     var playerType : String?
-    
+    var playerNumber : String
     enum CodingKeys: String, CodingKey{
         case playerName = "player_name"
         case playerImage = "player_image"
         case playerType = "player_type"
+        case playerNumber = "player_number"
     }
 }
 
