@@ -77,8 +77,8 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        var storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
-        var details = storyBoard.instantiateViewController(identifier: "leaguesDetails") as! LeaguesDetailsProtocol
+        let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
+        let details = storyBoard.instantiateViewController(identifier: "leaguesDetails") as! LeaguesDetailsProtocol
         details.sportName = self.sportName
         details.leaguesId = self.leagues[indexPath.row].leagueKey
         navigationController?.pushViewController(details, animated: true)
