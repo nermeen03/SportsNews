@@ -38,7 +38,14 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             }
         }
-        
+        network.getAllSportLeagues(sportName: .basketball){
+            result in
+            if let leagues = result as? [BasketballLeague]{
+                for league in leagues {
+                    print(league.leagueName)
+                }
+            }
+        }
         let nib = UINib(nibName: "TeamsTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "playercell")
         tableView.delegate = self

@@ -33,29 +33,48 @@ class NetworkServices {
                 }
     }
     
-    func getAllSportLeagues(sportName:String){
+    func getAllSportLeagues(sportName:SportType, completion: @escaping ([LeagueModel]) -> Void){
         
         let date = Date()
         print(date)
         
-        let url = self.url + "\(sportName)/?met=Leagues&APIkey=\(key)"
+        let url = self.url + "\(sportName.rawValue)/?met=Leagues&APIkey=\(key)"
         
-        AF.request(url).responseDecodable(of: LeaguesResult.self){
-            response in
-            switch response.result {
-            case .success(let data):
-                guard let result = data.result else {
-                    print("No leagues")
-                    return
+        AF.request(url).responseData { response in
+                guard let data = response.data,
+                      let decoder = LeaguesDecoderFactory.decoder(for: sportName) else {
+                          print("No leagues")
+                          completion([])
+                          return
                 }
-                print(result.count)
-                for league in result{
-                    print("\(league.leagueName) + \(league.leagueKey) ")
+
+                do {
+                    let result = try decoder.decode(data: data)
+                    DispatchQueue.main.async {
+                        completion(result)
+                    }
+                } catch {
+                    print("Decoding failed: \(error)")
+                    completion([])
                 }
-            case .failure(let error):
-                print("Error: \(error)")
             }
-        }
+        
+//        AF.request(url).responseDecodable(of: LeaguesResult.self){
+//            response in
+//            switch response.result {
+//            case .success(let data):
+//                guard let result = data.result else {
+//                    print("No leagues")
+//                    return
+//                }
+//                print(result.count)
+//                for league in result{
+//                    print("\(league.leagueName) + \(league.leagueKey) ")
+//                }
+//            case .failure(let error):
+//                print("Error: \(error)")
+//            }
+//        }
     }
     
     func getFixtures(sportName:String, leagueKey:Int, fromData:String, toData:String){
