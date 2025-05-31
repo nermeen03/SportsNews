@@ -7,10 +7,10 @@
 
 struct FixturesResult : Decodable {
     let success : Int
-    let result : [Fixture]?
+    let result : [FootballFixture]?
 }
 
-struct Fixture: Codable {
+struct FootballFixture: Codable {
     let fixtureDate: String
     let fixtureTime: String
     let homeTeam: String
