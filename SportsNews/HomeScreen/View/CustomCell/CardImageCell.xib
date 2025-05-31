@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CardImageCell" customModule="SportsNews" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="160" height="200"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="160" height="200"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gwW-nA-WHQ">
+                        <rect key="frame" x="0.0" y="0.0" width="160" height="200"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Yv6-hY-Cfw">
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="200"/>
+                            </imageView>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G6I-Cf-AMf">
+                                <rect key="frame" x="0.0" y="150" width="160" height="50"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1cJ-kh-u1P">
+                                        <rect key="frame" x="47.333333333333336" y="11.333333333333345" width="65.333333333333314" height="27.666666666666671"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <viewLayoutGuide key="safeArea" id="Wt5-c8-z56"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.54615752551020413" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="2Ip-8F-R40"/>
+                                    <constraint firstItem="1cJ-kh-u1P" firstAttribute="centerY" secondItem="G6I-Cf-AMf" secondAttribute="centerY" id="VTX-jM-Dp6"/>
+                                    <constraint firstItem="1cJ-kh-u1P" firstAttribute="centerX" secondItem="G6I-Cf-AMf" secondAttribute="centerX" id="gqR-L7-H1q"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Yv6-hY-Cfw" secondAttribute="bottom" id="A2O-wA-OaG"/>
+                            <constraint firstItem="Yv6-hY-Cfw" firstAttribute="leading" secondItem="gwW-nA-WHQ" secondAttribute="leading" id="KwQ-92-QcN"/>
+                            <constraint firstAttribute="trailing" secondItem="Yv6-hY-Cfw" secondAttribute="trailing" id="MYO-uw-hTZ"/>
+                            <constraint firstAttribute="bottom" secondItem="G6I-Cf-AMf" secondAttribute="bottom" id="Owl-aM-DBu"/>
+                            <constraint firstItem="G6I-Cf-AMf" firstAttribute="leading" secondItem="gwW-nA-WHQ" secondAttribute="leading" id="Udz-il-Kbc"/>
+                            <constraint firstAttribute="trailing" secondItem="G6I-Cf-AMf" secondAttribute="trailing" id="VGZ-LE-AdT"/>
+                            <constraint firstItem="Yv6-hY-Cfw" firstAttribute="top" secondItem="gwW-nA-WHQ" secondAttribute="top" id="idT-l6-bGd"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="gwW-nA-WHQ" secondAttribute="bottom" id="DsO-IB-Kkn"/>
+                <constraint firstAttribute="trailing" secondItem="gwW-nA-WHQ" secondAttribute="trailing" id="GEt-by-I6x"/>
+                <constraint firstItem="gwW-nA-WHQ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="gGD-TV-Hmw"/>
+                <constraint firstItem="gwW-nA-WHQ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="wzp-vn-3Cx"/>
+            </constraints>
+            <size key="customSize" width="77" height="72"/>
+            <connections>
+                <outlet property="cardView" destination="gwW-nA-WHQ" id="WxG-gt-K1L"/>
+                <outlet property="imageView" destination="Yv6-hY-Cfw" id="12Q-sD-vFE"/>
+                <outlet property="protectionLayer" destination="G6I-Cf-AMf" id="BHH-fE-ESI"/>
+                <outlet property="sportName" destination="1cJ-kh-u1P" id="5N2-h5-AHL"/>
+            </connections>
+            <point key="canvasLocation" x="137.40458015267174" y="27.464788732394368"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

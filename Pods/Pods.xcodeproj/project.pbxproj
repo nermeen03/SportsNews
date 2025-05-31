@@ -3,23 +3,24 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 71;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		0DC30621E94F49EC2F25DD4D002CC27F /* Pods-SportsNews-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EB86DA745C68FDC4A9E650FB1235F13 /* Pods-SportsNews-dummy.m */; };
 		5EDC126911CF7AF78D8E3B53801FD68C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
+		C4B0D8992DEAFED20067FE0E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C4B0D8982DEAFED20067FE0E /* Kingfisher */; };
 		E0D659CE14188C2AC877BD4B287252DA /* Pods-SportsNews-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 802163D806A7858D9DB1164801CDEADA /* Pods-SportsNews-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		092296377FE2564AD137D174D6F5E116 /* Pods-SportsNews-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SportsNews-acknowledgements.markdown"; sourceTree = "<group>"; };
-		2EC6CA3B3DAA2A4596C99FC12A10DA7A /* Pods-SportsNews */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-SportsNews"; path = Pods_SportsNews.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2EC6CA3B3DAA2A4596C99FC12A10DA7A /* Pods_SportsNews.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SportsNews.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		6DC5956A883926A407D8E98EF963E621 /* Pods-SportsNews.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SportsNews.release.xcconfig"; sourceTree = "<group>"; };
 		72379CCA74EF6D495515B7BDCE22B541 /* Pods-SportsNews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SportsNews.debug.xcconfig"; sourceTree = "<group>"; };
 		802163D806A7858D9DB1164801CDEADA /* Pods-SportsNews-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SportsNews-umbrella.h"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9DF8DEEA4305CE18A71F7E15D746143B /* Pods-SportsNews-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SportsNews-Info.plist"; sourceTree = "<group>"; };
 		9EB86DA745C68FDC4A9E650FB1235F13 /* Pods-SportsNews-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SportsNews-dummy.m"; sourceTree = "<group>"; };
 		ADD8902EA4B1552B24795F171E0755EE /* Pods-SportsNews-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SportsNews-acknowledgements.plist"; sourceTree = "<group>"; };
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4B0D8992DEAFED20067FE0E /* Kingfisher in Frameworks */,
 				5EDC126911CF7AF78D8E3B53801FD68C /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -83,7 +85,7 @@
 		E434FB37CFD6588EAC55FBFD2EE4982F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2EC6CA3B3DAA2A4596C99FC12A10DA7A /* Pods-SportsNews */,
+				2EC6CA3B3DAA2A4596C99FC12A10DA7A /* Pods_SportsNews.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -125,7 +127,7 @@
 			);
 			name = "Pods-SportsNews";
 			productName = Pods_SportsNews;
-			productReference = 2EC6CA3B3DAA2A4596C99FC12A10DA7A /* Pods-SportsNews */;
+			productReference = 2EC6CA3B3DAA2A4596C99FC12A10DA7A /* Pods_SportsNews.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -146,8 +148,9 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			minimizedProjectReferenceProxies = 0;
-			preferredProjectObjectVersion = 77;
+			packageReferences = (
+				C4B0D8972DEAFED20067FE0E /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = E434FB37CFD6588EAC55FBFD2EE4982F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -406,6 +409,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C4B0D8972DEAFED20067FE0E /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.3.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C4B0D8982DEAFED20067FE0E /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4B0D8972DEAFED20067FE0E /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 }

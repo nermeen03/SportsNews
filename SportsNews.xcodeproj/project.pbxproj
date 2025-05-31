@@ -8,13 +8,27 @@
 
 /* Begin PBXBuildFile section */
 		41A7B656D4CB8833FC2282F0 /* Pods_SportsNews.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C48F45B6900E82D87E415B4 /* Pods_SportsNews.framework */; };
+		C46EAC9F2DE763CC00C1CE73 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C46EAC9E2DE763CC00C1CE73 /* Alamofire */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C4B0D8A22DEAFF030067FE0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0486D9322DE5EAA3006EFD01 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0486D9392DE5EAA3006EFD01;
+			remoteInfo = SportsNews;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0486D93A2DE5EAA3006EFD01 /* SportsNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SportsNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C48F45B6900E82D87E415B4 /* Pods_SportsNews.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SportsNews.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A8F732C2F40B0E27969ED56 /* Pods-SportsNews.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SportsNews.release.xcconfig"; path = "Target Support Files/Pods-SportsNews/Pods-SportsNews.release.xcconfig"; sourceTree = "<group>"; };
 		75A4F8668A355CDFAE9756DD /* Pods-SportsNews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SportsNews.debug.xcconfig"; path = "Target Support Files/Pods-SportsNews/Pods-SportsNews.debug.xcconfig"; sourceTree = "<group>"; };
+		C4603CD72DE761960008556A /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C46EAB9E2DE7629D00C1CE73 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4B0D89E2DEAFF030067FE0E /* SportsNewsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SportsNewsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,6 +50,11 @@
 			path = SportsNews;
 			sourceTree = "<group>";
 		};
+		C4B0D89F2DEAFF030067FE0E /* SportsNewsTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SportsNewsTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +63,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				41A7B656D4CB8833FC2282F0 /* Pods_SportsNews.framework in Frameworks */,
+				C46EAC9F2DE763CC00C1CE73 /* Alamofire in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C4B0D89B2DEAFF030067FE0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				0486D93C2DE5EAA3006EFD01 /* SportsNews */,
+				C4B0D89F2DEAFF030067FE0E /* SportsNewsTests */,
 				0486D93B2DE5EAA3006EFD01 /* Products */,
 				43EDE7B202D4D615FA4D5864 /* Pods */,
 				90F9864FA244182413E9F327 /* Frameworks */,
@@ -64,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				0486D93A2DE5EAA3006EFD01 /* SportsNews.app */,
+				C4B0D89E2DEAFF030067FE0E /* SportsNewsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,6 +109,8 @@
 		90F9864FA244182413E9F327 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C46EAB9E2DE7629D00C1CE73 /* Alamofire.framework */,
+				C4603CD72DE761960008556A /* Alamofire.framework */,
 				0C48F45B6900E82D87E415B4 /* Pods_SportsNews.framework */,
 			);
 			name = Frameworks;
@@ -109,6 +140,29 @@
 			productReference = 0486D93A2DE5EAA3006EFD01 /* SportsNews.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C4B0D89D2DEAFF030067FE0E /* SportsNewsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C4B0D8A42DEAFF030067FE0E /* Build configuration list for PBXNativeTarget "SportsNewsTests" */;
+			buildPhases = (
+				C4B0D89A2DEAFF030067FE0E /* Sources */,
+				C4B0D89B2DEAFF030067FE0E /* Frameworks */,
+				C4B0D89C2DEAFF030067FE0E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C4B0D8A32DEAFF030067FE0E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C4B0D89F2DEAFF030067FE0E /* SportsNewsTests */,
+			);
+			name = SportsNewsTests;
+			packageProductDependencies = (
+			);
+			productName = SportsNewsTests;
+			productReference = C4B0D89E2DEAFF030067FE0E /* SportsNewsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -122,6 +176,10 @@
 					0486D9392DE5EAA3006EFD01 = {
 						CreatedOnToolsVersion = 16.3;
 					};
+					C4B0D89D2DEAFF030067FE0E = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 0486D9392DE5EAA3006EFD01;
+					};
 				};
 			};
 			buildConfigurationList = 0486D9352DE5EAA3006EFD01 /* Build configuration list for PBXProject "SportsNews" */;
@@ -133,18 +191,29 @@
 			);
 			mainGroup = 0486D9312DE5EAA3006EFD01;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C46EAC9D2DE763CC00C1CE73 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0486D93B2DE5EAA3006EFD01 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				0486D9392DE5EAA3006EFD01 /* SportsNews */,
+				C4B0D89D2DEAFF030067FE0E /* SportsNewsTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		0486D9382DE5EAA3006EFD01 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C4B0D89C2DEAFF030067FE0E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -186,7 +255,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C4B0D89A2DEAFF030067FE0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C4B0D8A32DEAFF030067FE0E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0486D9392DE5EAA3006EFD01 /* SportsNews */;
+			targetProxy = C4B0D8A22DEAFF030067FE0E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0486D9512DE5EAA4006EFD01 /* Debug */ = {
@@ -204,7 +288,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -233,7 +317,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -366,6 +450,50 @@
 			};
 			name = Release;
 		};
+		C4B0D8A52DEAFF030067FE0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = iti.SportsNewsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SportsNews.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SportsNews";
+				XROS_DEPLOYMENT_TARGET = 2.4;
+			};
+			name = Debug;
+		};
+		C4B0D8A62DEAFF030067FE0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = iti.SportsNewsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SportsNews.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SportsNews";
+				XROS_DEPLOYMENT_TARGET = 2.4;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -387,7 +515,35 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		C4B0D8A42DEAFF030067FE0E /* Build configuration list for PBXNativeTarget "SportsNewsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4B0D8A52DEAFF030067FE0E /* Debug */,
+				C4B0D8A62DEAFF030067FE0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C46EAC9D2DE763CC00C1CE73 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C46EAC9E2DE763CC00C1CE73 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C46EAC9D2DE763CC00C1CE73 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0486D9322DE5EAA3006EFD01 /* Project object */;
 }
