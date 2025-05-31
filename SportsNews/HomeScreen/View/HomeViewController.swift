@@ -27,32 +27,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.navigationItem.title = "Sports News"
         navigationController?.navigationBar.prefersLargeTitles = true
         // Do any additional setup after loading the view.
-        let network = NetworkServices()
-        let todayDate = Date()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        
-        let today = formatter.string(from: todayDate)
-        print(today)
-        
-        let calendar = Calendar.current
-        
-        guard let futureDate = calendar.date(byAdding: .day, value: 20, to: todayDate) else{return}
-        let future = formatter.string(from: futureDate)
-        print(future)
-
-        guard let pastDate = calendar.date(byAdding: .day, value: -20, to: todayDate) else{return}
-        let past = formatter.string(from: pastDate)
-        print(past)
-        
-        // football, basketball, cricket, tennis
-        
-//        network.getAllSportLeagues(sportName: "cricket")
-        network.getFixtures(sportName: "cricket", leagueKey: 96, fromData: past, toData: today)
-        network.getFixtures(sportName: "cricket", leagueKey: 96, fromData: today, toData: future)
-        network.getTeamsAndPlayers(sportName: "cricket", leagueId: 96){_ in 
-            
-        }
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -108,6 +82,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 16
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyBoard = UIStoryboard(name: "Leagues", bundle: nil)
+        let details = storyBoard.instantiateViewController(identifier: "leagues") as! LeaguesProtocol
+        switch indexPath.row{
+        case 0:
+            details.sportName = .football
+        case 1:
+            details.sportName = .basketball
+        case 2:
+            details.sportName = .tennis
+        case 3:
+            details.sportName = .cricket
+        default:
+            details.sportName = .football
+        }
+        navigationController?.pushViewController(details, animated: true)
     }
     
 }

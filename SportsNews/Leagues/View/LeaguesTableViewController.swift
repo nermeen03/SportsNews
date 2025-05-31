@@ -7,8 +7,16 @@
 
 import UIKit
 
-class LeaguesTableViewController: UITableViewController {
-        
+protocol LeaguesProtocol : UIViewController {
+    func showLeagues(leagues : [LeagueModel])
+    var sportName : SportType! { get set }
+}
+
+class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
+    
+    var sportName : SportType!
+    var leagues : [LeagueModel] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -16,16 +24,24 @@ class LeaguesTableViewController: UITableViewController {
         
         let nib = UINib(nibName: "CellNib", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "cell")
+        
+        let presenter = LeaguesPresenter(leaguesView: self)
+        presenter.getLeaguesFromNetwork(sportName: sportName)
+        
     }
-
-    // MARK: - Table view data source
-
+    
+    func showLeagues(leagues : [LeagueModel]){
+        print(leagues)
+        self.leagues = leagues
+        tableView.reloadData()
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 10
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return self.leagues.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -35,8 +51,37 @@ class LeaguesTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CellNib
-        
+        let data = self.leagues[indexPath.row]
+        if let logoURL = URL(string: data.leagueLogo ?? "") {
+            cell.customImage.kf.setImage(with: logoURL)
+        } else {
+            var name : String?
+            let number = (indexPath.row % 5) + 1
+            switch sportName {
+            case .football:
+                name = "football\(1)"
+            case .basketball:
+                name = "basketball\(number)"
+            case .cricket:
+                name = "cricket\(number)"
+            case .tennis:
+                name = "tennis\(number)"
+            default:
+                name = "football\(1)"
+            }
+            cell.customImage.image = UIImage(named: name!)
+        }
+        cell.customLabel.text = data.leagueName
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        var storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
+        var details = storyBoard.instantiateViewController(identifier: "leaguesDetails") as! LeaguesDetailsProtocol
+        details.sportName = self.sportName
+        details.leaguesId = self.leagues[indexPath.row].leagueKey
+        navigationController?.pushViewController(details, animated: true)
     }
     
 

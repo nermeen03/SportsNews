@@ -13,7 +13,7 @@ class NetworkServices {
     private let url = "https://apiv2.allsportsapi.com/"
     
     
-    func getTeamsAndPlayers(sportName:String, leagueId : Int, handler:@escaping ([TeamPojo])->Void) {
+    func getTeamsAndPlayers(sportName:SportType, leagueId : Int, handler:@escaping ([TeamPojo])->Void) {
                 
         let url = self.url + "\(sportName)//?&met=Teams&leagueId=\(leagueId)&APIkey=\(key)"
         AF.request(url).responseDecodable(of: TeamResult.self) { response in
@@ -50,9 +50,9 @@ class NetworkServices {
 
                 do {
                     let result = try decoder.decode(data: data)
-                    DispatchQueue.main.async {
-                        completion(result)
-                    }
+                    print(result)
+                    completion(result)
+                    
                 } catch {
                     print("Decoding failed: \(error)")
                     completion([])
@@ -77,23 +77,15 @@ class NetworkServices {
 //        }
     }
     
-    func getFixtures(sportName:String, leagueKey:Int, fromData:String, toData:String){
+    func getFixtures(sportName:SportType, leagueKey:Int, fromData:String, toData:String, completion : @escaping ([FixtureModel]) -> Void){
         let url = self.url + "\(sportName)/?met=Fixtures&APIkey=\(key)&from=\(fromData)&to=\(toData)&leagueId=\(leagueKey)"
-        AF.request(url).responseDecodable(of: FixturesResult.self){
-            response in
-            switch response.result {
-            case .success(let data):
-                guard let result = data.result else {
-                    print("No fixture between \(fromData) and \(toData)")
+        AF.request(url).responseData { response in
+            guard let data = response.data , let decoder = FixturesDecoderFactory.decoder(for: sportName) else {
+                    print("No data returned")
                     return
                 }
-                print(result.count)
-                for fixture in result{
-                    print("\(fixture.homeTeam) + \(fixture.awayTeam) ")
-                }
-            case .failure(let error):
-                print("Error: \(error)")
-            }
+            let result = decoder.decode(data: data)
+            completion(result)
         }
     }
     

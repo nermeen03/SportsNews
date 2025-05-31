@@ -5,11 +5,11 @@
 //  Created by mac on 28/05/2025.
 //
 
-//struct LeaguesResult : Decodable{
-//    let success : Int
-//    let result : [LeagueModel]?
-//}
-protocol LeagueModel: Codable {}
+protocol LeagueModel: Codable {
+    var leagueKey: Int { get }
+    var leagueName: String { get }
+    var leagueLogo: String? { get }
+}
 
 struct FootballLeague: LeagueModel {
     let leagueKey: Int
@@ -30,6 +30,8 @@ struct FootballLeague: LeagueModel {
 }
 
 struct BasketballLeague: LeagueModel {
+    var leagueLogo: String?
+    
     let leagueKey: Int
     let leagueName: String
     let countryKey: Int?
@@ -44,6 +46,8 @@ struct BasketballLeague: LeagueModel {
 }
 
 struct CricketLeague: LeagueModel {
+    var leagueLogo: String?
+    
     let leagueKey: Int
     let leagueName: String
     let leagueYear: String?
@@ -56,6 +60,8 @@ struct CricketLeague: LeagueModel {
 }
 
 struct TennisLeague: LeagueModel {
+    var leagueLogo: String?
+    
     let leagueKey: Int
     let leagueName: String
     let countryKey: Int?

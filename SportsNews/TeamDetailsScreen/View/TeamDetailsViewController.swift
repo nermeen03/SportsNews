@@ -23,7 +23,7 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         indicator?.center = view.center
         view.addSubview(indicator!)
         indicator?.startAnimating()
-        network.getTeamsAndPlayers(sportName: "football", leagueId: 152){
+        network.getTeamsAndPlayers(sportName: .football, leagueId: 152){
             [weak self] teams in
             self?.team = teams[1]
             DispatchQueue.main.async {
