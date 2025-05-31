@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Team Details View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController id="Y6W-OH-hqX" customClass="TeamDetailsViewController" customModule="SportsNews" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2gL-QQ-Wsx">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="784"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="footballStadium" translatesAutoresizingMaskIntoConstraints="NO" id="LHV-aR-YQU">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="250" id="R2Z-Fd-Oxa"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Real Madrid FC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afb-qJ-Sw7">
+                                        <rect key="frame" x="136" y="250" width="253" height="68"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Qeb-dg-A3K">
+                                        <rect key="frame" x="8" y="318" width="377" height="466"/>
+                                    </tableView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cZh-Y8-RP0">
+                                        <rect key="frame" x="16" y="190" width="120" height="120"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="120" id="Y82-Zs-pIN"/>
+                                            <constraint firstAttribute="height" constant="120" id="q7P-P7-DO5"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="afb-qJ-Sw7" secondAttribute="trailing" constant="4" id="2wd-Xa-xnJ"/>
+                                    <constraint firstItem="cZh-Y8-RP0" firstAttribute="leading" secondItem="2gL-QQ-Wsx" secondAttribute="leading" constant="16" id="33r-1l-CPg"/>
+                                    <constraint firstItem="LHV-aR-YQU" firstAttribute="top" secondItem="2gL-QQ-Wsx" secondAttribute="top" id="Fck-6I-03D"/>
+                                    <constraint firstAttribute="trailing" secondItem="LHV-aR-YQU" secondAttribute="trailing" id="Mhh-ZM-8wX"/>
+                                    <constraint firstItem="cZh-Y8-RP0" firstAttribute="top" secondItem="LHV-aR-YQU" secondAttribute="bottom" constant="-60" id="Oua-dQ-4Eg"/>
+                                    <constraint firstItem="Qeb-dg-A3K" firstAttribute="top" secondItem="cZh-Y8-RP0" secondAttribute="bottom" constant="8" id="Q6O-Ww-ps4"/>
+                                    <constraint firstAttribute="trailing" secondItem="Qeb-dg-A3K" secondAttribute="trailing" constant="8" id="VsK-IM-Fks"/>
+                                    <constraint firstItem="Qeb-dg-A3K" firstAttribute="top" secondItem="afb-qJ-Sw7" secondAttribute="bottom" id="cYY-iy-LYc"/>
+                                    <constraint firstItem="afb-qJ-Sw7" firstAttribute="top" secondItem="LHV-aR-YQU" secondAttribute="bottom" id="fpp-lL-ue1"/>
+                                    <constraint firstItem="LHV-aR-YQU" firstAttribute="leading" secondItem="2gL-QQ-Wsx" secondAttribute="leading" id="mpu-lJ-Egn"/>
+                                    <constraint firstItem="afb-qJ-Sw7" firstAttribute="leading" secondItem="cZh-Y8-RP0" secondAttribute="trailing" id="muY-Ld-gWK"/>
+                                    <constraint firstItem="Qeb-dg-A3K" firstAttribute="leading" secondItem="2gL-QQ-Wsx" secondAttribute="leading" constant="8" id="qRE-CD-rcP"/>
+                                    <constraint firstAttribute="bottom" secondItem="Qeb-dg-A3K" secondAttribute="bottom" id="svK-qQ-9qs"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="2gL-QQ-Wsx" secondAttribute="bottom" id="1yV-wM-Pr8"/>
+                            <constraint firstItem="2gL-QQ-Wsx" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" id="Ohb-Hl-Ssh"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="2gL-QQ-Wsx" secondAttribute="trailing" id="QKx-6q-Fkt"/>
+                            <constraint firstItem="2gL-QQ-Wsx" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="cYx-g8-sJx"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="containerView" destination="2gL-QQ-Wsx" id="MrQ-Lx-Cw0"/>
+                        <outlet property="tableView" destination="Qeb-dg-A3K" id="kV9-Um-qkW"/>
+                        <outlet property="teamLogo" destination="cZh-Y8-RP0" id="RPa-O1-qro"/>
+                        <outlet property="teamName" destination="afb-qJ-Sw7" id="8sT-6u-4kM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="57.251908396946561" y="-2.1126760563380285"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="footballStadium" width="4000" height="2340"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
