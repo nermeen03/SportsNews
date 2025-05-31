@@ -7,17 +7,14 @@
 
 import Foundation
 
-struct TeamResult : Codable{
-    var success : Int
-    var result : [TeamPojo]?
-}
+protocol TeamModel : Codable{}
 
-struct TeamPojo : Codable{
+struct FootballTeam : TeamModel{
     var teamKey : Int
     var teamName : String
-    var teamLogo : String
-    var players : [PlayerPojo]
-    var coaches : [CoachPojo]
+    var teamLogo : String?
+    var players : [FootballPlayer]?
+    var coaches : [FootballCoach]?
     
     enum CodingKeys: String, CodingKey{
         case teamKey = "team_key"
@@ -28,7 +25,7 @@ struct TeamPojo : Codable{
     }
 }
 
-struct PlayerPojo : Codable {
+struct FootballPlayer : Codable {
     var playerName : String
     var playerImage : String?
     var playerType : String?
@@ -41,12 +38,24 @@ struct PlayerPojo : Codable {
     }
 }
 
-struct CoachPojo : Codable{
+struct FootballCoach : Codable{
     var coachName : String
     var coachCountry : String?
     
     enum CodingKeys: String, CodingKey{
         case coachName = "coach_name"
         case coachCountry = "coach_country"
+    }
+}
+
+struct BasketballTeam : TeamModel{
+    var teamKey : Int
+    var teamName : String
+    var teamLogo : String?
+    
+    enum CodingKeys: String, CodingKey{
+        case teamKey = "team_key"
+        case teamName = "team_name"
+        case teamLogo = "team_logo"
     }
 }

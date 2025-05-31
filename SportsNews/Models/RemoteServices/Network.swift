@@ -13,20 +13,17 @@ class NetworkServices {
     private let url = "https://apiv2.allsportsapi.com/"
     
     
-    func getTeamsAndPlayers(sportName:SportType, leagueId : Int, handler:@escaping ([TeamPojo])->Void) {
+    func getTeamsAndPlayers(sportName:String, leagueId : Int, handler:@escaping ([FootballTeam])->Void) {
                 
         let url = self.url + "\(sportName)//?&met=Teams&leagueId=\(leagueId)&APIkey=\(key)"
-        AF.request(url).responseDecodable(of: TeamResult.self) { response in
+        AF.request(url).responseDecodable(of: APIResponse<[FootballTeam]?>.self) { response in
             switch response.result {
                     case .success(let data):
                         guard let result = data.result else {
                             print("No teams")
                             return
                         }
-                        print("Data received: \(result[0].players)")
-                        print("Data received: \(result[0].coaches)")
                         handler(result)
-                        
                     case .failure(let error):
                         print("Error: \(error)")
                     }
@@ -58,23 +55,6 @@ class NetworkServices {
                     completion([])
                 }
             }
-        
-//        AF.request(url).responseDecodable(of: LeaguesResult.self){
-//            response in
-//            switch response.result {
-//            case .success(let data):
-//                guard let result = data.result else {
-//                    print("No leagues")
-//                    return
-//                }
-//                print(result.count)
-//                for league in result{
-//                    print("\(league.leagueName) + \(league.leagueKey) ")
-//                }
-//            case .failure(let error):
-//                print("Error: \(error)")
-//            }
-//        }
     }
     
     func getFixtures(sportName:SportType, leagueKey:Int, fromData:String, toData:String, completion : @escaping ([FixtureModel]) -> Void){
