@@ -14,7 +14,7 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var teamLogo: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     var indicator:UIActivityIndicatorView?
-    var team : TeamPojo?
+    var team : FootballTeam?
     override func viewDidLoad() {
         super.viewDidLoad()
         let network = NetworkServices()
@@ -58,15 +58,15 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return team?.coaches.count ?? 0
+            return team?.coaches?.count ?? 0
         case 1:
-            return team?.players.filter{$0.playerType == "Goalkeepers"}.count ?? 0
+            return team?.players?.filter{$0.playerType == "Goalkeepers"}.count ?? 0
         case 2:
-            return team?.players.filter{$0.playerType == "Defenders"}.count ?? 0
+            return team?.players?.filter{$0.playerType == "Defenders"}.count ?? 0
         case 3:
-            return team?.players.filter{$0.playerType == "Midfielders"}.count ?? 0
+            return team?.players?.filter{$0.playerType == "Midfielders"}.count ?? 0
         case 4:
-            return team?.players.filter{$0.playerType == "Forwards"}.count ?? 0
+            return team?.players?.filter{$0.playerType == "Forwards"}.count ?? 0
         default:
             return 0
         }
@@ -74,23 +74,23 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:TeamsTableViewCell = tableView.dequeueReusableCell(withIdentifier: "playercell") as! TeamsTableViewCell
-        var player:PlayerPojo?
+        var player:FootballPlayer?
         switch indexPath.section {
         case 0:
-            cell.playerName.text = team?.coaches[indexPath.item].coachName
+            cell.playerName.text = team?.coaches?[indexPath.item].coachName
             cell.playerImage.image = UIImage(named:"player_placeholder")
             return cell
         case 1:
-            player = team?.players.filter{$0.playerType == "Goalkeepers"}[indexPath.item]
+            player = team?.players?.filter{$0.playerType == "Goalkeepers"}[indexPath.item]
             break
         case 2:
-            player = team?.players.filter{$0.playerType == "Defenders"}[indexPath.item]
+            player = team?.players?.filter{$0.playerType == "Defenders"}[indexPath.item]
             break
         case 3:
-            player = team?.players.filter{$0.playerType == "Midfielders"}[indexPath.item]
+            player = team?.players?.filter{$0.playerType == "Midfielders"}[indexPath.item]
             break
         case 4:
-            player = team?.players.filter{$0.playerType == "Forwards"}[indexPath.item]
+            player = team?.players?.filter{$0.playerType == "Forwards"}[indexPath.item]
             break
         default:
             cell.playerName.text = "null"
