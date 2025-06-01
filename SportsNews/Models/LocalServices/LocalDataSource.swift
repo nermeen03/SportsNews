@@ -10,7 +10,7 @@ import UIKit
 
 protocol LocalDataSourceProtocol {
     func saveLeague(league:LeagueModel, sportType: SportType)
-    func getAllLeagues()->[LeagueModel]
+    func getAllLeagues()->[FavLeagueModel]
     func deleteLeague(league: LeagueModel)
     func getLeaguesBySport(sportType: SportType)->[LeagueModel]
 }
@@ -40,8 +40,8 @@ class LocalDataSource:LocalDataSourceProtocol{
             print(error.localizedDescription)
         }
     }
-    func getAllLeagues() -> [any LeagueModel] {
-        var newsArr:[LeagueModel] = []
+    func getAllLeagues() -> [FavLeagueModel] {
+        var newsArr:[FavLeagueModel] = []
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavLeagues")
         do{
             let leagues = try context?.fetch(fetchRequest)
@@ -55,7 +55,8 @@ class LocalDataSource:LocalDataSourceProtocol{
                     newObject.leagueKey = league.value(forKey: "leagueKey") as! Int
                     newObject.leagueLogo = league.value(forKey: "leagueLogo") as? String
                     newObject.isFav = league.value(forKey: "isFav") as? Bool
-                    newsArr.append(newObject)
+                    let favObject = FavLeagueModel(league: newObject, sportType: sport)
+                    newsArr.append(favObject)
                 }
             }
         }catch{
