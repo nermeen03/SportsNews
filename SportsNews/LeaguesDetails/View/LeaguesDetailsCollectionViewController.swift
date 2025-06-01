@@ -36,6 +36,9 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
         
         collectionView.register(UINib(nibName: "LoadingNib", bundle: nil), forCellWithReuseIdentifier: "LoadingCell")
 
+        collectionView.register(UICollectionReusableView.self,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                withReuseIdentifier: "SectionHeader")
 
         
         let layout = UICollectionViewCompositionalLayout { sectionIndex, enviroment in
@@ -76,13 +79,13 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     func upcomingEventSection()-> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .absolute(354),
-            heightDimension: .absolute(250)
+            heightDimension: .absolute(245)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .absolute(354),
-            heightDimension: .absolute(250)
+            heightDimension: .absolute(245)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize
         , subitems: [item])
@@ -93,6 +96,16 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5
         , bottom: 5, trailing: 0)
         section.orthogonalScrollingBehavior = .continuous
+        
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                   heightDimension: .absolute(40)),
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top)
+        ]
+
+        
         section.visibleItemsInvalidationHandler = { (items, offset, environment) in
              items.forEach { item in
              let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
@@ -108,13 +121,13 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     func latestEventSection()-> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .absolute(350),
-            heightDimension: .absolute(250)
+            heightDimension: .absolute(245)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .absolute(350),
-            heightDimension: .absolute(280)
+            heightDimension: .absolute(275)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize
         , subitems: [item])
@@ -124,8 +137,42 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 15, leading: 12
         , bottom: 5, trailing: 0)
+        
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                   heightDimension: .absolute(40)),
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top)
+        ]
+
+        
         return section
     }
+    
+    override func collectionView(_ collectionView: UICollectionView,
+                                 viewForSupplementaryElementOfKind kind: String,
+                                 at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionHeader {
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                              withReuseIdentifier: "SectionHeader",
+                                                                              for: indexPath)
+            
+            // Remove existing subviews (for reuse)
+            headerView.subviews.forEach { $0.removeFromSuperview() }
+
+            // Add a UILabel
+            let label = UILabel(frame: CGRect(x: 16, y: 0, width: collectionView.bounds.width - 32, height: 40))
+            label.font = UIFont.boldSystemFont(ofSize: 18)
+            label.textColor = .label
+            label.text = indexPath.section == 0 ? "Upcoming Events" : "Past Events"
+            
+            headerView.addSubview(label)
+            return headerView
+        }
+        return UICollectionReusableView()
+    }
+
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2

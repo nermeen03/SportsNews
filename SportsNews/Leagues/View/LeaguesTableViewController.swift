@@ -17,6 +17,8 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     var sportName : SportType!
     var leagues : [LeagueModel] = []
     
+    var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -24,6 +26,14 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
         
         let nib = UINib(nibName: "CellNib", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "cell")
+        
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = tableView.center
+        activityIndicator.hidesWhenStopped = true
+        tableView.addSubview(activityIndicator)
+
+        activityIndicator.startAnimating()
+        tableView.isUserInteractionEnabled = false
         
         let presenter = LeaguesPresenter(leaguesView: self)
         presenter.getLeaguesFromNetwork(sportName: sportName)
@@ -33,6 +43,8 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     func showLeagues(leagues : [LeagueModel]){
         print(leagues)
         self.leagues = leagues
+        self.activityIndicator.stopAnimating()
+        self.tableView.isUserInteractionEnabled = true
         tableView.reloadData()
     }
     
