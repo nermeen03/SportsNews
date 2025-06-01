@@ -1,0 +1,108 @@
+//
+//  LocalDataSource.swift
+//  SportsNews
+//
+//  Created by mac on 01/06/2025.
+//
+
+import CoreData
+import UIKit
+
+protocol LocalDataSourceProtocol {
+    func saveLeague(league:LeagueModel, sportType: SportType)
+    func getAllLeagues()->[FavLeagueModel]
+    func deleteLeague(league: LeagueModel)
+    func getLeaguesBySport(sportType: SportType)->[LeagueModel]
+}
+
+class LocalDataSource:LocalDataSourceProtocol{
+
+    static let shared = LocalDataSource()
+    var context:NSManagedObjectContext?
+    
+    private init() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        context = appDelegate.persistentContainer.viewContext
+    }
+    
+    func saveLeague(league: any LeagueModel, sportType: SportType) {
+        let entity = NSEntityDescription.entity(forEntityName: "FavLeagues", in: context!)
+        let newsObject = NSManagedObject(entity: entity!, insertInto: context)
+        newsObject.setValue(league.leagueName, forKey: "leagueName")
+        newsObject.setValue(league.leagueKey, forKey: "leagueKey")
+        newsObject.setValue(league.leagueLogo, forKey: "leagueLogo")
+        newsObject.setValue(league.isFav, forKey: "isFav")
+        newsObject.setValue(sportType.rawValue, forKey: "sportType")
+        do{
+            try context?.save()
+            
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
+    func getAllLeagues() -> [FavLeagueModel] {
+        var newsArr:[FavLeagueModel] = []
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavLeagues")
+        do{
+            let leagues = try context?.fetch(fetchRequest)
+            guard let leagues = leagues else{
+                return []
+            }
+            for league in leagues{
+                if let sport = SportType(rawValue: league.value(forKey: "sportType") as? String ?? SportType.football.rawValue){
+                    var newObject = LeagueFactory.createEmptyLeague(for: sport)
+                    newObject.leagueName = (league.value(forKey: "leagueName") as? String)!
+                    newObject.leagueKey = league.value(forKey: "leagueKey") as! Int
+                    newObject.leagueLogo = league.value(forKey: "leagueLogo") as? String
+                    newObject.isFav = league.value(forKey: "isFav") as? Bool
+                    let favObject = FavLeagueModel(league: newObject, sportType: sport)
+                    newsArr.append(favObject)
+                }
+            }
+        }catch{
+            print("Fetch failed: \(error)")
+        }
+        return newsArr
+    }
+    
+    func deleteLeague(league: any LeagueModel) {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavLeagues")
+        fetchRequest.predicate = NSPredicate(format: "leagueKey == %d", league.leagueKey)
+
+        do {
+            if let results = try context?.fetch(fetchRequest) {
+                for object in results {
+                    context?.delete(object)
+                }
+                try context?.save()
+            }
+        } catch {
+            print("Failed to delete league: \(error.localizedDescription)")
+        }
+    }
+    func getLeaguesBySport(sportType: SportType) -> [any LeagueModel] {
+        var newsArr:[LeagueModel] = []
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavLeagues")
+        fetchRequest.predicate = NSPredicate(format: "sportType == %@", sportType.rawValue)
+        do{
+            let leagues = try context?.fetch(fetchRequest)
+            guard let leagues = leagues else{
+                return []
+            }
+            for league in leagues{
+                if let sport = SportType(rawValue: league.value(forKey: "sportType") as? String ?? SportType.football.rawValue){
+                    var newObject = LeagueFactory.createEmptyLeague(for: sport)
+                    newObject.leagueName = (league.value(forKey: "leagueName") as? String)!
+                    newObject.leagueKey = league.value(forKey: "leagueKey") as! Int
+                    newObject.leagueLogo = league.value(forKey: "leagueLogo") as? String
+                    newObject.isFav = league.value(forKey: "isFav") as? Bool
+                    newsArr.append(newObject)
+                }
+            }
+        }catch{
+            print("Fetch failed: \(error)")
+        }
+        return newsArr
+    }
+    
+}

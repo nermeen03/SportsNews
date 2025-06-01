@@ -12,7 +12,11 @@ class CellNib: UITableViewCell {
     @IBOutlet weak var cardView: UIView!
     @IBOutlet weak var customImage: UIImageView!
     @IBOutlet weak var customLabel: UILabel!
-    
+    @IBOutlet weak var favBtn: UIButton!
+    var favBtnAction : (()->Void)?
+    @IBAction func favBtnPressed(_ sender: Any) {
+        favBtnAction?()
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         customImage.clipsToBounds = true
