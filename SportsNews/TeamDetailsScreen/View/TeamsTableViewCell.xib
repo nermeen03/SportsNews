@@ -23,7 +23,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZlN-gZ-VAT">
-                        <rect key="frame" x="110" y="32.666666666666664" width="121" height="20.666666666666664"/>
+                        <rect key="frame" x="110" y="32.666666666666664" width="223" height="20.666666666666664"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -34,7 +34,7 @@
                     <constraint firstItem="ZlN-gZ-VAT" firstAttribute="leading" secondItem="Upf-4W-v6L" secondAttribute="trailing" constant="32" id="7HF-fW-S1e"/>
                     <constraint firstItem="Upf-4W-v6L" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="8HK-Jn-HWt"/>
                     <constraint firstItem="ZlN-gZ-VAT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="V0g-6M-0Ii"/>
-                    <constraint firstAttribute="trailing" secondItem="ZlN-gZ-VAT" secondAttribute="trailing" constant="110" id="aJE-BW-g0V"/>
+                    <constraint firstAttribute="trailing" secondItem="ZlN-gZ-VAT" secondAttribute="trailing" constant="8" id="aJE-BW-g0V"/>
                     <constraint firstAttribute="bottom" secondItem="Upf-4W-v6L" secondAttribute="bottom" constant="8" id="uFB-j0-yhm"/>
                 </constraints>
             </tableViewCellContentView>

@@ -31,10 +31,6 @@ class NetworkServices {
     }
     
     func getAllSportLeagues(sportName:SportType, completion: @escaping ([LeagueModel]) -> Void){
-        
-        let date = Date()
-        print(date)
-        
         let url = self.url + "\(sportName.rawValue)/?met=Leagues&APIkey=\(key)"
         
         AF.request(url).responseData { response in
@@ -47,7 +43,6 @@ class NetworkServices {
 
                 do {
                     let result = try decoder.decode(data: data)
-                    print(result)
                     completion(result)
                     
                 } catch {
