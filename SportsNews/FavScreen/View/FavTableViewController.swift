@@ -7,14 +7,12 @@
 
 import UIKit
 protocol FavViewProtocol{
-    func showLeagues(leagues : [FavLeagueModel])
+    func showLeagues()
 }
 class FavTableViewController: UITableViewController, FavViewProtocol {
-    var favLeagues: [FavLeagueModel]?
     var favPresenter: FavPresenterProtocol?
     override func viewDidLoad() {
         super.viewDidLoad()
-        favLeagues = []
         favPresenter = FavPresenter(favView: self, local: LocalDataSource.shared)
         title = "Favorite"
         let nib = UINib(nibName: "CellNib", bundle: nil)
@@ -30,7 +28,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return favLeagues?.count ?? 0
+        return favPresenter?.getLocalArray().count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -40,14 +38,14 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CellNib
-        cell.customLabel.text = favLeagues?[indexPath.item].league.leagueName
+        cell.customLabel.text = favPresenter?.getLocalArray()[indexPath.item].league.leagueName
         cell.favBtn.isHidden = true
-        if let logoURL = URL(string: favLeagues?[indexPath.item].league.leagueLogo ?? "") {
+        if let logoURL = URL(string: favPresenter?.getLocalArray()[indexPath.item].league.leagueLogo ?? "") {
             cell.customImage.kf.setImage(with: logoURL)
         } else {
             var name : String?
             let number = (indexPath.row % 5) + 1
-            switch favLeagues?[indexPath.item].sportType {
+            switch favPresenter?.getLocalArray()[indexPath.item].sportType {
             case .football:
                 name = "football\(1)"
             case .basketball:
@@ -67,13 +65,12 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         
         let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
         let details = storyBoard.instantiateViewController(identifier: "leaguesDetails") as! LeaguesDetailsProtocol
-        details.sportName = favLeagues?[indexPath.row].sportType
-        details.leaguesId = favLeagues?[indexPath.row].league.leagueKey
+        details.sportName = favPresenter?.getLocalArray()[indexPath.row].sportType
+        details.leaguesId = favPresenter?.getLocalArray()[indexPath.row].league.leagueKey
         navigationController?.pushViewController(details, animated: true)
     }
     
-    func showLeagues(leagues: [FavLeagueModel]) {
-        favLeagues = leagues
+    func showLeagues() {
         tableView.reloadData()
     }
 
@@ -91,9 +88,8 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
             let alert = UIAlertController(title: "Delete League", message: "Are you sure you want to remove this league from your favorites?", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: {[weak self] _ in
-                if let league = self?.favLeagues?[indexPath.row].league {
+                if let league = self?.favPresenter?.getLocalArray()[indexPath.row].league {
                     self?.favPresenter?.deleteLeagueFromLocal(league: league)
-                    self?.favLeagues?.remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: .fade)
                 }
             }))
