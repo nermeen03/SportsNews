@@ -13,21 +13,24 @@ class NetworkServices {
     private let url = "https://apiv2.allsportsapi.com/"
     
     
-    func getTeamsAndPlayers(sportName:SportType, leagueId : Int, handler:@escaping ([FootballTeam])->Void) {
-                
-        let url = self.url + "\(sportName)//?&met=Teams&leagueId=\(leagueId)&APIkey=\(key)"
-        AF.request(url).responseDecodable(of: APIResponse<[FootballTeam]?>.self) { response in
+    func getTeamsAndPlayers<T: Codable>(sportName: SportType, leagueId: Int, responseType: T.Type, handler: @escaping ([T]) -> Void) {
+        let endpoint = sportName == .tennis ? "Players" : "Teams"
+        let url = self.url + "\(sportName)//?&met=\(endpoint)&leagueId=\(leagueId)&APIkey=\(key)"
+        
+        AF.request(url).responseDecodable(of: APIResponse<[T]?>.self) { response in
             switch response.result {
-                    case .success(let data):
-                        guard let result = data.result else {
-                            print("No teams")
-                            return
-                        }
-                handler(result ?? [])
-                    case .failure(let error):
-                        print("Error: \(error)")
-                    }
+            case .success(let data):
+                guard let result = data.result else {
+                    print("No teams/players")
+                    handler([])
+                    return
                 }
+                handler(result ?? [])
+            case .failure(let error):
+                print("Error: \(error)")
+                handler([])
+            }
+        }
     }
     
     func getAllSportLeagues(sportName:SportType, completion: @escaping ([LeagueModel]) -> Void){

@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import Kingfisher
 protocol LeaguesDetailsProtocol : UIViewController{
     
     var sportName : SportType? { get set }
@@ -14,17 +14,19 @@ protocol LeaguesDetailsProtocol : UIViewController{
     
     func renderUpcomingFixtureToView(fixtureList:[FixtureModel])
     func renderPastFixtureToView(fixtureList:[FixtureModel])
-    func renderTeamsToView()
+    func renderTeamsToView(teams: [FootballTeam])
+    func renderPlayersToView(players: [TennisPlayer])
 }
 
 class LeaguesDetailsCollectionViewController: UICollectionViewController, LeaguesDetailsProtocol {
-
+    
     var sportName : SportType?
     var leaguesId : Int?
     
     var pastFixture : [FixtureModel]?
     var upcomingFixture : [FixtureModel]?
-    // var teams : [TeamsModel]?
+    var footballTeams: [FootballTeam]?
+    var tennisPlayers: [TennisPlayer]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +41,8 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
         collectionView.register(UICollectionReusableView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: "SectionHeader")
-
+        
+        collectionView.register(UINib(nibName: "TeamOrPlayerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "teamOrPlayerCell")
         
         let layout = UICollectionViewCompositionalLayout { sectionIndex, enviroment in
                     switch sectionIndex {
@@ -48,7 +51,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
                     case 1 :
                         return self.latestEventSection()
                     default:
-                        return self.upcomingEventSection()
+                        return self.teamsSection()
                     }
                 }
         collectionView.setCollectionViewLayout(layout, animated: true)
@@ -70,9 +73,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
             self.collectionView.reloadSections(IndexSet(integer: 1))
         }
     }
-    func renderTeamsToView(){
-        
-    }
+    
     
     // MARK: UICollectionViewDataSource
     
@@ -149,6 +150,38 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
         return section
     }
     
+    func teamsSection()-> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(200)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(150),
+            heightDimension: .absolute(245)
+        )
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize
+        , subitems: [item])
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0
+        , bottom: 0, trailing: 0)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5
+        , bottom: 5, trailing: 0)
+        section.orthogonalScrollingBehavior = .continuous
+        
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                   heightDimension: .absolute(40)),
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top)
+        ]
+
+        return section
+    }
+    
     override func collectionView(_ collectionView: UICollectionView,
                                  viewForSupplementaryElementOfKind kind: String,
                                  at indexPath: IndexPath) -> UICollectionReusableView {
@@ -164,7 +197,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
             let label = UILabel(frame: CGRect(x: 16, y: 0, width: collectionView.bounds.width - 32, height: 40))
             label.font = UIFont.boldSystemFont(ofSize: 18)
             label.textColor = .label
-            label.text = indexPath.section == 0 ? "Upcoming Events" : "Past Events"
+            label.text = indexPath.section == 0 ? "Upcoming Events" : indexPath.section == 1 ? "Past Events" : "Teams"
             
             headerView.addSubview(label)
             return headerView
@@ -174,7 +207,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
 
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 3
     }
 
 
@@ -191,6 +224,12 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
                 return 1
             } else {
                 return pastFixture!.count
+            }
+        case 2:
+            if sportName == .tennis {
+                return tennisPlayers?.count ?? 1
+            }else{
+                return footballTeams?.count ?? 1
             }
         default:
             return 0
@@ -264,42 +303,66 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
                 
                 return cell
             }
+        case 2:
+            // Check data presence first
+            if sportName == .football || sportName == .basketball || sportName == .cricket {
+                guard let teams = footballTeams else {
+                    // Show loading or empty cell if needed
+                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
+                    return emptyCell
+                }
+                if teams.isEmpty {
+                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
+                    return emptyCell
+                }
+                // dequeue the correct cell once and configure
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "teamOrPlayerCell", for: indexPath) as! TeamOrPlayerCollectionViewCell
+                if let logoURL = URL(string: teams[indexPath.item].teamLogo ?? "") {
+                    cell.teamOrPlayerImage.kf.setImage(with: logoURL)
+                } else {
+                    cell.teamOrPlayerImage.image = UIImage(named: "team_placeholder")
+                }
+                cell.teamOrPlayerLabel.text = teams[indexPath.item].teamName
+                return cell
+
+            } else if sportName == .tennis {
+                guard let players = tennisPlayers else {
+                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
+                    return emptyCell
+                }
+                if players.isEmpty {
+                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
+                    return emptyCell
+                }
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "teamOrPlayerCell", for: indexPath) as! TeamOrPlayerCollectionViewCell
+                if let logoURL = URL(string: players[indexPath.item].playerLogo) {
+                    cell.teamOrPlayerImage.kf.setImage(with: logoURL)
+                } else {
+                    cell.teamOrPlayerImage.image = UIImage(named: "player_placeholder")
+                }
+                cell.teamOrPlayerLabel.text = players[indexPath.item].playerName
+                return cell
+            }
+            
+            // If none of the above, fallback empty cell
+            let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
+            return emptyCell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
             return cell
         }
     }
-
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
-
+    func renderTeamsToView(teams: [FootballTeam]) {
+            self.footballTeams = teams
+            DispatchQueue.main.async {
+                self.collectionView.reloadSections(IndexSet(integer: 2))
+            }
+        }
+        
+        func renderPlayersToView(players: [TennisPlayer]) {
+            self.tennisPlayers = players
+            DispatchQueue.main.async {
+                self.collectionView.reloadSections(IndexSet(integer: 2))
+            }
+        }
 }

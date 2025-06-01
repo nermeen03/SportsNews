@@ -23,21 +23,21 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         indicator?.center = view.center
         view.addSubview(indicator!)
         indicator?.startAnimating()
-        network.getTeamsAndPlayers(sportName: .football, leagueId: 152){
-            [weak self] teams in
-            self?.team = teams[1]
-            DispatchQueue.main.async {
-                self?.indicator?.stopAnimating()
-                self?.containerView.isHidden = false
-                self?.tableView.reloadData()
-                self?.teamName.text = self?.team?.teamName
-                if let string = self?.team?.teamLogo {
-                    if let url = URL(string: string){
-                        self?.teamLogo.kf.setImage(with: url)
-                    }
-                }
-            }
-        }
+//        network.getTeamsAndPlayers(sportName: .football, leagueId: 152, responseType: <#FootballTeam?.Type#>){
+//            [weak self] teams in
+//            self?.team = teams[1]
+//            DispatchQueue.main.async {
+//                self?.indicator?.stopAnimating()
+//                self?.containerView.isHidden = false
+//                self?.tableView.reloadData()
+//                self?.teamName.text = self?.team?.teamName
+//                if let string = self?.team?.teamLogo {
+//                    if let url = URL(string: string){
+//                        self?.teamLogo.kf.setImage(with: url)
+//                    }
+//                }
+//            }
+//        }
         network.getAllSportLeagues(sportName: .basketball){
             result in
             if let leagues = result as? [BasketballLeague]{

@@ -32,6 +32,24 @@ class LeaguesDetailsPresenter {
             self.leaguesView.renderUpcomingFixtureToView(fixtureList: data)
         }
         
+        switch sportName {
+        case .football:
+            network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId, responseType: FootballTeam.self) { teams in
+                self.leaguesView.renderTeamsToView(teams: teams)
+            }
+        case .basketball:
+            network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId, responseType: FootballTeam.self) { teams in
+                self.leaguesView.renderTeamsToView(teams: teams)
+            }
+        case .cricket:
+            network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId, responseType: FootballTeam.self) { teams in
+                self.leaguesView.renderTeamsToView(teams: teams)
+            }
+        case .tennis:
+            network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId, responseType: TennisPlayer.self) { players in
+                self.leaguesView.renderPlayersToView(players: players)
+            }
+        }
     }
     
     func calcDate() -> (String, String, String){
@@ -44,7 +62,7 @@ class LeaguesDetailsPresenter {
         
         let calendar = Calendar.current
         
-        if let futureDate = calendar.date(byAdding: .day, value: 40, to: todayDate), let pastDate = calendar.date(byAdding: .day, value: -40, to: todayDate) {
+        if let futureDate = calendar.date(byAdding: .day, value: 40, to: todayDate), let pastDate = calendar.date(byAdding: .day, value: -5*365, to: todayDate) {
             let future = formatter.string(from: futureDate)
             let past = formatter.string(from: pastDate)
             return(past, today, future)

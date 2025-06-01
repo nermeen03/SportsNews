@@ -7,9 +7,7 @@
 
 import Foundation
 
-protocol TeamModel : Codable{}
-
-struct FootballTeam : TeamModel{
+struct FootballTeam : Codable{
     var teamKey : Int
     var teamName : String
     var teamLogo : String?
@@ -48,14 +46,11 @@ struct FootballCoach : Codable{
     }
 }
 
-struct BasketballTeam : TeamModel{
-    var teamKey : Int
-    var teamName : String
-    var teamLogo : String?
-    
+struct TennisPlayer: Codable{
+    var playerName: String
+    var playerLogo: String
     enum CodingKeys: String, CodingKey{
-        case teamKey = "team_key"
-        case teamName = "team_name"
-        case teamLogo = "team_logo"
+        case playerName = "player_name"
+        case playerLogo = "player_logo"
     }
 }
