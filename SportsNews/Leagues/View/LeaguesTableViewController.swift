@@ -16,7 +16,7 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     
     var sportName : SportType!
     var leagues : [LeagueModel] = []
-    
+    var presenter: LeaguesPresenterProtocol?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,13 +25,12 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
         let nib = UINib(nibName: "CellNib", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "cell")
         
-        let presenter = LeaguesPresenter(leaguesView: self)
-        presenter.getLeaguesFromNetwork(sportName: sportName)
+        presenter = LeaguesPresenter(leaguesView: self)
+        presenter?.getLeaguesFromNetwork(sportName: sportName)
         
     }
     
     func showLeagues(leagues : [LeagueModel]){
-        print(leagues)
         self.leagues = leagues
         tableView.reloadData()
     }
@@ -72,6 +71,27 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
             cell.customImage.image = UIImage(named: name!)
         }
         cell.customLabel.text = data.leagueName
+        
+        if leagues[indexPath.item].isFav ?? false {
+            cell.favBtn.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        }else{
+            cell.favBtn.setImage(UIImage(systemName: "heart"), for: .normal)
+        }
+        
+        cell.favBtnAction = {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.leagues[indexPath.item].isFav = !(self.leagues[indexPath.item].isFav ?? false)
+
+            if self.leagues[indexPath.item].isFav == true {
+                presenter?.saveLeagueToLocal(league: self.leagues[indexPath.item], sportName: self.sportName)
+            } else {
+                presenter?.deleteLeagueFromLocal(league: self.leagues[indexPath.item])
+            }
+
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
         return cell
     }
     

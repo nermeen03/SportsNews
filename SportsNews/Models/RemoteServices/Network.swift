@@ -47,7 +47,7 @@ class NetworkServices {
 
                 do {
                     let result = try decoder.decode(data: data)
-                    print(result)
+//                    print(result)
                     completion(result)
                     
                 } catch {
