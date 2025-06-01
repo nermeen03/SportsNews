@@ -39,7 +39,11 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
         tableView.isUserInteractionEnabled = false
         
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationItem.largeTitleDisplayMode = .never // or .automatic if you want to allow it
+    }
     func showLeagues(leagues : [LeagueModel]){
         self.leagues = leagues
         self.activityIndicator.stopAnimating()

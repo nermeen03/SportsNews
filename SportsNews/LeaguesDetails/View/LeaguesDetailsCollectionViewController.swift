@@ -120,23 +120,22 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     
     func latestEventSection()-> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(350),
+            widthDimension: .absolute(collectionView.frame.width - 40),
             heightDimension: .absolute(245)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(350),
+            widthDimension: .absolute(collectionView.frame.width - 40),
             heightDimension: .absolute(275)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize
         , subitems: [item])
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10
-        , bottom: 0, trailing: 5)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 15, leading: 12
-        , bottom: 5, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 15, leading: 10, bottom: 5, trailing: 10)
         
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(
