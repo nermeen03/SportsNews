@@ -64,13 +64,13 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     func renderUpcomingFixtureToView(fixtureList:[FixtureModel]){
         self.upcomingFixture = fixtureList
         DispatchQueue.main.async {
-            self.collectionView.reloadSections(IndexSet(integer: 0))
+            self.collectionView.reloadData()
         }
     }
     func renderPastFixtureToView(fixtureList:[FixtureModel]){
         self.pastFixture = fixtureList
         DispatchQueue.main.async {
-            self.collectionView.reloadSections(IndexSet(integer: 1))
+            self.collectionView.reloadData()
         }
     }
     
@@ -152,7 +152,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     
     func teamsSection()-> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(250),
+            widthDimension: .absolute(200),
             heightDimension: .absolute(150)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -358,14 +358,14 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     func renderTeamsToView(teams: [FootballTeam]) {
             self.footballTeams = teams
             DispatchQueue.main.async {
-                self.collectionView.reloadSections(IndexSet(integer: 2))
+                self.collectionView.reloadData()
             }
         }
         
         func renderPlayersToView(players: [TennisPlayer]) {
             self.tennisPlayers = players
             DispatchQueue.main.async {
-                self.collectionView.reloadSections(IndexSet(integer: 2))
+                self.collectionView.reloadData()
             }
         }
 }

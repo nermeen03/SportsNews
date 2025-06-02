@@ -73,6 +73,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         if let array = favPresenter?.getLocalArray(){
             if array.count == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyTableCellNib
+                tableView.isUserInteractionEnabled = false
                 return cell
             }
             
@@ -99,6 +100,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyTableCellNib
+            tableView.isUserInteractionEnabled = false
             return cell
         }
     }
