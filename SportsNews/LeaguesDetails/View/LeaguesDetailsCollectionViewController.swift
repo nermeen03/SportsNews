@@ -11,7 +11,7 @@ protocol LeaguesDetailsProtocol : UIViewController{
     
     var sportName : SportType? { get set }
     var leaguesId : Int? { get set }
-    
+    var leagueName : String? {get set}
     func renderUpcomingFixtureToView(fixtureList:[FixtureModel])
     func renderPastFixtureToView(fixtureList:[FixtureModel])
     func renderTeamsToView(teams: [FootballTeam])
@@ -22,7 +22,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     
     var sportName : SportType?
     var leaguesId : Int?
-    
+    var leagueName : String?
     var pastFixture : [FixtureModel]?
     var upcomingFixture : [FixtureModel]?
     var footballTeams: [FootballTeam]?
@@ -30,7 +30,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Leagues Details"
+        title = leagueName ?? "Leagues Details"
         collectionView.register(UINib(nibName: "PrevCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PrevCell")
         collectionView.register(UINib(nibName: "FutureCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "FutureCell")
 
@@ -80,13 +80,13 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     func upcomingEventSection()-> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .absolute(354),
-            heightDimension: .absolute(245)
+            heightDimension: .absolute(220)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .absolute(354),
-            heightDimension: .absolute(245)
+            heightDimension: .absolute(220)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize
         , subitems: [item])
@@ -122,13 +122,13 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     func latestEventSection()-> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .absolute(collectionView.frame.width - 40),
-            heightDimension: .absolute(245)
+            heightDimension: .absolute(220)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .absolute(collectionView.frame.width - 40),
-            heightDimension: .absolute(275)
+            heightDimension: .absolute(240)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize
         , subitems: [item])
@@ -153,13 +153,13 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     func teamsSection()-> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(200)
+            heightDimension: .absolute(150)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .absolute(150),
-            heightDimension: .absolute(245)
+            heightDimension: .absolute(170)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize
         , subitems: [item])
@@ -304,18 +304,15 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
                 return cell
             }
         case 2:
-            // Check data presence first
             if sportName == .football || sportName == .basketball || sportName == .cricket {
                 guard let teams = footballTeams else {
-                    // Show loading or empty cell if needed
-                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
+                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCell", for: indexPath) as! LoadingNib
                     return emptyCell
                 }
                 if teams.isEmpty {
                     let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
                     return emptyCell
                 }
-                // dequeue the correct cell once and configure
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "teamOrPlayerCell", for: indexPath) as! TeamOrPlayerCollectionViewCell
                 if let logoURL = URL(string: teams[indexPath.item].teamLogo ?? "") {
                     cell.teamOrPlayerImage.kf.setImage(with: logoURL)
@@ -335,7 +332,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
                     return emptyCell
                 }
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "teamOrPlayerCell", for: indexPath) as! TeamOrPlayerCollectionViewCell
-                if let logoURL = URL(string: players[indexPath.item].playerLogo) {
+                if let playerLogo = players[indexPath.item].playerLogo, let logoURL = URL(string:playerLogo) {
                     cell.teamOrPlayerImage.kf.setImage(with: logoURL)
                 } else {
                     cell.teamOrPlayerImage.image = UIImage(named: "player_placeholder")
@@ -344,12 +341,19 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
                 return cell
             }
             
-            // If none of the above, fallback empty cell
             let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
             return emptyCell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
             return cell
+        }
+    }
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if(indexPath.section == 2 && sportName == .football){
+            let storyboard = UIStoryboard(name: "TeamDetails", bundle: nil)
+            let teamVC = storyboard.instantiateViewController(withIdentifier: "teamDetails") as! TeamDetailsViewController
+            teamVC.team = footballTeams?[indexPath.item]
+            navigationController?.pushViewController(teamVC, animated: true)
         }
     }
     func renderTeamsToView(teams: [FootballTeam]) {

@@ -121,6 +121,7 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
         let details = storyBoard.instantiateViewController(identifier: "leaguesDetails") as! LeaguesDetailsProtocol
         details.sportName = self.sportName
         details.leaguesId = self.presenter?.getLeagues()[indexPath.row].leagueKey
+        details.leagueName = self.presenter?.getLeagues()[indexPath.row].leagueName
         navigationController?.pushViewController(details, animated: true)
     }
     
