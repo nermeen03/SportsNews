@@ -17,39 +17,19 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     var team : FootballTeam?
     override func viewDidLoad() {
         super.viewDidLoad()
-        let network = NetworkServices()
-        containerView.isHidden = true
-        indicator = UIActivityIndicatorView()
-        indicator?.center = view.center
-        view.addSubview(indicator!)
-        indicator?.startAnimating()
-//        network.getTeamsAndPlayers(sportName: .football, leagueId: 152, responseType: <#FootballTeam?.Type#>){
-//            [weak self] teams in
-//            self?.team = teams[1]
-//            DispatchQueue.main.async {
-//                self?.indicator?.stopAnimating()
-//                self?.containerView.isHidden = false
-//                self?.tableView.reloadData()
-//                self?.teamName.text = self?.team?.teamName
-//                if let string = self?.team?.teamLogo {
-//                    if let url = URL(string: string){
-//                        self?.teamLogo.kf.setImage(with: url)
-//                    }
-//                }
-//            }
-//        }
-        network.getAllSportLeagues(sportName: .basketball){
-            result in
-            if let leagues = result as? [BasketballLeague]{
-                for league in leagues {
-                    print(league.leagueName)
-                }
-            }
-        }
+//        containerView.isHidden = true
+//        indicator = UIActivityIndicatorView()
+//        indicator?.center = view.center
+//        view.addSubview(indicator!)
+//        indicator?.startAnimating()
         let nib = UINib(nibName: "TeamsTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "playercell")
         tableView.delegate = self
         tableView.dataSource = self
+        teamName.text = team?.teamName
+        if let urlString = team?.teamLogo, let url = URL(string: urlString){
+            teamLogo.kf.setImage(with: url)
+        }
         // Do any additional setup after loading the view.
     }
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -126,14 +106,4 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

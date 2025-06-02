@@ -38,8 +38,8 @@ class FutureCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        firstImage.layer.cornerRadius = firstImage.frame.width / 2
-        secondImage.layer.cornerRadius = secondImage.frame.width / 2
+//        firstImage.layer.cornerRadius = firstImage.frame.width / 2
+//        secondImage.layer.cornerRadius = secondImage.frame.width / 2
     }
 
 }

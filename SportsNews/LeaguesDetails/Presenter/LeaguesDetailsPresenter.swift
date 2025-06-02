@@ -18,7 +18,7 @@ class LeaguesDetailsPresenter {
         
         let network = NetworkServices()
         
-        let (past, today, future) = calcDate()
+        let (past, today, future) = calcDate(sportType: sportName)
         
 //        network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId) { data in
 //
@@ -33,26 +33,14 @@ class LeaguesDetailsPresenter {
         }
         
         switch sportName {
-        case .football:
-            network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId, responseType: FootballTeam.self) { teams in
-                self.leaguesView.renderTeamsToView(teams: teams)
-            }
-        case .basketball:
-            network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId, responseType: FootballTeam.self) { teams in
-                self.leaguesView.renderTeamsToView(teams: teams)
-            }
-        case .cricket:
-            network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId, responseType: FootballTeam.self) { teams in
-                self.leaguesView.renderTeamsToView(teams: teams)
-            }
-        case .tennis:
-            network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId, responseType: TennisPlayer.self) { players in
-                self.leaguesView.renderPlayersToView(players: players)
-            }
+            case .tennis:
+                network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId, responseType: TennisPlayer.self) { players in self.leaguesView.renderPlayersToView(players: players)}
+            default :
+                network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId, responseType: FootballTeam.self) { teams in self.leaguesView.renderTeamsToView(teams: teams)}
         }
     }
     
-    func calcDate() -> (String, String, String){
+    func calcDate(sportType: SportType) -> (String, String, String){
         let todayDate = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -61,11 +49,25 @@ class LeaguesDetailsPresenter {
         print(today)
         
         let calendar = Calendar.current
-        
-        if let futureDate = calendar.date(byAdding: .day, value: 40, to: todayDate), let pastDate = calendar.date(byAdding: .day, value: -5*365, to: todayDate) {
-            let future = formatter.string(from: futureDate)
-            let past = formatter.string(from: pastDate)
-            return(past, today, future)
+        switch sportType {
+        case .tennis:
+            if let futureDate = calendar.date(byAdding: .day, value: 40, to: todayDate), let pastDate = calendar.date(byAdding: .day, value: -5*365, to: todayDate) {
+                let future = formatter.string(from: futureDate)
+                let past = formatter.string(from: pastDate)
+                return(past, today, future)
+            }
+        case .cricket:
+            if let futureDate = calendar.date(byAdding: .day, value: 40, to: todayDate), let pastDate = calendar.date(byAdding: .day, value: -5*365, to: todayDate) {
+                let future = formatter.string(from: futureDate)
+                let past = formatter.string(from: pastDate)
+                return(past, today, future)
+            }
+        default:
+            if let futureDate = calendar.date(byAdding: .day, value: 40, to: todayDate), let pastDate = calendar.date(byAdding: .day, value: -40, to: todayDate) {
+                let future = formatter.string(from: futureDate)
+                let past = formatter.string(from: pastDate)
+                return(past, today, future)
+            }
         }
         return(today,today,today)
     }

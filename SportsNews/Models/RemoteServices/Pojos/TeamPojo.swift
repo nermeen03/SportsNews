@@ -48,7 +48,7 @@ struct FootballCoach : Codable{
 
 struct TennisPlayer: Codable{
     var playerName: String
-    var playerLogo: String
+    var playerLogo: String?
     enum CodingKeys: String, CodingKey{
         case playerName = "player_name"
         case playerLogo = "player_logo"
