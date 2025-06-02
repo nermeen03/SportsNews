@@ -14,17 +14,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-
-        window = UIWindow(windowScene: windowScene)
         
-        let hasSeen = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
-        if hasSeen {
-            createScreens()
-        }else{
-            let onboardingVC = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "nav")
-            window?.rootViewController = onboardingVC
-            window?.makeKeyAndVisible()
-        }
+        
+    }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.

@@ -47,9 +47,11 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     }
     
     func showLeagues(){
-        self.activityIndicator.stopAnimating()
-        self.tableView.isUserInteractionEnabled = true
         tableView.reloadData()
+        if (self.presenter?.getLeagues().count ?? 0 > 0){
+            self.activityIndicator.stopAnimating()
+            self.tableView.isUserInteractionEnabled = true
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
