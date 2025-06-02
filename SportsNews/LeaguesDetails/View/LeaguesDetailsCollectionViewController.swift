@@ -324,7 +324,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
 
             } else if sportName == .tennis {
                 guard let players = tennisPlayers else {
-                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
+                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCell", for: indexPath) as! LoadingNib
                     return emptyCell
                 }
                 if players.isEmpty {
