@@ -115,7 +115,10 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
     
     func showLeagues() {
         self.activityIndicator.stopAnimating()
-        self.tableView.isUserInteractionEnabled = true
+        let isEmpty = favPresenter?.getLocalArray()?.isEmpty ?? true
+        self.tableView.isUserInteractionEnabled = !isEmpty
+        self.tableView.allowsSelection = !isEmpty
+        self.tableView.isScrollEnabled = !isEmpty
         tableView.reloadData()
     }
 

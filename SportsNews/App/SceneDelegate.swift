@@ -15,23 +15,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        let window = UIWindow(windowScene: windowScene)
+        window = UIWindow(windowScene: windowScene)
+        
+        let hasSeen = UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
+        if hasSeen {
+            createScreens()
+        }else{
+            let onboardingVC = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "nav")
+            window?.rootViewController = onboardingVC
+            window?.makeKeyAndVisible()
+        }
 
-        let firstStoryboard = UIStoryboard(name: "Home", bundle: nil)
-        let secondStoryboard = UIStoryboard(name: "Fav", bundle: nil)
-
-        let firstVC = firstStoryboard.instantiateInitialViewController()!
-        let secondVC = secondStoryboard.instantiateInitialViewController()!
-
-        firstVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
-        secondVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "heart"), tag: 1)
-
-        let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [firstVC, secondVC]
-
-        window.rootViewController = tabBarController
-        self.window = window
-        window.makeKeyAndVisible()
     }
 
 
