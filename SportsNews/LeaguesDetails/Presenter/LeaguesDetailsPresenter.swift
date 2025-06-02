@@ -46,7 +46,6 @@ class LeaguesDetailsPresenter {
         formatter.dateFormat = "yyyy-MM-dd"
         
         let today = formatter.string(from: todayDate)
-        print(today)
         
         let calendar = Calendar.current
         switch sportType {
