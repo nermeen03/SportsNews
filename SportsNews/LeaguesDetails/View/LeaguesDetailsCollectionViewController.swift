@@ -64,13 +64,14 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     func renderUpcomingFixtureToView(fixtureList:[FixtureModel]){
         self.upcomingFixture = fixtureList
         DispatchQueue.main.async {
-            self.collectionView.reloadSections(IndexSet(integer: 0))
+            self.collectionView.reloadData()
         }
     }
+
     func renderPastFixtureToView(fixtureList:[FixtureModel]){
         self.pastFixture = fixtureList
         DispatchQueue.main.async {
-            self.collectionView.reloadSections(IndexSet(integer: 1))
+            self.collectionView.reloadData()
         }
     }
     
@@ -152,7 +153,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     
     func teamsSection()-> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
+            widthDimension: .absolute(200),
             heightDimension: .absolute(150)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -304,45 +305,44 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
                 return cell
             }
         case 2:
-            if sportName == .football || sportName == .basketball || sportName == .cricket {
-                guard let teams = footballTeams else {
-                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCell", for: indexPath) as! LoadingNib
-                    return emptyCell
+            if sportName == .tennis {
+                if tennisPlayers == nil {
+                    let loadingCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCell", for: indexPath) as! LoadingNib
+                    loadingCell.activityIndicator.startAnimating()
+                    return loadingCell
                 }
-                if teams.isEmpty {
+                if tennisPlayers!.isEmpty {
                     let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
                     return emptyCell
                 }
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "teamOrPlayerCell", for: indexPath) as! TeamOrPlayerCollectionViewCell
-                if let logoURL = URL(string: teams[indexPath.item].teamLogo ?? "") {
-                    cell.teamOrPlayerImage.kf.setImage(with: logoURL)
-                } else {
-                    cell.teamOrPlayerImage.image = UIImage(named: "team_placeholder")
-                }
-                cell.teamOrPlayerLabel.text = teams[indexPath.item].teamName
-                return cell
-
-            } else if sportName == .tennis {
-                guard let players = tennisPlayers else {
-                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCell", for: indexPath) as! LoadingNib
-                    return emptyCell
-                }
-                if players.isEmpty {
-                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
-                    return emptyCell
-                }
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "teamOrPlayerCell", for: indexPath) as! TeamOrPlayerCollectionViewCell
-                if let playerLogo = players[indexPath.item].playerLogo, let logoURL = URL(string:playerLogo) {
+                if let playerLogo = tennisPlayers![indexPath.item].playerLogo, let logoURL = URL(string:playerLogo) {
                     cell.teamOrPlayerImage.kf.setImage(with: logoURL)
                 } else {
                     cell.teamOrPlayerImage.image = UIImage(named: "player_placeholder")
                 }
-                cell.teamOrPlayerLabel.text = players[indexPath.item].playerName
+                cell.teamOrPlayerLabel.text = tennisPlayers![indexPath.item].playerName
+                return cell
+            } else {
+                if footballTeams == nil {
+                    let loadingCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCell", for: indexPath) as! LoadingNib
+                    loadingCell.activityIndicator.startAnimating()
+                    return loadingCell
+                }
+                if footballTeams!.isEmpty {
+                    let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
+                    return emptyCell
+                }
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "teamOrPlayerCell", for: indexPath) as! TeamOrPlayerCollectionViewCell
+                if let logoURL = URL(string: footballTeams![indexPath.item].teamLogo ?? "") {
+                    cell.teamOrPlayerImage.kf.setImage(with: logoURL)
+                } else {
+                    cell.teamOrPlayerImage.image = UIImage(named: "team_placeholder")
+                }
+                cell.teamOrPlayerLabel.text = footballTeams![indexPath.item].teamName
                 return cell
             }
-            
-            let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCellNib
-            return emptyCell
+
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
             return cell
@@ -359,14 +359,14 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     func renderTeamsToView(teams: [FootballTeam]) {
             self.footballTeams = teams
             DispatchQueue.main.async {
-                self.collectionView.reloadSections(IndexSet(integer: 2))
+                self.collectionView.reloadData()
             }
         }
         
         func renderPlayersToView(players: [TennisPlayer]) {
             self.tennisPlayers = players
             DispatchQueue.main.async {
-                self.collectionView.reloadSections(IndexSet(integer: 2))
+                self.collectionView.reloadData()
             }
         }
 }
