@@ -8,14 +8,13 @@
 import UIKit
 
 protocol LeaguesProtocol : UIViewController {
-    func showLeagues(leagues : [LeagueModel])
+    func showLeagues()
     var sportName : SportType! { get set }
 }
 
 class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     
     var sportName : SportType!
-    var leagues : [LeagueModel] = []
     var presenter: LeaguesPresenterProtocol?
     
     var activityIndicator: UIActivityIndicatorView!
@@ -39,13 +38,15 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
         tableView.isUserInteractionEnabled = false
         
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationItem.largeTitleDisplayMode = .never // or .automatic if you want to allow it
+        presenter?.checkFav(sportName: sportName, leagueList: presenter?.getLeagues() ?? [])
     }
-    func showLeagues(leagues : [LeagueModel]){
-        self.leagues = leagues
+    
+    func showLeagues(){
         self.activityIndicator.stopAnimating()
         self.tableView.isUserInteractionEnabled = true
         tableView.reloadData()
@@ -56,7 +57,7 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.leagues.count
+        return self.presenter?.getLeagues().count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -66,47 +67,50 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CellNib
-        let data = self.leagues[indexPath.row]
-        if let logoURL = URL(string: data.leagueLogo ?? "") {
-            cell.customImage.kf.setImage(with: logoURL)
-        } else {
-            var name : String?
-            let number = (indexPath.row % 5) + 1
-            switch sportName {
-            case .football:
-                name = "football\(1)"
-            case .basketball:
-                name = "basketball\(number)"
-            case .cricket:
-                name = "cricket\(number)"
-            case .tennis:
-                name = "tennis\(number)"
-            default:
-                name = "football\(1)"
-            }
-            cell.customImage.image = UIImage(named: name!)
-        }
-        cell.customLabel.text = data.leagueName
-        
-        if leagues[indexPath.item].isFav ?? false {
-            cell.favBtn.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        }else{
-            cell.favBtn.setImage(UIImage(systemName: "heart"), for: .normal)
-        }
-        
-        cell.favBtnAction = {
-            [weak self] in
-            guard let self = self else { return }
-
-            self.leagues[indexPath.item].isFav = !(self.leagues[indexPath.item].isFav ?? false)
-
-            if self.leagues[indexPath.item].isFav == true {
-                presenter?.saveLeagueToLocal(league: self.leagues[indexPath.item], sportName: self.sportName)
+        if var data = self.presenter?.getLeagues()[indexPath.row]{
+            if let logoURL = URL(string: data.leagueLogo ?? "") {
+                cell.customImage.kf.setImage(with: logoURL)
             } else {
-                presenter?.deleteLeagueFromLocal(league: self.leagues[indexPath.item])
+                var name : String?
+                let number = (indexPath.row % 5) + 1
+                switch sportName {
+                case .football:
+                    name = "football\(1)"
+                case .basketball:
+                    name = "basketball\(number)"
+                case .cricket:
+                    name = "cricket\(number)"
+                case .tennis:
+                    name = "tennis\(number)"
+                default:
+                    name = "football\(1)"
+                }
+                cell.customImage.image = UIImage(named: name!)
             }
-
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            cell.customLabel.text = data.leagueName
+            
+            if data.isFav ?? false {
+                cell.favBtn.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            }else{
+                cell.favBtn.setImage(UIImage(systemName: "heart"), for: .normal)
+            }
+            
+            cell.favBtnAction = {
+                [weak self] in
+                guard let self = self else { return }
+                
+                data.isFav = !(data.isFav ?? false)
+                
+                if data.isFav == true {
+                    presenter?.saveLeagueToLocal(league: data, sportName: self.sportName)
+                    tableView.reloadData()
+                } else {
+                    presenter?.deleteLeagueFromLocal(league: data)
+                    tableView.reloadData()
+                }
+                
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
         }
         return cell
     }
@@ -116,7 +120,7 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
         let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
         let details = storyBoard.instantiateViewController(identifier: "leaguesDetails") as! LeaguesDetailsProtocol
         details.sportName = self.sportName
-        details.leaguesId = self.leagues[indexPath.row].leagueKey
+        details.leaguesId = self.presenter?.getLeagues()[indexPath.row].leagueKey
         navigationController?.pushViewController(details, animated: true)
     }
     
