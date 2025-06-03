@@ -5,3 +5,9 @@
   Created by Nermeen Mohamed on 03/06/2025.
   
 */
+"Sports News" = "أخبار الرياضة";
+
+"football" = "كرة القدم";
+"basketball" = "كرة السلة";
+"tennis" = "التنس";
+"cricket" = "الكريكيت";
