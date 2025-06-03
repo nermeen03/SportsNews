@@ -28,7 +28,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
     }
     
     func getLeaguesFromNetwork(sportName : SportType){
-        network.getAllSportLeagues(sportName: sportName) {[weak self] data in
+        network.getAllSportLeagues(sportName: sportName,lang: true) {[weak self] data in
             self?.checkFav(sportName: sportName, leagueList: data)
         }
     }
