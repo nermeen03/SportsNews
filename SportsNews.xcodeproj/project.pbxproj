@@ -10,6 +10,7 @@
 		045FB5962DEE40CB00A97739 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 045FB5952DEE40CB00A97739 /* Lottie */; };
 		41A7B656D4CB8833FC2282F0 /* Pods_SportsNews.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C48F45B6900E82D87E415B4 /* Pods_SportsNews.framework */; };
 		C46EAC9F2DE763CC00C1CE73 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C46EAC9E2DE763CC00C1CE73 /* Alamofire */; };
+		C495289E2DEED2690075C882 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C495289C2DEED2690075C882 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,8 @@
 		75A4F8668A355CDFAE9756DD /* Pods-SportsNews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SportsNews.debug.xcconfig"; path = "Target Support Files/Pods-SportsNews/Pods-SportsNews.debug.xcconfig"; sourceTree = "<group>"; };
 		C4603CD72DE761960008556A /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C46EAB9E2DE7629D00C1CE73 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C495289D2DEED2690075C882 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C495289F2DEED2AB0075C882 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C4B0D89E2DEAFF030067FE0E /* SportsNewsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SportsNewsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -82,6 +85,7 @@
 		0486D9312DE5EAA3006EFD01 = {
 			isa = PBXGroup;
 			children = (
+				C495289C2DEED2690075C882 /* Localizable.strings */,
 				0486D93C2DE5EAA3006EFD01 /* SportsNews */,
 				C4B0D89F2DEAFF030067FE0E /* SportsNewsTests */,
 				0486D93B2DE5EAA3006EFD01 /* Products */,
@@ -190,6 +194,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ar,
 			);
 			mainGroup = 0486D9312DE5EAA3006EFD01;
 			minimizedProjectReferenceProxies = 1;
@@ -213,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C495289E2DEED2690075C882 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +280,18 @@
 			targetProxy = C4B0D8A22DEAFF030067FE0E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C495289C2DEED2690075C882 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C495289D2DEED2690075C882 /* en */,
+				C495289F2DEED2AB0075C882 /* ar */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0486D9512DE5EAA4006EFD01 /* Debug */ = {
@@ -339,6 +357,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -402,6 +421,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
