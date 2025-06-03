@@ -13,10 +13,12 @@ class NetworkServices {
     private let url = "https://apiv2.allsportsapi.com/"
     
     
-    func getTeamsAndPlayers<T: Codable>(sportName: SportType, leagueId: Int, responseType: T.Type, handler: @escaping ([T]) -> Void) {
+    func getTeamsAndPlayers<T: Codable>(sportName: SportType, lang:Bool, leagueId: Int, responseType: T.Type, handler: @escaping ([T]) -> Void) {
         let endpoint = sportName == .tennis ? "Players" : "Teams"
-        let url = self.url + "\(sportName)//?&met=\(endpoint)&leagueId=\(leagueId)&APIkey=\(key)"
-        
+        var url = self.url + "\(sportName)//?&met=\(endpoint)&leagueId=\(leagueId)&APIkey=\(key)"
+        if(lang == true){
+            url += "&lang=ar"
+        }
         AF.request(url).responseDecodable(of: APIResponse<[T]?>.self) { response in
             switch response.result {
             case .success(let data):
@@ -33,9 +35,11 @@ class NetworkServices {
         }
     }
     
-    func getAllSportLeagues(sportName:SportType, completion: @escaping ([LeagueModel]) -> Void){
-        let url = self.url + "\(sportName.rawValue)/?met=Leagues&APIkey=\(key)"
-        
+    func getAllSportLeagues(sportName:SportType,lang:Bool, completion: @escaping ([LeagueModel]) -> Void){
+        var url = self.url + "\(sportName.rawValue)/?met=Leagues&APIkey=\(key)"
+        if(lang == true){
+            url += "&lang=ar"
+        }
         AF.request(url).responseData { response in
                 guard let data = response.data,
                       let decoder = LeaguesDecoderFactory.decoder(for: sportName) else {
@@ -55,8 +59,11 @@ class NetworkServices {
             }
     }
     
-    func getFixtures(sportName:SportType, leagueKey:Int, fromData:String, toData:String, completion : @escaping ([FixtureModel]) -> Void){
-        let url = self.url + "\(sportName)/?met=Fixtures&APIkey=\(key)&from=\(fromData)&to=\(toData)&leagueId=\(leagueKey)"
+    func getFixtures(sportName:SportType, lang:Bool, leagueKey:Int, fromData:String, toData:String, completion : @escaping ([FixtureModel]) -> Void){
+        var url = self.url + "\(sportName)/?met=Fixtures&APIkey=\(key)&from=\(fromData)&to=\(toData)&leagueId=\(leagueKey)"
+        if(lang == true){
+            url += "&lang=ar"
+        }
         AF.request(url).responseData { response in
             guard let data = response.data , let decoder = FixturesDecoderFactory.decoder(for: sportName) else {
                     print("No data returned")
