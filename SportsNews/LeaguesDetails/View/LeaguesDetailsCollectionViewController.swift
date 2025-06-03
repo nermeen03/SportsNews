@@ -198,7 +198,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
             let label = UILabel(frame: CGRect(x: 16, y: 0, width: collectionView.bounds.width - 32, height: 40))
             label.font = UIFont.boldSystemFont(ofSize: 18)
             label.textColor = .label
-            label.text = indexPath.section == 0 ? "Upcoming Events" : indexPath.section == 1 ? "Past Events" : "Teams"
+            label.text = indexPath.section == 0 ? "Upcoming Events".localized : indexPath.section == 1 ? "Past Events".localized : "Teams".localized
             
             headerView.addSubview(label)
             return headerView

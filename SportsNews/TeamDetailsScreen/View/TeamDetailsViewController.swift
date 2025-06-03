@@ -17,11 +17,6 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     var team : FootballTeam?
     override func viewDidLoad() {
         super.viewDidLoad()
-//        containerView.isHidden = true
-//        indicator = UIActivityIndicatorView()
-//        indicator?.center = view.center
-//        view.addSubview(indicator!)
-//        indicator?.startAnimating()
         let nib = UINib(nibName: "TeamsTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "playercell")
         tableView.delegate = self
@@ -30,7 +25,6 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         if let urlString = team?.teamLogo, let url = URL(string: urlString){
             teamLogo.kf.setImage(with: url)
         }
-        // Do any additional setup after loading the view.
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         5
@@ -90,15 +84,15 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "Coaches"
+            return "Coaches".localized
         case 1:
-            return "Goalkeepers"
+            return "Goalkeepers".localized
         case 2:
-            return "Defenders"
+            return "Defenders".localized
         case 3:
-            return "Midfielders"
+            return "Midfielders".localized
         case 4:
-            return "Forwards"
+            return "Forwards".localized
         default:
             return nil
         }
