@@ -35,7 +35,7 @@ class CardImageCell: UICollectionViewCell {
         
     func configure(with image: UIImage ,and name: String) {
             imageView.image = image
-            sportName.text = name
+            sportName.text = name.localized
         }
 
 }

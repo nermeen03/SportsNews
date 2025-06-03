@@ -5,3 +5,19 @@
   Created by Nermeen Mohamed on 03/06/2025.
   
 */
+"Sports News" = "Sports News";
+
+"football" = "Football";
+"basketball" = "Basketball";
+"tennis" = "Tennis";
+"cricket" = "Cricket";
+"Leagues" = "Leagues";
+"Leagues Details" = "Leagues Details";
+"Upcoming Events" = "Upcoming Events";
+"Past Events" = "Past Events";
+"Teams" = "Teams";
+"Coaches" = "Coaches";
+"Goalkeepers" = "Goalkeepers";
+"Defenders" = "Defenders";
+"Midfielders" = "Midfielders";
+"Forwards" = "Forwards";

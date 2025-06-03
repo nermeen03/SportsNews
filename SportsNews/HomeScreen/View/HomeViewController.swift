@@ -11,10 +11,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     @IBOutlet weak var collectionView: UICollectionView!
     let images: [(UIImage,String)] = [
-            (UIImage(named: "football")!, "Football"),
-            (UIImage(named: "basketball")!, "Basketball"),
-            (UIImage(named: "tennis")!, "Tennis"),
-            (UIImage(named: "cricket")!, "Cricket")
+            (UIImage(named: "football")!, "football"),
+            (UIImage(named: "basketball")!, "basketball"),
+            (UIImage(named: "tennis")!, "tennis"),
+            (UIImage(named: "cricket")!, "cricket")
         ]
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +24,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
-        self.navigationItem.title = "Sports News"
         navigationController?.navigationBar.prefersLargeTitles = true
         NetworkMonitor.shared.onConnected = {
             showAlert(title: "Online", message: "You're back online ", view: self)
@@ -34,6 +33,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 showAlert(title: "Offline", message: "No internet connection", view: self)
             }
         
+        self.navigationItem.title = "Sports News".localized
+//        navigationController?.navigationBar.prefersLargeTitles = true
+        // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

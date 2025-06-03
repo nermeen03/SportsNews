@@ -5,3 +5,19 @@
   Created by Nermeen Mohamed on 03/06/2025.
   
 */
+"Sports News" = "أخبار الرياضة";
+
+"football" = "كرة القدم";
+"basketball" = "كرة السلة";
+"tennis" = "التنس";
+"cricket" = "الكريكيت";
+"Leagues" = "الدوريات";
+"Leagues Details" = "تفاصيل الدوريات";
+"Upcoming Events" = "الأحداث القادمة";
+"Past Events" = "الأحداث السابقة";
+"Teams" = "الفرق";
+"Coaches" = "المدربون";
+"Goalkeepers" = "حراس المرمى";
+"Defenders" = "المدافعون";
+"Midfielders" = "لاعبي الوسط";
+"Forwards" = "المهاجمون";

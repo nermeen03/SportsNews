@@ -22,7 +22,7 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Leagues"
+        title = "\(sportName.rawValue.localized) \("Leagues".localized)"
         
         let nib = UINib(nibName: "CellNib", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "cell")
@@ -42,7 +42,7 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationItem.largeTitleDisplayMode = .never // or .automatic if you want to allow it
+        navigationItem.largeTitleDisplayMode = .never
         presenter?.checkFav(sportName: sportName, leagueList: presenter?.getLeagues() ?? [])
     }
     
