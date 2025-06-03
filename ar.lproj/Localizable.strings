@@ -11,3 +11,13 @@
 "basketball" = "كرة السلة";
 "tennis" = "التنس";
 "cricket" = "الكريكيت";
+"Leagues" = "الدوريات";
+"Leagues Details" = "تفاصيل الدوريات";
+"Upcoming Events" = "الأحداث القادمة";
+"Past Events" = "الأحداث السابقة";
+"Teams" = "الفرق";
+"Coaches" = "المدربون";
+"Goalkeepers" = "حراس المرمى";
+"Defenders" = "المدافعون";
+"Midfielders" = "لاعبي الوسط";
+"Forwards" = "المهاجمون";
