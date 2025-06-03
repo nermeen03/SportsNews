@@ -14,4 +14,11 @@ extension String {
     }
 }
 
-
+func isEnglish() -> Bool{
+    let currentLanguageCode = Locale.current.language.languageCode?.identifier ?? "en"
+    if currentLanguageCode == "en" {
+        return true
+    } else {
+        return false
+    }
+}
