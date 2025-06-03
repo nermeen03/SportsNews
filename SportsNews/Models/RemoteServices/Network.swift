@@ -61,9 +61,11 @@ class NetworkServices {
     
     func getFixtures(sportName:SportType, lang:Bool, leagueKey:Int, fromData:String, toData:String, completion : @escaping ([FixtureModel]) -> Void){
         var url = self.url + "\(sportName)/?met=Fixtures&APIkey=\(key)&from=\(fromData)&to=\(toData)&leagueId=\(leagueKey)"
+        print(url)
         if(lang == true){
             url += "&lang=ar"
         }
+        print(url)
         AF.request(url).responseData { response in
             guard let data = response.data , let decoder = FixturesDecoderFactory.decoder(for: sportName) else {
                     print("No data returned")
@@ -74,4 +76,34 @@ class NetworkServices {
         }
     }
     
+    func translate(text: String, sourceLang: String, targetLang: String,
+        completion: @escaping (String) -> Void) {
+        guard let url = URL(string: "https://libretranslate-production-d875.up.railway.app/translate") else {
+                completion(text)
+                return
+            }
+
+        let parameters: [String: Any] = [
+            "q": text,
+            "source": sourceLang,
+            "target": targetLang,
+            "format": "text"
+        ]
+        
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        print(url)
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseDecodable(of: LibreTranslateResponse.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(data.translatedText)
+                case .failure(let error):
+                    print("LibreTranslate failed: \(error)")
+                    completion(text)
+                }
+            }
+    }
 }

@@ -9,10 +9,11 @@ import CoreData
 import UIKit
 
 protocol LocalDataSourceProtocol {
-    func saveLeague(league:LeagueModel, sportType: SportType)
+    func saveLeague(league: any LeagueModel, sportType: SportType,sportName:String)
     func getAllLeagues()->[FavLeagueModel]
     func deleteLeague(league: LeagueModel)
     func getLeaguesBySport(sportType: SportType)->[LeagueModel]
+    func getAllArabicLeagues() -> [FavLeagueModel]
 }
 
 class LocalDataSource:LocalDataSourceProtocol{
@@ -25,7 +26,8 @@ class LocalDataSource:LocalDataSourceProtocol{
         context = appDelegate.persistentContainer.viewContext
     }
     
-    func saveLeague(league: any LeagueModel, sportType: SportType) {
+    func saveLeague(league: any LeagueModel, sportType: SportType,sportName:String) {
+        print(sportName)
         let entity = NSEntityDescription.entity(forEntityName: "FavLeagues", in: context!)
         let newsObject = NSManagedObject(entity: entity!, insertInto: context)
         newsObject.setValue(league.leagueName, forKey: "leagueName")
@@ -33,6 +35,7 @@ class LocalDataSource:LocalDataSourceProtocol{
         newsObject.setValue(league.leagueLogo, forKey: "leagueLogo")
         newsObject.setValue(league.isFav, forKey: "isFav")
         newsObject.setValue(sportType.rawValue, forKey: "sportType")
+        newsObject.setValue(sportName, forKey: "arabicName")
         do{
             try context?.save()
             
@@ -104,5 +107,31 @@ class LocalDataSource:LocalDataSourceProtocol{
         }
         return newsArr
     }
+    
+    func getAllArabicLeagues() -> [FavLeagueModel] {
+        var newsArr:[FavLeagueModel] = []
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavLeagues")
+        do{
+            let leagues = try context?.fetch(fetchRequest)
+            guard let leagues = leagues else{
+                return []
+            }
+            for league in leagues{
+                if let sport = SportType(rawValue: league.value(forKey: "sportType") as? String ?? SportType.football.rawValue){
+                    var newObject = LeagueFactory.createEmptyLeague(for: sport)
+                    newObject.leagueName = (league.value(forKey: "arabicName") as? String) ?? "nil"
+                    newObject.leagueKey = league.value(forKey: "leagueKey") as! Int
+                    newObject.leagueLogo = league.value(forKey: "leagueLogo") as? String
+                    newObject.isFav = league.value(forKey: "isFav") as? Bool
+                    let favObject = FavLeagueModel(league: newObject, sportType: sport)
+                    newsArr.append(favObject)
+                }
+            }
+        }catch{
+            print("Fetch failed: \(error)")
+        }
+        return newsArr
+    }
+    
     
 }

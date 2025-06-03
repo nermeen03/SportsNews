@@ -24,19 +24,19 @@ class LeaguesDetailsPresenter {
 //
 //        }
         
-        network.getFixtures(sportName: sportName,lang: true, leagueKey: leagueId, fromData: past, toData: today) { data in
+        network.getFixtures(sportName: sportName,lang: !isEnglish(), leagueKey: leagueId, fromData: past, toData: today) { data in
             self.leaguesView.renderPastFixtureToView(fixtureList: data)
         }
         
-        network.getFixtures(sportName: sportName,lang: true, leagueKey: leagueId, fromData: today, toData: future) { data in
+        network.getFixtures(sportName: sportName,lang: !isEnglish(), leagueKey: leagueId, fromData: today, toData: future) { data in
             self.leaguesView.renderUpcomingFixtureToView(fixtureList: data)
         }
         
         switch sportName {
             case .tennis:
-                network.getTeamsAndPlayers(sportName: sportName,lang: true, leagueId: leagueId, responseType: TennisPlayer.self) { players in self.leaguesView.renderPlayersToView(players: players)}
+                network.getTeamsAndPlayers(sportName: sportName,lang: !isEnglish(), leagueId: leagueId, responseType: TennisPlayer.self) { players in self.leaguesView.renderPlayersToView(players: players)}
             default :
-                network.getTeamsAndPlayers(sportName: sportName,lang: true, leagueId: leagueId, responseType: FootballTeam.self) { teams in self.leaguesView.renderTeamsToView(teams: teams)}
+                network.getTeamsAndPlayers(sportName: sportName,lang: !isEnglish(), leagueId: leagueId, responseType: FootballTeam.self) { teams in self.leaguesView.renderTeamsToView(teams: teams)}
         }
     }
     
