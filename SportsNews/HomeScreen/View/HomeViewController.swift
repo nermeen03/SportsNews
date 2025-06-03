@@ -25,8 +25,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView.delegate = self
         collectionView.dataSource = self
         self.navigationItem.title = "Sports News"
-//        navigationController?.navigationBar.prefersLargeTitles = true
-        // Do any additional setup after loading the view.
+        navigationController?.navigationBar.prefersLargeTitles = true
+        NetworkMonitor.shared.onConnected = {
+            showAlert(title: "Online", message: "You're back online ", view: self)
+            }
+
+            NetworkMonitor.shared.onDisconnected = {
+                showAlert(title: "Offline", message: "No internet connection", view: self)
+            }
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -49,7 +56,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         let inset = max((collectionHeight - contentHeight) / 3, 0)
         collectionView.contentInset.top = inset
-//        collectionView.contentInset.bottom = inset
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         images.count

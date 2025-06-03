@@ -20,10 +20,6 @@ class LeaguesDetailsPresenter {
         
         let (past, today, future) = calcDate(sportType: sportName)
         
-//        network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId) { data in
-//
-//        }
-        
         network.getFixtures(sportName: sportName,lang: true, leagueKey: leagueId, fromData: past, toData: today) { data in
             self.leaguesView.renderPastFixtureToView(fixtureList: data)
         }
