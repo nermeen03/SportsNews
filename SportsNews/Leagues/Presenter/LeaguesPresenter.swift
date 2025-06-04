@@ -72,7 +72,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
     
     func getLeagueNameTranslated(league:LeagueModel,sportName:SportType) {
         var savedLeague = league
-        if isEnglish(){
+        if isEnglish() || sportName != .football{
             network.translate(text: savedLeague.leagueName,sourceLang: "en",targetLang: "ar"){[weak self] result in
                 print(result)
             self?.local.saveLeague(league: league, sportType: sportName,sportName: result)

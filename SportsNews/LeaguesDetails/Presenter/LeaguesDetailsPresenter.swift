@@ -44,6 +44,7 @@ class LeaguesDetailsPresenter {
         let todayDate = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         
         let today = formatter.string(from: todayDate)
         

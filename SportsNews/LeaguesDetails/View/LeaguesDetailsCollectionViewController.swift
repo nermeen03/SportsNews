@@ -30,7 +30,7 @@ class LeaguesDetailsCollectionViewController: UICollectionViewController, League
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = leagueName ?? "Leagues Details"
+        title = leagueName ?? "Leagues Details".localized
         collectionView.register(UINib(nibName: "PrevCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PrevCell")
         collectionView.register(UINib(nibName: "FutureCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "FutureCell")
 
