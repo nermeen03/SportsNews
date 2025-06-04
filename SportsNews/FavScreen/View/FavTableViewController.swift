@@ -25,12 +25,19 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
 
         activityIndicator.startAnimating()
         tableView.isUserInteractionEnabled = false
+        let nib = UINib(nibName: "CellNib", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "cell")
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         favPresenter?.getLeaguesFromLocal()
+        tableView.reloadData()
+        NotificationCenter.default.addObserver(self,selector: #selector(appWillEnterForeground),name: UIApplication.willEnterForegroundNotification,object: nil)
+    }
+    
+    @objc func appWillEnterForeground() {
         tableView.reloadData()
     }
 
@@ -74,7 +81,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CellNib
             cell.customLabel.text = array[indexPath.item].league.leagueName
-            cell.favBtn.isHidden = true
+            cell.favBtn?.isHidden = true
             if let logoURL = URL(string: array[indexPath.item].league.leagueLogo ?? "") {
                 cell.customImage.kf.setImage(with: logoURL)
             } else {
@@ -122,9 +129,14 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
 
-        let imageView = UIImageView(image: UIImage(named: "noData"))
+        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        if traitCollection.userInterfaceStyle == .dark {
+            imageView.image = UIImage(named: "noData")
+        } else {
+            imageView.image = UIImage(named: "noDataDark")
+        }
 
         cell.contentView.addSubview(imageView)
 
@@ -138,7 +150,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         tableView.isUserInteractionEnabled = false
         return cell
     }
-
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {

@@ -27,13 +27,14 @@ class FutureCollectionViewCell: UICollectionViewCell {
 
         cardView.layer.cornerRadius = 12
         cardView.layer.masksToBounds = false
-        cardView.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 1.0)
-
 
         cardView.layer.shadowColor = UIColor.black.cgColor
         cardView.layer.shadowOpacity = 0.2
         cardView.layer.shadowOffset = CGSize(width: 0, height: 3)
         cardView.layer.shadowRadius = 6
+        
+        cardView.backgroundColor = UIColor(named: "AppBackgroundColor")
+        
     }
     
     override func layoutSubviews() {
