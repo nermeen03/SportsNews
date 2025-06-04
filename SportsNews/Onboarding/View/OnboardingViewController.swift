@@ -13,8 +13,13 @@ class OnboardingViewController: UIViewController {
     @IBOutlet weak var thirdScreen: UIImageView?
     @IBOutlet weak var forthScreen: UIImageView?
     
+    @IBOutlet weak var nextImage: UIImageView?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if !isEnglish(){
+            nextImage?.image = UIImage(named:"arrowBack")
+        }
 
         enableTap(on: firstScreen, action: #selector(firstTapped))
         enableTap(on: secondScreen, action: #selector(secondTapped))
