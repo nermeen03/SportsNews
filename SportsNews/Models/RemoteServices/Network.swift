@@ -76,7 +76,38 @@ class NetworkServices {
         }
     }
     
-    func translate(text: String, sourceLang: String, targetLang: String,
+    func translate(texts: [String], sourceLang: String, targetLang: String,
+        completion: @escaping ([String]) -> Void) {
+        guard let url = URL(string: "https://libretranslate-production-22bd.up.railway.app/translate") else {
+                completion(texts)
+                return
+            }
+
+        let parameters: [String: Any] = [
+            "q": texts,
+            "source": sourceLang,
+            "target": targetLang,
+            "format": "text"
+        ]
+        
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        print(url)
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseDecodable(of: TranslatorArrayResponse.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(data.translatedText)
+                case .failure(let error):
+                    print("LibreTranslate failed: \(error)")
+                    completion(texts)
+                }
+            }
+    }
+    
+    func translateText(text: String, sourceLang: String, targetLang: String,
         completion: @escaping (String) -> Void) {
         guard let url = URL(string: "https://libretranslate-production-d875.up.railway.app/translate") else {
                 completion(text)
@@ -96,7 +127,7 @@ class NetworkServices {
         print(url)
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate()
-            .responseDecodable(of: LibreTranslateResponse.self) { response in
+            .responseDecodable(of: TranslatorResponse.self) { response in
                 switch response.result {
                 case .success(let data):
                     completion(data.translatedText)
@@ -106,4 +137,5 @@ class NetworkServices {
                 }
             }
     }
+
 }
