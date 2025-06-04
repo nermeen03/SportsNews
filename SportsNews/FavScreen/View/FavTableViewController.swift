@@ -16,7 +16,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         favPresenter = FavPresenter(favView: self, local: LocalDataSource.shared)
-        title = "Favorite"
+        title = "Favorite".localized
         let nib = UINib(nibName: "CellNib", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "cell")
         tableView.register(UINib(nibName: "EmptyTableCellNib", bundle: nil), forCellReuseIdentifier: "emptyCell")
@@ -135,9 +135,9 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let alert = UIAlertController(title: "Delete League", message: "Are you sure you want to remove this league from your favorites?", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Delete League".localized, message: "Are you sure you want to remove this league from your favorites?".localized, preferredStyle: .alert)
             
-            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: {[weak self] _ in
+            alert.addAction(UIAlertAction(title: "Delete".localized, style: .destructive, handler: {[weak self] _ in
                 guard let self = self,
                       let favPresenter = self.favPresenter,
                       let array = favPresenter.getLocalArray()
@@ -155,7 +155,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
                     self.tableView.deleteRows(at: [indexPath], with: .fade)
                 }
             }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel".localized, style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
     }

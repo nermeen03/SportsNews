@@ -1,0 +1,25 @@
+
+/* Class = "UIButton"; configuration.title = "Let's get starting"; ObjectID = "OsZ-C6-hOi"; */
+"OsZ-C6-hOi.configuration.title" = "لنبدأ الآن";
+
+/* Class = "UILabel"; text = "Discover the world of football like never before.\nFollow leagues, explore upcoming and past matches, and dive into team details — all in one place."; ObjectID = "VA7-LE-lon"; */
+"VA7-LE-lon.text" = "اكتشف عالم كرة القدم كما لم تفعل من قبل.\nتابع الدوريات، استعرض المباريات القادمة والسابقة، وتعمق في تفاصيل الفرق — كل ذلك في مكان واحد.";
+
+/* Class = "UILabel"; text = "Follow thrilling tennis matches across global tournaments.\nStay updated on upcoming and past events — and keep an eye on your favorite tennis players in action."; ObjectID = "hy9-Ki-3O6"; */
+"hy9-Ki-3O6.text" = "تابع مباريات التنس المثيرة في البطولات العالمية.\nابقَ على اطلاع بالأحداث القادمة والسابقة — وراقب لاعبيك المفضلين وهم في قلب المنافسة.";
+
+/* Class = "UILabel"; text = "Catch every over and boundary.\nFollow your favorite cricket leagues, explore upcoming and past matches, and stay in the loop with live cricket action."; ObjectID = "nC1-Rv-q16"; */
+"nC1-Rv-q16.text" = "لا تفوّت أي كرة أو حدود.\nتابع دوريات الكريكيت المفضلة لديك، واستعرض المباريات القادمة والسابقة، وابقَ على اتصال مباشر بأحداث الكريكيت الحية.";
+
+/* Class = "UIButton"; configuration.title = "Let's get starting"; ObjectID = "nVl-CV-Nef"; */
+"nVl-CV-Nef.configuration.title" = "لنبدأ الآن";
+
+
+/* Class = "UILabel"; text = "Discover all your favorite sports, track leagues, and follow live events — all in one app.\nFrom scores to team details, we’ve got you covered."; ObjectID = "tFm-Aa-Sw6"; */
+"tFm-Aa-Sw6.text" = "اكتشف جميع رياضاتك المفضلة، تابع الدوريات، وتابع الأحداث المباشرة — كل ذلك في تطبيق واحد.\nمن النتائج إلى تفاصيل الفرق، نحن نوفر لك كل ما تحتاج.";
+
+/* Class = "UILabel"; text = "Stay on top of the basketball action.\nFollow your favorite leagues, check out upcoming and past games, and never miss a moment on the court."; ObjectID = "ypE-qK-5PQ"; */
+"ypE-qK-5PQ.text" = "ابقَ على اطلاع دائم على أحداث كرة السلة.\nتابع الدوريات المفضلة لديك، استعرض المباريات القادمة والسابقة، ولا تفوّت لحظة واحدة من الإثارة.";
+
+/* Class = "UILabel"; text = "Discover all your favorite sports, track leagues, and follow live events — all in one app.\nFrom scores to team details, we’ve got you covered."; ObjectID = "znS-fn-MRh"; */
+"znS-fn-MRh.text" = "اكتشف جميع رياضاتك المفضلة، تابع الدوريات، وتابع الأحداث المباشرة — كل ذلك في تطبيق واحد.\nمن النتائج إلى تفاصيل الفرق، نحن نوفر لك كل ما تحتاج.";

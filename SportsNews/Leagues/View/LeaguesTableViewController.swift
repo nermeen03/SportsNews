@@ -22,7 +22,7 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "\(sportName.rawValue.localized) \("Leagues".localized)"
+        title = isEnglish() ? "\(sportName.rawValue.localized) \("Leagues".localized)" : "\("Leagues".localized) \(sportName.rawValue.localized)" 
         
         let nib = UINib(nibName: "CellNib", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "cell")

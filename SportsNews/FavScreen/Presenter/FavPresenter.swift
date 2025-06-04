@@ -20,7 +20,12 @@ class FavPresenter: FavPresenterProtocol{
     }
     
     func getLeaguesFromLocal() {
-        localArr = local.getAllLeagues()
+        if isEnglish(){
+            localArr = local.getAllLeagues()
+        }
+        else {
+            localArr = local.getAllArabicLeagues()
+        }
         favView.showLeagues()
     }
     

@@ -18,8 +18,8 @@ func createScreens(){
         return
     }
 
-    homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
-    favVC.tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "heart.fill"), tag: 1)
+    homeVC.tabBarItem = UITabBarItem(title: "Home".localized, image: UIImage(systemName: "house.fill"), tag: 0)
+    favVC.tabBarItem = UITabBarItem(title: "Favorite".localized, image: UIImage(systemName: "heart.fill"), tag: 1)
 
     let tabBarController = UITabBarController()
     tabBarController.viewControllers = [homeVC, favVC]

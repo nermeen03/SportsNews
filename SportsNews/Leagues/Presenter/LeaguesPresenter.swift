@@ -28,7 +28,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
     }
     
     func getLeaguesFromNetwork(sportName : SportType){
-        network.getAllSportLeagues(sportName: sportName,lang: true) {[weak self] data in
+        network.getAllSportLeagues(sportName: sportName,lang: !isEnglish()) {[weak self] data in
             self?.checkFav(sportName: sportName, leagueList: data)
         }
     }
@@ -40,7 +40,8 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         if let index = remoteArr.firstIndex(where: { $0.leagueKey == league.leagueKey }) {
             remoteArr[index] = league
         }
-        local.saveLeague(league: league, sportType: sportName)
+        
+        self.getLeagueNameTranslated(league: league, sportName: sportName)
     }
     
     func deleteLeagueFromLocal(league: any LeagueModel) {
@@ -67,6 +68,23 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         }
         self.remoteArr = updatedData
         self.leaguesView.showLeagues()
+    }
+    
+    func getLeagueNameTranslated(league:LeagueModel,sportName:SportType) {
+        var savedLeague = league
+        if isEnglish() || sportName != .football{
+            network.translate(text: savedLeague.leagueName,sourceLang: "en",targetLang: "ar"){[weak self] result in
+                print(result)
+            self?.local.saveLeague(league: league, sportType: sportName,sportName: result)
+        }
+        }else{
+            network.translate(text: savedLeague.leagueName,sourceLang: "ar",targetLang: "en"){[weak self] result in
+                print(result)
+                savedLeague.leagueName = result
+                self?.local.saveLeague(league: savedLeague, sportType: sportName,sportName: league.leagueName)
+            }
+            
+        }
     }
     
 }
