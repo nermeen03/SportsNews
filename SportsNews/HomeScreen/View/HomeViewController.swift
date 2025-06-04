@@ -100,21 +100,31 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let storyBoard = UIStoryboard(name: "Leagues", bundle: nil)
-        let details = storyBoard.instantiateViewController(identifier: "leagues") as! LeaguesProtocol
-        switch indexPath.row{
-        case 0:
-            details.sportName = .football
-        case 1:
-            details.sportName = .basketball
-        case 2:
-            details.sportName = .tennis
-        case 3:
-            details.sportName = .cricket
-        default:
-            details.sportName = .football
-        }
-        navigationController?.pushViewController(details, animated: true)
+        NetworkMonitor.shared.checkInternetConnection(completion: {
+            [weak self]flag in
+            DispatchQueue.main.async {
+                if(flag){
+                    let storyBoard = UIStoryboard(name: "Leagues", bundle: nil)
+                    let details = storyBoard.instantiateViewController(identifier: "leagues") as! LeaguesProtocol
+                    switch indexPath.row{
+                    case 0:
+                        details.sportName = .football
+                    case 1:
+                        details.sportName = .basketball
+                    case 2:
+                        details.sportName = .tennis
+                    case 3:
+                        details.sportName = .cricket
+                    default:
+                        details.sportName = .football
+                    }
+                    self?.navigationController?.pushViewController(details, animated: true)
+                }else{
+                    showAlert(title: "Offline", message: "No internet connection", view: self!)
+                }
+            }
+            
+        })
     }
     
 }

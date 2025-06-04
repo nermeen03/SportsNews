@@ -7,7 +7,12 @@
 
 import UIKit
 import Kingfisher
-class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+protocol TeamDetailsViewProtocol{
+    func showData(team:FootballTeam)
+}
+class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,TeamDetailsViewProtocol {
+    var teamPresenter: TeamDetailsPresenterProtocol?
+    
     @IBOutlet weak var containerView: UIView!
     
     @IBOutlet weak var teamName: UILabel!
@@ -22,8 +27,14 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.delegate = self
         tableView.dataSource = self
         teamName.text = team?.teamName
+        teamPresenter = TeamDetailsPresenter(view: self)
         if let urlString = team?.teamLogo, let url = URL(string: urlString){
             teamLogo.kf.setImage(with: url)
+        }
+        if(Locale.current.language.languageCode?.identifier == "ar"){
+            guard let team = team else{return}
+            teamPresenter?.translateNames(team: team)
+            
         }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -99,5 +110,9 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
+    }
+    func showData(team:FootballTeam) {
+        self.team = team
+        tableView.reloadData()
     }
 }

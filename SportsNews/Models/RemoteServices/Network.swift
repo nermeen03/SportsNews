@@ -74,4 +74,18 @@ class NetworkServices {
         }
     }
     
+    func getTranslationForName(name: String, completion: @escaping (String) -> Void) {
+        let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? name
+        let url = "https://lingva.ml/api/v1/en/ar/\(encodedName)"
+        
+        AF.request(url).responseDecodable(of: TranslationModel.self) { response in
+            switch response.result {
+            case .success(let data):
+                completion(data.translation ?? "")
+            case .failure(let error):
+                print("Error: \(error)")
+                completion(name)
+            }
+        }
+    }
 }
