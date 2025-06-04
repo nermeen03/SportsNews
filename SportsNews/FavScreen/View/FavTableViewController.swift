@@ -17,9 +17,6 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         super.viewDidLoad()
         favPresenter = FavPresenter(favView: self, local: LocalDataSource.shared)
         title = "Favorite".localized
-        let nib = UINib(nibName: "CellNib", bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: "cell")
-        tableView.register(UINib(nibName: "EmptyTableCellNib", bundle: nil), forCellReuseIdentifier: "emptyCell")
         
         activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.center = tableView.center
@@ -72,9 +69,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let array = favPresenter?.getLocalArray(){
             if array.count == 0 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyTableCellNib
-                tableView.isUserInteractionEnabled = false
-                return cell
+                return createEmptyCell()
             }
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CellNib
@@ -99,9 +94,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
             }
             return cell
         }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyTableCellNib
-            tableView.isUserInteractionEnabled = false
-            return cell
+            return createEmptyCell()
         }
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -124,13 +117,27 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         tableView.reloadData()
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    func createEmptyCell() -> UITableViewCell{
+        let cell = UITableViewCell()
+        cell.selectionStyle = .none
+        cell.backgroundColor = .clear
+
+        let imageView = UIImageView(image: UIImage(named: "noData"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+
+        cell.contentView.addSubview(imageView)
+
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: cell.contentView.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 180),
+            imageView.heightAnchor.constraint(equalToConstant: 180)
+        ])
+
+        tableView.isUserInteractionEnabled = false
+        return cell
     }
-    */
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
