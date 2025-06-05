@@ -17,6 +17,7 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     var team : FootballTeam?
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupConnectivity()
         let nib = UINib(nibName: "TeamsTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "playercell")
         tableView.delegate = self
@@ -26,6 +27,9 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
             teamLogo.kf.setImage(with: url)
         }
     }
+    deinit {
+            stopConnectivity()
+        }
     func numberOfSections(in tableView: UITableView) -> Int {
         5
     }

@@ -1,5 +1,5 @@
 {
-  "originHash" : "81000be1009b534470ff032e4fe9d5d80a9a0b93061ba24c597f6f2067ff0d71",
+  "originHash" : "796a5cf4e7105945e4f7b68370d3b5ed9eea5c18490d67502a3314c1aa04dc0c",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
         "version" : "5.10.2"
+      }
+    },
+    {
+      "identity" : "connectivity",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rwbutler/Connectivity",
+      "state" : {
+        "revision" : "30956aa751170afee0feb340714829dff159b265",
+        "version" : "8.0.1"
       }
     },
     {
