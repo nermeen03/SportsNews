@@ -58,9 +58,9 @@ extension UIViewController {
             print(message)
 
             if isConnected {
-                showAlert(title: "Internet!", message: "You're connected to the internet", view: self)
+                showAlert(title: "Internet!".localized, message: "You're connected to the internet".localized, view: self)
             } else {
-                showAlert(title: "No Internet!", message: "Please check your connection", view: self)
+                showAlert(title: "No Internet!".localized, message: "Please check your connection".localized, view: self)
             }
         }
     }

@@ -112,7 +112,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
             navigationController?.pushViewController(details, animated: true)
         }else{
-            showAlert(title: "No Internet Connection", message: "Please check your internet connection", view: self)
+            showAlert(title: "No Internet Connection".localized, message: "Please check your internet connection".localized, view: self)
         }
     }
     
