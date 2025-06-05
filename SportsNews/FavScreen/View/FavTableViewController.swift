@@ -9,14 +9,17 @@ import UIKit
 protocol FavViewProtocol{
     func showLeagues()
 }
-class FavTableViewController: UITableViewController, FavViewProtocol {
+class FavTableViewController: UITableViewController, FavViewProtocol, UISearchBarDelegate {
     var favPresenter: FavPresenterProtocol?
     var activityIndicator: UIActivityIndicatorView!
+    
+    @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         favPresenter = FavPresenter(favView: self, local: LocalDataSource.shared)
         title = "Favorite".localized
+        searchBar.delegate = self
         setupConnectivity()
         activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.center = tableView.center
@@ -36,13 +39,35 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         super.viewWillAppear(animated)
         favPresenter?.getLeaguesFromLocal()
         tableView.reloadData()
+        checkSearchBar()
         NotificationCenter.default.addObserver(self,selector: #selector(appWillEnterForeground),name: UIApplication.willEnterForegroundNotification,object: nil)
     }
     
     @objc func appWillEnterForeground() {
         tableView.reloadData()
     }
-
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        favPresenter?.filterLocalArray(searchText: searchText)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        favPresenter?.filterLocalArray(searchText: searchBar.text ?? "")
+    }
+    
+    func checkSearchBar() {
+        if favPresenter?.getLocalArray()?.count ?? 0 == 0 && searchBar.text?.isEmpty ?? true{
+            searchBar.isHidden = true
+            tableView.isUserInteractionEnabled = false
+        }else if favPresenter?.getLocalArray()?.count ?? 0 == 0 {
+            searchBar.isHidden = false
+            tableView.isUserInteractionEnabled = true
+        }else{
+            searchBar.isHidden = false
+            tableView.isUserInteractionEnabled = true
+        }
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         guard (favPresenter?.getLocalArray()) != nil else {
@@ -153,7 +178,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
             imageView.heightAnchor.constraint(equalToConstant: 180)
         ])
 
-        tableView.isUserInteractionEnabled = false
+        checkSearchBar()
         return cell
     }
     

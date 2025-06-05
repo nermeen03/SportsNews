@@ -8,11 +8,13 @@ protocol FavPresenterProtocol{
     func getLeaguesFromLocal()
     func deleteLeagueFromLocal(league:LeagueModel)
     func getLocalArray()->[FavLeagueModel]?
+    func filterLocalArray(searchText: String)
 }
 class FavPresenter: FavPresenterProtocol{
     let favView: FavViewProtocol
     let local : LocalDataSourceProtocol
     private var localArr:[FavLeagueModel]?
+    private var displayedArray:[FavLeagueModel]?
     
     init(favView: FavViewProtocol, local: LocalDataSourceProtocol) {
         self.favView = favView
@@ -26,15 +28,21 @@ class FavPresenter: FavPresenterProtocol{
         else {
             localArr = local.getAllArabicLeagues()
         }
+        displayedArray = localArr
         favView.showLeagues()
     }
     
     func deleteLeagueFromLocal(league: any LeagueModel) {
         local.deleteLeague(league: league)
         localArr?.removeAll(where: {$0.league.leagueKey == league.leagueKey})
+        displayedArray = localArr
     }
     func getLocalArray() -> [FavLeagueModel]? {
-        return self.localArr
+        return self.displayedArray
     }
     
+    func filterLocalArray(searchText: String) {
+        displayedArray = searchText.isEmpty ? self.localArr : self.localArr?.filter({$0.league.leagueName.lowercased().contains(searchText.lowercased())})
+        favView.showLeagues()
+    }
 }
