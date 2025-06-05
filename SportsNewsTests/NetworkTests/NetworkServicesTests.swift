@@ -8,7 +8,7 @@
 import XCTest
 @testable import SportsNews
 
-final class SportsNewsTests: XCTestCase {
+final class NetworkServicesTests: XCTestCase {
 
     var network: NetworkServices!
 
@@ -42,4 +42,26 @@ final class SportsNewsTests: XCTestCase {
         waitForExpectations(timeout: 5)
     }
     
+    func testTranslateSuccess(){
+        let array = ["first","second"]
+        let exp = expectation(description: "test api")
+        
+        network.translate(texts: array, sourceLang: "en", targetLang: "ar", completion: { translated in
+            XCTAssertNotEqual(array, translated)
+            exp.fulfill()
+        })
+
+        waitForExpectations(timeout: 5)
+    }
+    func testTranslateTextError(){
+        let text = "first"
+        let exp = expectation(description: "test api")
+        
+        network.translateText(text: text, sourceLang: "en", targetLang: "arabic", completion: { translated in
+            XCTAssertEqual(text, translated)
+            exp.fulfill()
+        })
+
+        waitForExpectations(timeout: 5)
+    }
 }
