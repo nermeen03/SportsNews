@@ -245,7 +245,7 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
                 }
                 
                 let fixture = self.upcomingFixture![indexPath.row]
-                cell.eventDate.text = fixture.fixtureDate + " " + fixture.fixtureTime
+                cell.eventDate.text = fixture.fixtureDate.localizedDigits() + " " + fixture.fixtureTime.localizedDigits()
                 cell.firstName.text = fixture.homeTeam
                 cell.secondName.text = fixture.awayTeam
                 if let logoURL = URL(string: fixture.homeTeamLogo ?? "") {
@@ -276,7 +276,7 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
                 }
                 
                 let fixture = self.pastFixture![indexPath.row]
-                cell.eventDate.text = fixture.fixtureDate + " " + fixture.fixtureTime
+                cell.eventDate.text = fixture.fixtureDate.localizedDigits() + " " + fixture.fixtureTime.localizedDigits()
                 cell.firstName.text = fixture.homeTeam
                 cell.secondName.text = fixture.awayTeam
                 if let logoURL = URL(string: fixture.homeTeamLogo ?? "") {
@@ -290,7 +290,7 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
                     cell.secondImage.image = UIImage(named: "team_placeholder")
                 }
                 cell.eventName.text = fixture.leagueName ?? ""
-                cell.eventScore.text = fixture.finalResult ?? "0 - 0"
+                cell.eventScore.text = fixture.finalResult?.localizedDigits() ?? "0 - 0".localizedDigits()
                 
                 return cell
             }

@@ -6,9 +6,9 @@
 //
 
 class TranslatorResponse : Decodable{
-    var translation : String
+    var translatedText : String
 }
 
-class LibreTranslateResponse : Decodable{
-    var translatedText : String
+class TranslatorArrayResponse : Decodable{
+    var translatedText : [String]
 }

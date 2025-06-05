@@ -49,6 +49,12 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
         presenter?.checkFav(sportName: sportName, leagueList: presenter?.getLeagues() ?? [])
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presenter?.cancelApiCallings()
+    }
+
+    
     func showLeagues(){
         tableView.reloadData()
         if (self.presenter?.getLeagues().count ?? 0 > 0){
