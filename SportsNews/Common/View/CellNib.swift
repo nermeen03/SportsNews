@@ -26,14 +26,20 @@ class CellNib: UITableViewCell {
 
         cardView.layer.cornerRadius = 12
         cardView.layer.masksToBounds = false
-        cardView.backgroundColor = .lightGray
+        cardView.backgroundColor = UIColor(named: "AppBackgroundColor")
+        favBtn.tintColor = UIColor(named: "TextColor")
 
         cardView.layer.shadowColor = UIColor.black.cgColor
         cardView.layer.shadowOpacity = 0.2
         cardView.layer.shadowOffset = CGSize(width: 0, height: 3)
         cardView.layer.shadowRadius = 6
     }
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
 
+        cardView.backgroundColor = UIColor(named: "AppBackgroundColor")
+        favBtn.tintColor = UIColor(named: "TextColor")
+    }
     override func layoutSubviews() {
         super.layoutSubviews()
         

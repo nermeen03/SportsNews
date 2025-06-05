@@ -17,9 +17,6 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         super.viewDidLoad()
         favPresenter = FavPresenter(favView: self, local: LocalDataSource.shared)
         title = "Favorite".localized
-        let nib = UINib(nibName: "CellNib", bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: "cell")
-        tableView.register(UINib(nibName: "EmptyTableCellNib", bundle: nil), forCellReuseIdentifier: "emptyCell")
         
         activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.center = tableView.center
@@ -28,12 +25,19 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
 
         activityIndicator.startAnimating()
         tableView.isUserInteractionEnabled = false
+        let nib = UINib(nibName: "CellNib", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "cell")
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         favPresenter?.getLeaguesFromLocal()
+        tableView.reloadData()
+        NotificationCenter.default.addObserver(self,selector: #selector(appWillEnterForeground),name: UIApplication.willEnterForegroundNotification,object: nil)
+    }
+    
+    @objc func appWillEnterForeground() {
         tableView.reloadData()
     }
 
@@ -72,14 +76,12 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let array = favPresenter?.getLocalArray(){
             if array.count == 0 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyTableCellNib
-                tableView.isUserInteractionEnabled = false
-                return cell
+                return createEmptyCell()
             }
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CellNib
             cell.customLabel.text = array[indexPath.item].league.leagueName
-            cell.favBtn.isHidden = true
+            cell.favBtn?.isHidden = true
             if let logoURL = URL(string: array[indexPath.item].league.leagueLogo ?? "") {
                 cell.customImage.kf.setImage(with: logoURL)
             } else {
@@ -99,9 +101,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
             }
             return cell
         }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyTableCellNib
-            tableView.isUserInteractionEnabled = false
-            return cell
+            return createEmptyCell()
         }
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -109,7 +109,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
             return
         }
         let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
-        let details = storyBoard.instantiateViewController(identifier: "leaguesDetails") as! LeaguesDetailsProtocol
+        let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
         details.sportName = array[indexPath.row].sportType
         details.leaguesId = array[indexPath.row].league.leagueKey
         navigationController?.pushViewController(details, animated: true)
@@ -124,14 +124,33 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         tableView.reloadData()
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
+    func createEmptyCell() -> UITableViewCell{
+        let cell = UITableViewCell()
+        cell.selectionStyle = .none
+        cell.backgroundColor = .clear
 
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        if traitCollection.userInterfaceStyle == .dark {
+            imageView.image = UIImage(named: "noData")
+        } else {
+            imageView.image = UIImage(named: "noDataDark")
+        }
+
+        cell.contentView.addSubview(imageView)
+
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: cell.contentView.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 180),
+            imageView.heightAnchor.constraint(equalToConstant: 180)
+        ])
+
+        tableView.isUserInteractionEnabled = false
+        return cell
+    }
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {

@@ -120,7 +120,7 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
-        let details = storyBoard.instantiateViewController(identifier: "leaguesDetails") as! LeaguesDetailsProtocol
+        let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
         details.sportName = self.sportName
         details.leaguesId = self.presenter?.getLeagues()[indexPath.row].leagueKey
         details.leagueName = self.presenter?.getLeagues()[indexPath.row].leagueName
