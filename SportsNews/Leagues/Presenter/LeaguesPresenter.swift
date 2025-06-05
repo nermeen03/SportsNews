@@ -8,6 +8,9 @@
 import Foundation
 
 protocol LeaguesPresenterProtocol{
+    var leagues: [LeagueModel] { get }
+    var filteredLeagues: [LeagueModel] { get }
+    var isFiltering: Bool { get }
     func getLeaguesFromNetwork(sportName : SportType)
     func getLeaguesFromLocal(sportName : SportType)
     func saveLeagueToLocal(league:LeagueModel, sportName : SportType)
@@ -15,20 +18,24 @@ protocol LeaguesPresenterProtocol{
     func getLeagues() -> [LeagueModel]
     func checkFav(sportName : SportType, leagueList: [LeagueModel])
     func cancelApiCallings()
+    func filterLeagues(with searchText: String)
 }
 class LeaguesPresenter: LeaguesPresenterProtocol{
-    
+
+    var filteredLeagues: [LeagueModel]
+    var isFiltering: Bool
     let leaguesView: LeaguesProtocol
     let network = NetworkServices()
     let local = LocalDataSource.shared
     var localArr:[LeagueModel]?
-    var remoteArr:[LeagueModel]!
-    
+    var leagues:[LeagueModel]
     var shouldCancelTranslation = false
     
     init(leaguesView: LeaguesProtocol) {
         self.leaguesView = leaguesView
-        remoteArr = []
+        leagues = []
+        filteredLeagues = []
+        isFiltering = false
     }
     
     func getLeaguesFromNetwork(sportName : SportType){
@@ -41,21 +48,21 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
     }
     
     func saveLeagueToLocal(league: any LeagueModel, sportName : SportType) {
-        if let index = remoteArr.firstIndex(where: { $0.leagueKey == league.leagueKey }) {
-            remoteArr[index] = league
+        if let index = leagues.firstIndex(where: { $0.leagueKey == league.leagueKey }) {
+            leagues[index] = league
         }
         
         self.getLeagueNameTranslated(league: league, sportName: sportName)
     }
     
     func deleteLeagueFromLocal(league: any LeagueModel) {
-        if let index = remoteArr.firstIndex(where: { $0.leagueKey == league.leagueKey }) {
-            remoteArr[index] = league
+        if let index = leagues.firstIndex(where: { $0.leagueKey == league.leagueKey }) {
+            leagues[index] = league
         }
         local.deleteLeague(league: league)
     }
     func getLeagues() -> [LeagueModel] {
-        return remoteArr ?? []
+        return leagues
     }
     
     func checkFav(sportName : SportType, leagueList: [LeagueModel]){
@@ -71,12 +78,12 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
             }
         }
         if isEnglish() || sportName == .football{
-            self.remoteArr = updatedData
+            self.leagues = updatedData
             self.leaguesView.showLeagues()
         }else if !isEnglish() && sportName != .football{
             translateLeaguesInChunks(updatedData, chunkSize: 10,
                 onBatchComplete: { translatedSoFar in
-                    self.remoteArr = translatedSoFar
+                    self.leagues = translatedSoFar
                 self.leaguesView.showLeagues()
                 },
                 onAllComplete: {
@@ -91,7 +98,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
                                   onBatchComplete: @escaping ([LeagueModel]) -> Void,
                                   onAllComplete: @escaping () -> Void) {
         
-        var allTranslated: [LeagueModel] = remoteArr
+        var allTranslated: [LeagueModel] = leagues
 
         func processChunk(startIndex: Int) {
             
@@ -147,4 +154,16 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         self.shouldCancelTranslation = true
     }
     
+    func filterLeagues(with searchText: String) {
+        if searchText.isEmpty {
+            isFiltering = false
+            filteredLeagues = []
+        } else {
+            isFiltering = true
+            filteredLeagues = leagues.filter {
+                $0.leagueName.lowercased().contains(searchText.lowercased())
+            }
+        }
+        leaguesView.showLeagues()
+    }
 }
