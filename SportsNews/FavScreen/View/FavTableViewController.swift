@@ -17,7 +17,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         super.viewDidLoad()
         favPresenter = FavPresenter(favView: self, local: LocalDataSource.shared)
         title = "Favorite".localized
-        
+        setupConnectivity()
         activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.center = tableView.center
         activityIndicator.hidesWhenStopped = true
@@ -29,7 +29,9 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         tableView.register(nib, forCellReuseIdentifier: "cell")
         
     }
-    
+    deinit {
+            stopConnectivity()
+        }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         favPresenter?.getLeaguesFromLocal()
@@ -108,11 +110,15 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
         guard let array = favPresenter?.getLocalArray() else {
             return
         }
-        let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
-        let details = storyBoard.instantiateViewController(identifier: "leaguesDetails") as! LeaguesDetailsProtocol
-        details.sportName = array[indexPath.row].sportType
-        details.leaguesId = array[indexPath.row].league.leagueKey
-        navigationController?.pushViewController(details, animated: true)
+        if isConnected{
+            let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
+            let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
+            details.sportName = array[indexPath.row].sportType
+            details.leaguesId = array[indexPath.row].league.leagueKey
+            navigationController?.pushViewController(details, animated: true)
+        }else{
+            showAlert(title: "No Internet Connection", message: "Please check your internet connection", view: self)
+        }
     }
     
     func showLeagues() {

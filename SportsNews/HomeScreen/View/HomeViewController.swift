@@ -18,7 +18,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         ]
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupConnectivity()
         collectionView.register(UINib(nibName: "CardImageCell", bundle: nil), forCellWithReuseIdentifier: CardImageCell.identifier)
         collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -28,6 +28,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
 //        navigationController?.navigationBar.prefersLargeTitles = true
         // Do any additional setup after loading the view.
     }
+    deinit {
+            stopConnectivity()
+        }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -92,21 +95,25 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let storyBoard = UIStoryboard(name: "Leagues", bundle: nil)
-        let details = storyBoard.instantiateViewController(identifier: "leagues") as! LeaguesProtocol
-        switch indexPath.row{
-        case 0:
-            details.sportName = .football
-        case 1:
-            details.sportName = .basketball
-        case 2:
-            details.sportName = .tennis
-        case 3:
-            details.sportName = .cricket
-        default:
-            details.sportName = .football
+        if isConnected{
+            let storyBoard = UIStoryboard(name: "Leagues", bundle: nil)
+            let details = storyBoard.instantiateViewController(identifier: "leagues") as! LeaguesProtocol
+            switch indexPath.row{
+            case 0:
+                details.sportName = .football
+            case 1:
+                details.sportName = .basketball
+            case 2:
+                details.sportName = .tennis
+            case 3:
+                details.sportName = .cricket
+            default:
+                details.sportName = .football
+            }
+            navigationController?.pushViewController(details, animated: true)
+        }else{
+            showAlert(title: "No Internet Connection", message: "Please check your internet connection", view: self)
         }
-        navigationController?.pushViewController(details, animated: true)
     }
     
 }

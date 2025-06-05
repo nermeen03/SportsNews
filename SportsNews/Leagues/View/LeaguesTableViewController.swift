@@ -21,7 +21,7 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupConnectivity()
         title = isEnglish() ? "\(sportName.rawValue.localized) \("Leagues".localized)" : "\("Leagues".localized) \(sportName.rawValue.localized)" 
         
         let nib = UINib(nibName: "CellNib", bundle: nil)
@@ -38,6 +38,9 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
         tableView.isUserInteractionEnabled = false
         
     }
+    deinit {
+            stopConnectivity()
+        }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -118,13 +121,16 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
-        let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
-        details.sportName = self.sportName
-        details.leaguesId = self.presenter?.getLeagues()[indexPath.row].leagueKey
-        details.leagueName = self.presenter?.getLeagues()[indexPath.row].leagueName
-        navigationController?.pushViewController(details, animated: true)
+        if isConnected{
+            let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
+            let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
+            details.sportName = self.sportName
+            details.leaguesId = self.presenter?.getLeagues()[indexPath.row].leagueKey
+            details.leagueName = self.presenter?.getLeagues()[indexPath.row].leagueName
+            navigationController?.pushViewController(details, animated: true)
+        }else{
+            showAlert(title: "No Internet Connection", message: "Please check your internet connection", view: self)
+        }
     }
     
 

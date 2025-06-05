@@ -21,7 +21,7 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setupConnectivity()
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -40,6 +40,9 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
         let presenter = LeaguesDetailsPresenter(leaguesView: self)
         presenter.getDataFromNetwork(sportName: sportName!, leagueId: leaguesId!)
     }
+    deinit {
+            stopConnectivity()
+        }
     
     func renderUpcomingFixtureToView(fixtureList:[FixtureModel]){
         self.upcomingFixture = fixtureList
@@ -337,10 +340,14 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(indexPath.section == 2 && sportName == .football){
-            let storyboard = UIStoryboard(name: "TeamDetails", bundle: nil)
-            let teamVC = storyboard.instantiateViewController(withIdentifier: "teamDetails") as! TeamDetailsViewController
-            teamVC.team = footballTeams?[indexPath.item]
-            navigationController?.pushViewController(teamVC, animated: true)
+            if isConnected{
+                let storyboard = UIStoryboard(name: "TeamDetails", bundle: nil)
+                let teamVC = storyboard.instantiateViewController(withIdentifier: "teamDetails") as! TeamDetailsViewController
+                teamVC.team = footballTeams?[indexPath.item]
+                navigationController?.pushViewController(teamVC, animated: true)
+            }else{
+                showAlert(title: "No Internet Connection", message: "Please check your internet connection", view: self)
+            }
         }
     }
     func collectionView(_ collectionView: UICollectionView,

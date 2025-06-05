@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0DC30621E94F49EC2F25DD4D002CC27F /* Pods-SportsNews-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EB86DA745C68FDC4A9E650FB1235F13 /* Pods-SportsNews-dummy.m */; };
 		5EDC126911CF7AF78D8E3B53801FD68C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
+		C40C956E2DF1251700D089D9 /* Connectivity in Frameworks */ = {isa = PBXBuildFile; productRef = C40C956D2DF1251700D089D9 /* Connectivity */; };
 		C4B0D8992DEAFED20067FE0E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C4B0D8982DEAFED20067FE0E /* Kingfisher */; };
 		E0D659CE14188C2AC877BD4B287252DA /* Pods-SportsNews-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 802163D806A7858D9DB1164801CDEADA /* Pods-SportsNews-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -32,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C40C956E2DF1251700D089D9 /* Connectivity in Frameworks */,
 				C4B0D8992DEAFED20067FE0E /* Kingfisher in Frameworks */,
 				5EDC126911CF7AF78D8E3B53801FD68C /* Foundation.framework in Frameworks */,
 			);
@@ -150,6 +152,7 @@
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
 			packageReferences = (
 				C4B0D8972DEAFED20067FE0E /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				C40C956C2DF1251700D089D9 /* XCRemoteSwiftPackageReference "Connectivity" */,
 			);
 			productRefGroup = E434FB37CFD6588EAC55FBFD2EE4982F /* Products */;
 			projectDirPath = "";
@@ -411,6 +414,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C40C956C2DF1251700D089D9 /* XCRemoteSwiftPackageReference "Connectivity" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rwbutler/Connectivity";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.1;
+			};
+		};
 		C4B0D8972DEAFED20067FE0E /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -422,6 +433,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C40C956D2DF1251700D089D9 /* Connectivity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C40C956C2DF1251700D089D9 /* XCRemoteSwiftPackageReference "Connectivity" */;
+			productName = Connectivity;
+		};
 		C4B0D8982DEAFED20067FE0E /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C4B0D8972DEAFED20067FE0E /* XCRemoteSwiftPackageReference "Kingfisher" */;
