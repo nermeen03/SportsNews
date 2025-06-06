@@ -1,0 +1,35 @@
+/* 
+  Localizable.strings
+  SportsNews
+
+  Created by Nermeen Mohamed on 03/06/2025.
+  
+*/
+"Sports News" = "Sports News";
+
+"football" = "Football";
+"basketball" = "Basketball";
+"tennis" = "Tennis";
+"cricket" = "Cricket";
+"Leagues" = "Leagues";
+"Leagues Details" = "Leagues Details";
+"Upcoming Events" = "Upcoming Events";
+"Previous Events" = "Past Events";
+"Teams" = "Teams";
+"Coaches" = "Coaches";
+"Goalkeepers" = "Goalkeepers";
+"Defenders" = "Defenders";
+"Midfielders" = "Midfielders";
+"Forwards" = "Forwards";
+"Favorite" = "Favorite";
+"Home" = "Home";
+"Delete League" = "Delete League";
+"Are you sure you want to remove this league from your favorites?" = "Are you sure you want to remove this league from your favorites?";
+"Delete" = "Delete";
+"Cancel" = "Cancel";
+"No Internet Connection" = "No Internet Connection";
+"Please check your internet connection" = "Please check your internet connection";
+"Internet!" = "Internet!";
+"You're connected to the internet" = "You're connected to the internet";
+"No Internet!" = "No Internet!";
+"Please check your connection" = "Please check your connection";

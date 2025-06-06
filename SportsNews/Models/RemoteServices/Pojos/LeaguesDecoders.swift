@@ -14,27 +14,27 @@ protocol LeagueDecoder {
 class FootballLeaguesDecoder: LeagueDecoder {
     func decode(data: Data) throws -> [LeagueModel] {
         let decoded = try JSONDecoder().decode(APIResponse<[FootballLeague]>.self, from: data)
-        return decoded.result
+        return decoded.result ?? []
     }
 }
 
 class BasketballLeaguesDecoder: LeagueDecoder {
     func decode(data: Data) throws -> [LeagueModel] {
         let decoded = try JSONDecoder().decode(APIResponse<[BasketballLeague]>.self, from: data)
-        return decoded.result
+        return decoded.result ?? []
     }
 }
 
 class TennisLeaguesDecoder: LeagueDecoder {
     func decode(data: Data) throws -> [LeagueModel] {
         let decoded = try JSONDecoder().decode(APIResponse<[TennisLeague]>.self, from: data)
-        return decoded.result
+        return decoded.result ?? []
     }
 }
 class CricketLeaguesDecoder: LeagueDecoder {
     func decode(data: Data) throws -> [LeagueModel] {
         let decoded = try JSONDecoder().decode(APIResponse<[CricketLeague]>.self, from: data)
-        return decoded.result
+        return decoded.result ?? []
     }
 }
 
@@ -45,6 +45,8 @@ class LeaguesDecoderFactory {
         case .basketball: return BasketballLeaguesDecoder()
         case .tennis: return TennisLeaguesDecoder()
         case .cricket: return CricketLeaguesDecoder()
+        case .none: return nil
+            
         }
     }
 }

@@ -22,9 +22,15 @@
                             <constraint firstAttribute="width" constant="70" id="JT2-6C-0GM"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZlN-gZ-VAT">
-                        <rect key="frame" x="110" y="32.666666666666664" width="121" height="20.666666666666664"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="224" translatesAutoresizingMaskIntoConstraints="NO" id="ZlN-gZ-VAT">
+                        <rect key="frame" x="110" y="32.333333333333336" width="223" height="21.666666666666664"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ACo-Zb-YMb">
+                        <rect key="frame" x="269" y="30.333333333333336" width="56" height="25.333333333333336"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -34,14 +40,17 @@
                     <constraint firstItem="ZlN-gZ-VAT" firstAttribute="leading" secondItem="Upf-4W-v6L" secondAttribute="trailing" constant="32" id="7HF-fW-S1e"/>
                     <constraint firstItem="Upf-4W-v6L" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="8HK-Jn-HWt"/>
                     <constraint firstItem="ZlN-gZ-VAT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="V0g-6M-0Ii"/>
-                    <constraint firstAttribute="trailing" secondItem="ZlN-gZ-VAT" secondAttribute="trailing" constant="110" id="aJE-BW-g0V"/>
+                    <constraint firstItem="ACo-Zb-YMb" firstAttribute="centerY" secondItem="ZlN-gZ-VAT" secondAttribute="centerY" id="Y4r-Rg-bXC"/>
+                    <constraint firstAttribute="trailing" secondItem="ZlN-gZ-VAT" secondAttribute="trailing" constant="8" id="aJE-BW-g0V"/>
                     <constraint firstAttribute="bottom" secondItem="Upf-4W-v6L" secondAttribute="bottom" constant="8" id="uFB-j0-yhm"/>
+                    <constraint firstAttribute="trailing" secondItem="ACo-Zb-YMb" secondAttribute="trailing" constant="16" id="uwU-4p-BVX"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="playerImage" destination="Upf-4W-v6L" id="FKc-fP-wB5"/>
                 <outlet property="playerName" destination="ZlN-gZ-VAT" id="zQx-Vd-mtU"/>
+                <outlet property="playerNumber" destination="ACo-Zb-YMb" id="KL1-MT-4Xi"/>
             </connections>
             <point key="canvasLocation" x="203.81679389312976" y="26.760563380281692"/>
         </tableViewCell>

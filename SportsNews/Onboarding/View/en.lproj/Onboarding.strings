@@ -1,0 +1,30 @@
+
+/* Class = "UILabel"; text = "Stay on top of the basketball action.\nFollow your favorite leagues, check out upcoming and past games, and never miss a moment on the court."; ObjectID = "E60-Uu-WRm"; */
+"E60-Uu-WRm.text" = "Stay on top of the basketball action.\nFollow your favorite leagues, check out upcoming and past games, and never miss a moment on the court.";
+
+/* Class = "UILabel"; text = "Catch every over and boundary.\nFollow your favorite cricket leagues, explore upcoming and past matches, and stay in the loop with live cricket action."; ObjectID = "Fdl-hl-FeU"; */
+"Fdl-hl-FeU.text" = "Catch every over and boundary.\nFollow your favorite cricket leagues, explore upcoming and past matches, and stay in the loop with live cricket action.";
+
+/* Class = "UILabel"; text = "Discover the world of football like never before.\nFollow leagues, explore upcoming and past matches, and dive into team details — all in one place."; ObjectID = "Z4A-pL-Xwo"; */
+"Z4A-pL-Xwo.text" = "Discover the world of football like never before.\nFollow leagues, explore upcoming and past matches, and dive into team details — all in one place.";
+
+/* Class = "UIButton"; configuration.title = "Let's get starting"; ObjectID = "h1r-ey-cKd"; */
+"h1r-ey-cKd.configuration.title" = "Let's get starting";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "h1r-ey-cKd"; */
+"h1r-ey-cKd.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Discover all your favorite sports, track leagues, and follow live events — all in one app.\nFrom scores to team details, we’ve got you covered."; ObjectID = "iFZ-P2-kJi"; */
+"iFZ-P2-kJi.text" = "Discover all your favorite sports, track leagues, and follow live events — all in one app.\nFrom scores to team details, we’ve got you covered.";
+
+/* Class = "UIButton"; configuration.title = "Let's get starting"; ObjectID = "nVl-CV-Nef"; */
+"nVl-CV-Nef.configuration.title" = "Let's get starting";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "nVl-CV-Nef"; */
+"nVl-CV-Nef.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Follow thrilling tennis matches across global tournaments.\nStay updated on upcoming and past events — and keep an eye on your favorite tennis players in action."; ObjectID = "q0A-EU-3a0"; */
+"q0A-EU-3a0.text" = "Follow thrilling tennis matches across global tournaments.\nStay updated on upcoming and past events — and keep an eye on your favorite tennis players in action.";
+
+/* Class = "UILabel"; text = "Discover all your favorite sports, track leagues, and follow live events — all in one app.\nFrom scores to team details, we’ve got you covered."; ObjectID = "tFm-Aa-Sw6"; */
+"tFm-Aa-Sw6.text" = "Discover all your favorite sports, track leagues, and follow live events — all in one app.\nFrom scores to team details, we’ve got you covered.";

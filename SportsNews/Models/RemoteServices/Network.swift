@@ -13,88 +13,129 @@ class NetworkServices {
     private let url = "https://apiv2.allsportsapi.com/"
     
     
-    func getTeamsAndPlayers(sportName:String, leagueId : Int, handler:@escaping ([TeamPojo])->Void) {
-                
-        let url = self.url + "\(sportName)//?&met=Teams&leagueId=\(leagueId)&APIkey=\(key)"
-        AF.request(url).responseDecodable(of: TeamResult.self) { response in
+    func getTeamsAndPlayers<T: Codable>(sportName: SportType, lang:Bool, leagueId: Int, responseType: T.Type, handler: @escaping ([T]) -> Void) {
+        let endpoint = sportName == .tennis ? "Players" : "Teams"
+        var url = self.url + "\(sportName)//?&met=\(endpoint)&leagueId=\(leagueId)&APIkey=\(key)"
+        if(lang == true){
+            url += "&lang=ar"
+        }
+        AF.request(url).responseDecodable(of: APIResponse<[T]?>.self) { response in
             switch response.result {
-                    case .success(let data):
-                        guard let result = data.result else {
-                            print("No teams")
-                            return
-                        }
-                        print("Data received: \(result[0].players)")
-                        print("Data received: \(result[0].coaches)")
-                        handler(result)
-                        
-                    case .failure(let error):
-                        print("Error: \(error)")
-                    }
+            case .success(let data):
+                guard let result = data.result else {
+                    print("No teams/players")
+                    handler([])
+                    return
                 }
+                handler(result ?? [])
+            case .failure(let error):
+                print("Error: \(error)")
+                handler([])
+            }
+        }
     }
     
-    func getAllSportLeagues(sportName:SportType, completion: @escaping ([LeagueModel]) -> Void){
-        
-        let date = Date()
-        print(date)
-        
-        let url = self.url + "\(sportName.rawValue)/?met=Leagues&APIkey=\(key)"
-        
+    func getAllSportLeagues(sportName:SportType,lang:Bool, completion: @escaping ([LeagueModel]) -> Void){
+        var url = self.url + "\(sportName.rawValue)/?met=Leagues&APIkey=\(key)"
+        if(lang == true){
+            url += "&lang=ar"
+        }
         AF.request(url).responseData { response in
                 guard let data = response.data,
                       let decoder = LeaguesDecoderFactory.decoder(for: sportName) else {
-                          print("No leagues")
                           completion([])
                           return
                 }
 
                 do {
                     let result = try decoder.decode(data: data)
-                    DispatchQueue.main.async {
-                        completion(result)
-                    }
+                    completion(result)
+                    
                 } catch {
                     print("Decoding failed: \(error)")
                     completion([])
                 }
             }
-        
-//        AF.request(url).responseDecodable(of: LeaguesResult.self){
-//            response in
-//            switch response.result {
-//            case .success(let data):
-//                guard let result = data.result else {
-//                    print("No leagues")
-//                    return
-//                }
-//                print(result.count)
-//                for league in result{
-//                    print("\(league.leagueName) + \(league.leagueKey) ")
-//                }
-//            case .failure(let error):
-//                print("Error: \(error)")
-//            }
-//        }
     }
     
-    func getFixtures(sportName:String, leagueKey:Int, fromData:String, toData:String){
-        let url = self.url + "\(sportName)/?met=Fixtures&APIkey=\(key)&from=\(fromData)&to=\(toData)&leagueId=\(leagueKey)"
-        AF.request(url).responseDecodable(of: FixturesResult.self){
-            response in
-            switch response.result {
-            case .success(let data):
-                guard let result = data.result else {
-                    print("No fixture between \(fromData) and \(toData)")
+    func getFixtures(sportName:SportType, lang:Bool, leagueKey:Int, fromData:String, toData:String, completion : @escaping ([FixtureModel]) -> Void){
+        var url = self.url + "\(sportName)/?met=Fixtures&APIkey=\(key)&from=\(fromData)&to=\(toData)&leagueId=\(leagueKey)"
+        print(url)
+        if(lang == true){
+            url += "&lang=ar"
+        }
+        print(url)
+        AF.request(url).responseData { response in
+            guard let data = response.data , let decoder = FixturesDecoderFactory.decoder(for: sportName) else {
+                    print("No data returned")
+                    completion([])
                     return
                 }
-                print(result.count)
-                for fixture in result{
-                    print("\(fixture.homeTeam) + \(fixture.awayTeam) ")
-                }
-            case .failure(let error):
-                print("Error: \(error)")
-            }
+            let result = decoder.decode(data: data)
+            completion(result)
         }
     }
     
+    func translate(texts: [String], sourceLang: String, targetLang: String,
+        completion: @escaping ([String]) -> Void) {
+        guard let url = URL(string: "https://libretranslate-production-22bd.up.railway.app/translate") else {
+                completion(texts)
+                return
+            }
+
+        let parameters: [String: Any] = [
+            "q": texts,
+            "source": sourceLang,
+            "target": targetLang,
+            "format": "text"
+        ]
+        
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        print(url)
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseDecodable(of: TranslatorArrayResponse.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(data.translatedText)
+                case .failure(let error):
+                    print("LibreTranslate failed: \(error)")
+                    completion(texts)
+                }
+            }
+    }
+    
+    func translateText(text: String, sourceLang: String, targetLang: String,
+        completion: @escaping (String) -> Void) {
+        guard let url = URL(string: "https://libretranslate-production-d875.up.railway.app/translate") else {
+                completion(text)
+                return
+            }
+
+        let parameters: [String: Any] = [
+            "q": text,
+            "source": sourceLang,
+            "target": targetLang,
+            "format": "text"
+        ]
+        
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        print(url)
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .responseDecodable(of: TranslatorResponse.self) { response in
+                switch response.result {
+                case .success(let data):
+                    completion(data.translatedText)
+                case .failure(let error):
+                    print("LibreTranslate failed: \(error)")
+                    completion(text)
+                }
+            }
+    }
+
 }

@@ -27,19 +27,20 @@ class PrevCollectionViewCell: UICollectionViewCell {
 
         cardView.layer.cornerRadius = 12
         cardView.layer.masksToBounds = false
-        cardView.backgroundColor = UIColor(red: 137/255, green: 207/255, blue: 240/255, alpha: 1.0)
-
 
         cardView.layer.shadowColor = UIColor.black.cgColor
         cardView.layer.shadowOpacity = 0.2
         cardView.layer.shadowOffset = CGSize(width: 0, height: 3)
         cardView.layer.shadowRadius = 6
+        
+        cardView.backgroundColor = UIColor(named: "AppBackgroundColor")
+        
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        firstImage.layer.cornerRadius = firstImage.frame.width / 2
-        secondImage.layer.cornerRadius = secondImage.frame.width / 2
+//        firstImage.layer.cornerRadius = firstImage.frame.width / 2
+//        secondImage.layer.cornerRadius = secondImage.frame.width / 2
     }
 
 }

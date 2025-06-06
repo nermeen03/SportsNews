@@ -1,0 +1,35 @@
+/* 
+  Localizable.strings
+  SportsNews
+
+  Created by Nermeen Mohamed on 03/06/2025.
+  
+*/
+"Sports News" = "أخبار الرياضة";
+
+"football" = "كرة القدم";
+"basketball" = "كرة السلة";
+"tennis" = "التنس";
+"cricket" = "الكريكيت";
+"Leagues" = "دوريات";
+"Leagues Details" = "تفاصيل الدوريات";
+"Upcoming Events" = "الأحداث القادمة";
+"Previous Events" = "الأحداث السابقة";
+"Teams" = "الفرق";
+"Coaches" = "المدربون";
+"Goalkeepers" = "حراس المرمى";
+"Defenders" = "المدافعون";
+"Midfielders" = "لاعبي الوسط";
+"Forwards" = "المهاجمون";
+"Favorite" = "المفضلة";
+"Home" = "الرئيسية";
+"Delete League" = "حذف الدوري";
+"Are you sure you want to remove this league from your favorites?" = "هل أنت متأكد أنك تريد إزالة هذا الدوري من المفضلة؟";
+"Delete" = "حذف";
+"Cancel" = "إلغاء";
+"No Internet Connection" = "لا يوجد اتصال بالإنترنت";
+"Please check your internet connection" = "يرجى التحقق من اتصالك بالإنترنت";
+"Internet!" = "يوجد اتصال بالإنترنت!";
+"You're connected to the internet" = "أنت متصل بالإنترنت";
+"No Internet!" = "لا يوجد إنترنت!";
+"Please check your connection" = "يرجى التحقق من الاتصال";
