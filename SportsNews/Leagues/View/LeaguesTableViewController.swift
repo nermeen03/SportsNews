@@ -8,19 +8,26 @@
 import UIKit
 
 protocol LeaguesProtocol : UIViewController {
-    func showLeagues()
+    
     var sportName : SportType! { get set }
+    func showLeagues()
 }
 
-class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
+class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate, LeaguesProtocol {
     
+    @IBOutlet weak var tableView: UITableView!
     var sportName : SportType!
     var presenter: LeaguesPresenterProtocol?
     
+    @IBOutlet weak var searchBar: UISearchBar!
     var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.dataSource = self
+        tableView.delegate = self
+        searchBar.delegate = self
+        searchBar.placeholder = "Search Leagues"
         setupConnectivity()
         title = isEnglish() ? "\(sportName.rawValue.localized) \("Leagues".localized)" : "\("Leagues".localized) \(sportName.rawValue.localized)" 
         
@@ -63,22 +70,25 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
         }
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.presenter?.getLeagues().count ?? 0
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.presenter?.isFiltering ?? false ?
+        self.presenter?.filteredLeagues.count ?? 0 :
+        self.presenter?.getLeagues().count ?? 0
+        
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
 
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CellNib
-        if var data = self.presenter?.getLeagues()[indexPath.row]{
+        var leagues = (presenter?.isFiltering ?? false) ? presenter?.filteredLeagues : presenter?.getLeagues()
+        if var data = leagues?[indexPath.row] {
             if let logoURL = URL(string: data.leagueLogo ?? "") {
                 cell.customImage.kf.setImage(with: logoURL)
             } else {
@@ -114,10 +124,22 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
                 
                 if data.isFav == true {
                     presenter?.saveLeagueToLocal(league: data, sportName: self.sportName)
-                    tableView.reloadData()
+                    leagues?[indexPath.row].isFav = data.isFav
+//                    tableView.reloadData()
                 } else {
-                    presenter?.deleteLeagueFromLocal(league: data)
-                    tableView.reloadData()
+                    let alert = UIAlertController(title: "Delete League".localized, message: "Are you sure you want to remove this league from your favorites?".localized, preferredStyle: .alert)
+                    
+                    alert.addAction(UIAlertAction(title: "Delete".localized, style: .destructive, handler: {[weak self] _ in
+                        guard let self = self
+                        else {
+                            return
+                        }
+                        presenter?.deleteLeagueFromLocal(league: data)
+                        leagues?[indexPath.row].isFav = data.isFav
+                        tableView.reloadData()
+                    }))
+                    alert.addAction(UIAlertAction(title: "Cancel".localized, style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
                 
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -126,16 +148,19 @@ class LeaguesTableViewController: UITableViewController, LeaguesProtocol {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isConnected{
             let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
             let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
             details.sportName = self.sportName
-            details.leaguesId = self.presenter?.getLeagues()[indexPath.row].leagueKey
-            details.leagueName = self.presenter?.getLeagues()[indexPath.row].leagueName
+            details.league = self.presenter?.getLeagues()[indexPath.row]
             navigationController?.pushViewController(details, animated: true)
         }else{
             showAlert(title: "No Internet Connection".localized, message: "Please check your internet connection".localized, view: self)
         }
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let trimmedText = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        presenter?.filterLeagues(with: trimmedText)
     }
 }

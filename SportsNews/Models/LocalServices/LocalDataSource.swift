@@ -9,9 +9,9 @@ import CoreData
 import UIKit
 
 protocol LocalDataSourceProtocol {
-    func saveLeague(league: any LeagueModel, sportType: SportType,sportName:String)
+    func saveLeague(league: LeagueModel, sportType: SportType,sportName:String)
     func getAllLeagues()->[FavLeagueModel]
-    func deleteLeague(league: LeagueModel)
+    func deleteLeague(leagueId: Int)
     func getLeaguesBySport(sportType: SportType)->[LeagueModel]
     func getAllArabicLeagues() -> [FavLeagueModel]
 }
@@ -67,10 +67,28 @@ class LocalDataSource:LocalDataSourceProtocol{
         }
         return newsArr
     }
-    
-    func deleteLeague(league: any LeagueModel) {
+    func checkLeagueByID(leagueID: Int)-> Bool{
+        
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavLeagues")
-        fetchRequest.predicate = NSPredicate(format: "leagueKey == %d", league.leagueKey)
+        fetchRequest.predicate = NSPredicate(format: "leagueKey == %d", leagueID)
+        do{
+            let league = try context?.fetch(fetchRequest)
+            guard league != nil else{
+                return false
+            }
+            if league?.count == 0{
+                return false
+            }
+            return true
+        }catch{
+            print("Fetch failed: \(error)")
+        }
+        return false
+    }
+    
+    func deleteLeague(leagueId: Int) {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavLeagues")
+        fetchRequest.predicate = NSPredicate(format: "leagueKey == %d", leagueId)
 
         do {
             if let results = try context?.fetch(fetchRequest) {
