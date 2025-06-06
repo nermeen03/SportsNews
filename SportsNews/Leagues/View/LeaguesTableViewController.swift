@@ -87,7 +87,7 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CellNib
-        let leagues = (presenter?.isFiltering ?? false) ? presenter?.filteredLeagues : presenter?.getLeagues()
+        var leagues = (presenter?.isFiltering ?? false) ? presenter?.filteredLeagues : presenter?.getLeagues()
         if var data = leagues?[indexPath.row] {
             if let logoURL = URL(string: data.leagueLogo ?? "") {
                 cell.customImage.kf.setImage(with: logoURL)
@@ -124,10 +124,22 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
                 
                 if data.isFav == true {
                     presenter?.saveLeagueToLocal(league: data, sportName: self.sportName)
-                    tableView.reloadData()
+                    leagues?[indexPath.row].isFav = data.isFav
+//                    tableView.reloadData()
                 } else {
-                    presenter?.deleteLeagueFromLocal(league: data)
-                    tableView.reloadData()
+                    let alert = UIAlertController(title: "Delete League".localized, message: "Are you sure you want to remove this league from your favorites?".localized, preferredStyle: .alert)
+                    
+                    alert.addAction(UIAlertAction(title: "Delete".localized, style: .destructive, handler: {[weak self] _ in
+                        guard let self = self
+                        else {
+                            return
+                        }
+                        presenter?.deleteLeagueFromLocal(league: data)
+                        leagues?[indexPath.row].isFav = data.isFav
+                        tableView.reloadData()
+                    }))
+                    alert.addAction(UIAlertAction(title: "Cancel".localized, style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
                 
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -141,8 +153,7 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
             let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
             let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
             details.sportName = self.sportName
-            details.leaguesId = self.presenter?.getLeagues()[indexPath.row].leagueKey
-            details.leagueName = self.presenter?.getLeagues()[indexPath.row].leagueName
+            details.league = self.presenter?.getLeagues()[indexPath.row]
             navigationController?.pushViewController(details, animated: true)
         }else{
             showAlert(title: "No Internet Connection".localized, message: "Please check your internet connection".localized, view: self)

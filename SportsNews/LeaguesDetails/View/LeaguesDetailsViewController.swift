@@ -12,20 +12,20 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
     @IBOutlet weak var collectionView: UICollectionView!
     
     var sportName : SportType?
-    var leaguesId : Int?
-    var leagueName : String?
+    var league : LeagueModel?
     var pastFixture : [FixtureModel]?
     var upcomingFixture : [FixtureModel]?
     var footballTeams: [FootballTeam]?
     var tennisPlayers: [TennisPlayer]?
-
+    var presenter: LeaguesDetailsPresenterProtocol?
+    var rightBarButton : UIBarButtonItem?
     override func viewDidLoad() {
         super.viewDidLoad()
         setupConnectivity()
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        title = leagueName ?? "Leagues Details".localized
+        title = league?.leagueName ?? "Leagues Details".localized
 
         collectionView.register(UINib(nibName: "PrevCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "PrevCell")
         collectionView.register(UINib(nibName: "FutureCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "FutureCell")
@@ -37,13 +37,63 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
         
         collectionView.register(UINib(nibName: "LoadingNib", bundle: nil), forCellWithReuseIdentifier: "LoadingCell")
         
-        let presenter = LeaguesDetailsPresenter(leaguesView: self)
-        presenter.getDataFromNetwork(sportName: sportName!, leagueId: leaguesId!)
+        presenter = LeaguesDetailsPresenter(leaguesView: self)
+        presenter?.getDataFromNetwork(sportName: sportName!, leagueId: league?.leagueKey ?? 152)
+        
+        rightBarButton = UIBarButtonItem(
+            image: league?.isFav ?? false ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapNavBarButton)
+            )
+            navigationItem.rightBarButtonItem = rightBarButton
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard let leagueKey = league?.leagueKey else{
+            return
+        }
+        print(presenter?.checkFav(leagueID: leagueKey))
+        if presenter?.checkFav(leagueID: leagueKey) == true{
+            rightBarButton?.image = UIImage(systemName: "heart.fill")
+            league?.isFav = true
+        }else{
+            rightBarButton?.image = UIImage(systemName: "heart")
+            league?.isFav = false
+        }
+    }
+    
     deinit {
             stopConnectivity()
         }
-    
+    @objc func didTapNavBarButton() {
+        if var league = league {
+            league.isFav?.toggle()
+            self.league = league  // reassign the updated struct back
+            if league.isFav ?? false {
+                if let sportName = sportName {
+                    rightBarButton?.image = UIImage(systemName: "heart.fill")
+                    presenter?.saveLeagueToLocal(league: league, sportName: sportName)
+                }
+            } else {
+                let alert = UIAlertController(
+                    title: "Delete League".localized,
+                    message: "Are you sure you want to remove this league from your favorites?".localized,
+                    preferredStyle: .alert
+                )
+
+                alert.addAction(UIAlertAction(title: "Delete".localized, style: .destructive, handler: { [weak self] _ in
+                    guard let self = self else { return }
+                    DispatchQueue.main.async {[weak self] in
+                        self?.rightBarButton?.image = UIImage(systemName: "heart")
+                    }
+                    self.presenter?.deleteLeagueFromLocal(league: league)
+                }))
+                alert.addAction(UIAlertAction(title: "Cancel".localized, style: .default, handler: nil))
+                present(alert, animated: true, completion: nil)
+            }
+        }
+    }
     func renderUpcomingFixtureToView(fixtureList:[FixtureModel]){
         self.upcomingFixture = fixtureList
         DispatchQueue.main.async {

@@ -114,7 +114,7 @@ class FavTableViewController: UITableViewController, FavViewProtocol {
             let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
             let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
             details.sportName = array[indexPath.row].sportType
-            details.leaguesId = array[indexPath.row].league.leagueKey
+            details.league = array[indexPath.row].league
             navigationController?.pushViewController(details, animated: true)
         }else{
             showAlert(title: "No Internet Connection".localized, message: "Please check your internet connection".localized, view: self)

@@ -9,8 +9,7 @@ import UIKit
 protocol LeaguesDetailsProtocol : UIViewController{
     
     var sportName : SportType? { get set }
-    var leaguesId : Int? { get set }
-    var leagueName : String? {get set}
+    var league: LeagueModel? {get set}
     func renderUpcomingFixtureToView(fixtureList:[FixtureModel])
     func renderPastFixtureToView(fixtureList:[FixtureModel])
     func renderTeamsToView(teams: [FootballTeam])

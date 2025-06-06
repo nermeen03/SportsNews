@@ -29,8 +29,8 @@ class FavPresenter: FavPresenterProtocol{
         favView.showLeagues()
     }
     
-    func deleteLeagueFromLocal(league: any LeagueModel) {
-        local.deleteLeague(league: league)
+    func deleteLeagueFromLocal(league: LeagueModel) {
+        local.deleteLeague(leagueId: league.leagueKey)
         localArr?.removeAll(where: {$0.league.leagueKey == league.leagueKey})
     }
     func getLocalArray() -> [FavLeagueModel]? {

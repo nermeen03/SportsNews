@@ -47,7 +47,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         localArr = local.getLeaguesBySport(sportType: sportName)
     }
     
-    func saveLeagueToLocal(league: any LeagueModel, sportName : SportType) {
+    func saveLeagueToLocal(league:LeagueModel, sportName : SportType) {
         if let index = leagues.firstIndex(where: { $0.leagueKey == league.leagueKey }) {
             leagues[index] = league
         }
@@ -55,11 +55,11 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         self.getLeagueNameTranslated(league: league, sportName: sportName)
     }
     
-    func deleteLeagueFromLocal(league: any LeagueModel) {
+    func deleteLeagueFromLocal(league:LeagueModel) {
         if let index = leagues.firstIndex(where: { $0.leagueKey == league.leagueKey }) {
             leagues[index] = league
         }
-        local.deleteLeague(league: league)
+        local.deleteLeague(leagueId: league.leagueKey)
     }
     func getLeagues() -> [LeagueModel] {
         return leagues

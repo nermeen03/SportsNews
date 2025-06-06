@@ -6,12 +6,23 @@
 //
 
 import Foundation
+import UIKit
+protocol LeaguesDetailsPresenterProtocol{
+    func getDataFromNetwork(sportName: SportType, leagueId: Int)
+    func calcDate(sportType: SportType) -> (String, String, String)
+    func saveLeagueToLocal(league:LeagueModel, sportName : SportType)
+    func deleteLeagueFromLocal(league:LeagueModel)
+    func checkFav(leagueID:Int)->Bool
+}
 
-class LeaguesDetailsPresenter {
+class LeaguesDetailsPresenter : LeaguesDetailsPresenterProtocol{
     let leaguesView: LeaguesDetailsProtocol
-    
+    let network : NetworkServices
+    let local : LocalDataSource
     init(leaguesView: LeaguesDetailsProtocol) {
         self.leaguesView = leaguesView
+        network = NetworkServices()
+        local = LocalDataSource.shared
     }
     
     func getDataFromNetwork(sportName: SportType, leagueId: Int){
@@ -19,10 +30,6 @@ class LeaguesDetailsPresenter {
         let network = NetworkServices()
         
         let (past, today, future) = calcDate(sportType: sportName)
-        
-//        network.getTeamsAndPlayers(sportName: sportName, leagueId: leagueId) { data in
-//
-//        }
         
         network.getFixtures(sportName: sportName,lang: !isEnglish(), leagueKey: leagueId, fromData: past, toData: today) { data in
             self.leaguesView.renderPastFixtureToView(fixtureList: data)
@@ -71,5 +78,29 @@ class LeaguesDetailsPresenter {
         }
         return(today,today,today)
     }
+    func saveLeagueToLocal(league:LeagueModel, sportName : SportType) {
+        self.getLeagueNameTranslated(league: league, sportName: sportName)
+    }
     
+    func deleteLeagueFromLocal(league:LeagueModel) {
+        local.deleteLeague(leagueId: league.leagueKey)
+    }
+    func getLeagueNameTranslated(league:LeagueModel,sportName:SportType) {
+        var savedLeague = league
+        if isEnglish() || sportName != .football{
+            network.translateText(text: savedLeague.leagueName,sourceLang: "en",targetLang: "ar"){[weak self] result in
+                print(result)
+            self?.local.saveLeague(league: league, sportType: sportName,sportName: result)
+        }
+        }else{
+            network.translateText(text: savedLeague.leagueName,sourceLang: "ar",targetLang: "en"){[weak self] result in
+                print(result)
+                savedLeague.leagueName = result
+                self?.local.saveLeague(league: savedLeague, sportType: sportName,sportName: league.leagueName)
+            }
+        }
+    }
+    func checkFav(leagueID:Int)->Bool{
+        return local.checkLeagueByID(leagueID: leagueID)
+    }
 }
