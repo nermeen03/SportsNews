@@ -45,6 +45,8 @@ class LeaguesDecoderFactory {
         case .basketball: return BasketballLeaguesDecoder()
         case .tennis: return TennisLeaguesDecoder()
         case .cricket: return CricketLeaguesDecoder()
+        case .none: return nil
+            
         }
     }
 }

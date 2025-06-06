@@ -64,4 +64,69 @@ final class NetworkServicesTests: XCTestCase {
 
         waitForExpectations(timeout: 5)
     }
+    func testGetAllSportLeaguesEnSuccess(){
+        let exp = expectation(description: "test api")
+        network.getAllSportLeagues(sportName: .football, lang: false, completion: {
+            leagues in
+            XCTAssertNotNil(leagues)
+            XCTAssertFalse(leagues.isEmpty,"Expected leagues not to be empty")
+            exp.fulfill()
+        })
+        waitForExpectations(timeout: 5)
+    }
+    func testGetAllSportLeaguesArSuccess(){
+        let exp = expectation(description: "test api")
+        network.getAllSportLeagues(sportName: .football, lang: true, completion: {
+            leagues in
+            XCTAssertNotNil(leagues)
+            XCTAssertFalse(leagues.isEmpty,"Expected leagues not to be empty")
+            exp.fulfill()
+        })
+        waitForExpectations(timeout: 5)
+    }
+    
+    func testGetAllSportLeaguesFail(){
+        let exp = expectation(description: "test api")
+        network.getAllSportLeagues(sportName: .none, lang: false, completion: {
+            leagues in
+            XCTAssertNotNil(leagues)
+            XCTAssertTrue(leagues.isEmpty,"Expected leagues to be empty")
+            exp.fulfill()
+        })
+        waitForExpectations(timeout: 5)
+    }
+    
+    func testGetFixturesEnSuccess(){
+        let exp = expectation(description: "test api")
+        network.getFixtures(sportName: .football, lang: false, leagueKey: 152, fromData: "2025-05-01", toData: "2025-06-08", completion: {
+            fixtures in
+            XCTAssertNotNil(fixtures)
+            XCTAssertFalse(fixtures.isEmpty,"Expected fixture not to be empty")
+            exp.fulfill()
+        })
+        waitForExpectations(timeout: 5)
+    }
+    
+    func testGetFixturesArSuccess(){
+        let exp = expectation(description: "test api")
+        network.getFixtures(sportName: .football, lang: true, leagueKey: 152, fromData: "2025-05-01", toData: "2025-06-08", completion: {
+            fixtures in
+            XCTAssertNotNil(fixtures)
+            XCTAssertFalse(fixtures.isEmpty,"Expected fixture not to be empty")
+            exp.fulfill()
+        })
+        waitForExpectations(timeout: 5)
+    }
+    
+    func testGetFixturesFail(){
+        let exp = expectation(description: "test api")
+        network.getFixtures(sportName: .none, lang: true, leagueKey: 152, fromData: "2025-05-01", toData: "2025-06-08", completion: {
+            fixtures in
+            XCTAssertNotNil(fixtures)
+            XCTAssertTrue(fixtures.isEmpty,"Expected fixture to be empty")
+            exp.fulfill()
+        })
+        waitForExpectations(timeout: 5)
+    }
+
 }

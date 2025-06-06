@@ -123,6 +123,8 @@ struct LeagueFactory {
             return CricketLeague()
         case .tennis:
             return TennisLeague()
+        case .none:
+            return FootballLeague()
         }
     }
 }

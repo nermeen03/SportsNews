@@ -43,7 +43,6 @@ class NetworkServices {
         AF.request(url).responseData { response in
                 guard let data = response.data,
                       let decoder = LeaguesDecoderFactory.decoder(for: sportName) else {
-                          print("No leagues")
                           completion([])
                           return
                 }
@@ -69,6 +68,7 @@ class NetworkServices {
         AF.request(url).responseData { response in
             guard let data = response.data , let decoder = FixturesDecoderFactory.decoder(for: sportName) else {
                     print("No data returned")
+                    completion([])
                     return
                 }
             let result = decoder.decode(data: data)

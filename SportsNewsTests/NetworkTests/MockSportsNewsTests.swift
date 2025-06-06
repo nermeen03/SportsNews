@@ -26,4 +26,20 @@ final class MockSportsNewsTests: XCTestCase{
         })
     }
     
+    func testGetAllSportLeaguesSuccess(){
+        let network = MockNetworkServices(shouldFail: false)
+        
+        network.getAllSportLeagues(sportName: .football, lang: true, completion: {
+            _ in
+            XCTAssertNotNil(network.sportResponse[SportType.football])
+        })
+    }
+    func testGetAllSportLeaguesFail(){
+        let network = MockNetworkServices(shouldFail: true)
+        
+        network.getAllSportLeagues(sportName: .football, lang: true, completion: {
+            _ in
+            XCTAssertNil(network.sportResponse[SportType.football])
+        })
+    }
 }

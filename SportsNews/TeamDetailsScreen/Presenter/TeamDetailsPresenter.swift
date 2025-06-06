@@ -20,9 +20,10 @@ class TeamDetailsPresenter:TeamDetailsPresenterProtocol{
     }
     
     func getNamesToTranslate(from team: FootballTeam) -> [String]{
+        let teamName = [team.teamName]
         let playerNames = team.players?.compactMap { $0.playerName } ?? []
         let coachNames = team.coaches?.compactMap { $0.coachName } ?? []
-        let allNames = playerNames + coachNames
+        let allNames = playerNames + coachNames + teamName
         return allNames
     }
     
@@ -31,7 +32,7 @@ class TeamDetailsPresenter:TeamDetailsPresenterProtocol{
         let playerCount = team.players?.count ?? 0
         let coachCount = team.coaches?.count ?? 0
         
-        guard translatedNames.count == playerCount + coachCount else {
+        guard translatedNames.count == playerCount + coachCount + 1 else {
             print("Mismatch in translated names count.")
             return
         }
@@ -43,9 +44,23 @@ class TeamDetailsPresenter:TeamDetailsPresenterProtocol{
         for j in 0..<coachCount {
             team.coaches?[j].coachName = translatedNames[playerCount + j]
         }
+        team.teamName = translatedNames[playerCount + coachCount]
+        print(team.teamName)
     }
     func translateNames(team: FootballTeam) {
         
-    
+        var mutableTeam = team
+            let namesToTranslate = getNamesToTranslate(from: team)
+            
+            guard !namesToTranslate.isEmpty else {
+                view.showData(team: team)
+                return
+            }
+
+            network.translate(texts: namesToTranslate, sourceLang: "en", targetLang: "ar") { [weak self] translatedNames in
+                guard let self = self else { return }
+                self.assignTranslatedNames(to: &mutableTeam, translatedString: translatedNames)
+                self.view.showData(team: mutableTeam)
+            }
     }
 }

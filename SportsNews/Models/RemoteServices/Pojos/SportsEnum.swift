@@ -6,5 +6,5 @@
 //
 
 enum SportType: String {
-    case football, tennis, basketball, cricket
+    case football, tennis, basketball, cricket, none
 }

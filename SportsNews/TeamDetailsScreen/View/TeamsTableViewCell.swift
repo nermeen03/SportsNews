@@ -10,6 +10,7 @@ import UIKit
 class TeamsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var playerName: UILabel!
+    @IBOutlet weak var playerNumber: UILabel!
     @IBOutlet weak var playerImage: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()

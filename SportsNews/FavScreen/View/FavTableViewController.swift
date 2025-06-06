@@ -123,6 +123,8 @@ class FavTableViewController: UITableViewController, FavViewProtocol, UISearchBa
                     name = "cricket\(number)"
                 case .tennis:
                     name = "tennis\(number)"
+                case .none:
+                    name = "nil"
                 }
                 cell.customImage.image = UIImage(named: name!)
             }

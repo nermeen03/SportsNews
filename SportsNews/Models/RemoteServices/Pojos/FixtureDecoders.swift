@@ -66,6 +66,7 @@ class FixturesDecoderFactory {
         case .basketball: return BasketballFixtureDecoders()
         case .tennis: return TennisFixtureDecoders()
         case .cricket: return CricketFixtureDecoders()
+        case .none: return nil
         }
     }
 }

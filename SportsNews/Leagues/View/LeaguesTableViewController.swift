@@ -153,7 +153,11 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
             let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
             let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
             details.sportName = self.sportName
-            details.league = self.presenter?.getLeagues()[indexPath.row]
+            if presenter?.isFiltering ?? false{
+                details.league = self.presenter?.filteredLeagues[indexPath.row]
+            }else{
+                details.league = self.presenter?.getLeagues()[indexPath.row]
+            }
             navigationController?.pushViewController(details, animated: true)
         }else{
             showAlert(title: "No Internet Connection".localized, message: "Please check your internet connection".localized, view: self)
