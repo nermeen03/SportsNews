@@ -84,9 +84,12 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
             translateLeaguesInChunks(updatedData, chunkSize: 10,
                 onBatchComplete: { translatedSoFar in
                     self.leagues = translatedSoFar
-                self.leaguesView.showLeagues()
+                    self.leaguesView.showLeagues()
                 },
                 onAllComplete: {
+                for league in self.leagues{
+                    print(league.leagueName)
+                }
                     print("All league names translated to Arabic")
                 }
             )
@@ -98,7 +101,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
                                   onBatchComplete: @escaping ([LeagueModel]) -> Void,
                                   onAllComplete: @escaping () -> Void) {
         
-        var allTranslated: [LeagueModel] = leagues
+        var allTranslated: [LeagueModel] = []
 
         func processChunk(startIndex: Int) {
             
@@ -120,6 +123,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
                 var translatedChunk = chunk
                 for i in 0..<translatedNames.count {
                     translatedChunk[i].leagueName = translatedNames[i]
+                    print(translatedNames[i])
                 }
 
                 allTranslated += translatedChunk
