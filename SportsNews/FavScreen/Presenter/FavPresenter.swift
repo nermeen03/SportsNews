@@ -6,23 +6,19 @@
 //
 protocol FavPresenterProtocol{
     func getLeaguesFromLocal()
-    func deleteLeagueFromLocal(league:FavLeagueModel)
-//    func getLocalArray()->[FavLeagueModel]?
     func filterLocalArray(searchText: String)
-    var filteredLeaguesBySport: [SportType: [FavLeagueModel]] { get }
-    var filteredSortedSports: [SportType] { get }
-    func getleaguesBySportCount()-> Int
-    func isEmpty()->Bool
+    func getleaguesCount()-> Int
+    func deleteLeagueFromLocal(league: FavLeagueModel)
+    func getleaguesBySportDict() -> [SportType : [FavLeagueModel]]
+    var sortedSports: [SportType] { get }
 }
 class FavPresenter: FavPresenterProtocol{
-    var filteredLeaguesBySport: [SportType : [FavLeagueModel]] = [:]
-    var filteredSortedSports: [SportType] = []
     private var leaguesBySport: [SportType : [FavLeagueModel]] = [:]
-    private var sortedSports: [SportType] = []
+    var sortedSports: [SportType] = []
     let favView: FavViewProtocol
     let local : LocalDataSourceProtocol
     private var localArr:[FavLeagueModel]?
-//    private var displayedArray:[FavLeagueModel]?
+    private var displayedArray:[FavLeagueModel]?
     
     init(favView: FavViewProtocol, local: LocalDataSourceProtocol) {
         self.favView = favView
@@ -36,14 +32,8 @@ class FavPresenter: FavPresenterProtocol{
         else {
             localArr = local.getAllArabicLeagues()
         }
-        guard let localArr = localArr else{
-            return
-        }
-        leaguesBySport = Dictionary(grouping: localArr, by: { $0.sportType})
-        sortedSports = filteredLeaguesBySport.keys.sorted { $0.rawValue < $1.rawValue }
-        filteredLeaguesBySport = leaguesBySport
-        filteredSortedSports = sortedSports
-//        displayedArray = localArr
+        displayedArray = localArr
+        splitLocalArrayBySport()
         favView.showLeagues()
     }
     func isEmpty()->Bool{
@@ -53,37 +43,34 @@ class FavPresenter: FavPresenterProtocol{
     func deleteLeagueFromLocal(league: FavLeagueModel) {
         local.deleteLeague(leagueId: league.league.leagueKey)
         localArr?.removeAll(where: {$0.league.leagueKey == league.league.leagueKey})
-        if var leagues = leaguesBySport[league.sportType] {
-                leagues.removeAll(where: { $0.league.leagueKey == league.league.leagueKey })
-                if leagues.isEmpty {
-                    leaguesBySport.removeValue(forKey: league.sportType)
-                } else {
-                    leaguesBySport[league.sportType] = leagues
-                }
-            }
-        sortedSports = leaguesBySport.keys.sorted { $0.rawValue < $1.rawValue }
-        filteredLeaguesBySport = leaguesBySport
-        filteredSortedSports = sortedSports
+        displayedArray = localArr
+        splitLocalArrayBySport()
     }
-//    func getLocalArray() -> [FavLeagueModel]? {
-//        return self.displayedArray
-//    }
+    
+    func splitLocalArrayBySport() {
+        guard let localArr = displayedArray else{
+            return
+        }
+        leaguesBySport = Dictionary(grouping: localArr, by: {$0.sportType})
+        sortedSports = leaguesBySport.keys.sorted { $0.rawValue < $1.rawValue }
+    }
+    
+    func getleaguesBySportDict() -> [SportType : [FavLeagueModel]] {
+        return self.leaguesBySport
+    }
     
     func filterLocalArray(searchText: String) {
         if searchText.isEmpty {
-                filteredLeaguesBySport = self.leaguesBySport
+                displayedArray = localArr
             } else {
-                filteredLeaguesBySport = self.leaguesBySport.compactMapValues { leagues in
-                    let filteredLeagues = leagues.filter {
-                        $0.league.leagueName.lowercased().contains(searchText.lowercased())
-                    }
-                    return filteredLeagues.isEmpty ? nil : filteredLeagues
+                displayedArray = localArr?.filter {
+                    $0.league.leagueName.lowercased().contains(searchText.lowercased())
                 }
             }
-        filteredSortedSports = filteredLeaguesBySport.keys.sorted { $0.rawValue < $1.rawValue }
+        splitLocalArrayBySport()
         favView.showLeagues()
     }
-    func getleaguesBySportCount() -> Int {
-        return leaguesBySport.count
+    func getleaguesCount() -> Int {
+        return sortedSports.count
     }
 }
