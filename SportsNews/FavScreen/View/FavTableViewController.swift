@@ -116,12 +116,25 @@ class FavTableViewController: UITableViewController, FavViewProtocol, UISearchBa
             cell.customLabel.text = leagueItem.league.leagueName
             cell.favBtn?.isHidden = true
 
-            if let logoURL = URL(string: leagueItem.league.leagueLogo ?? "") {
-                cell.customImage.kf.setImage(with: logoURL)
-            } else {
+            if let logo = leagueItem.league.leagueLogo , let logoURL = URL(string: logo) {
+                let placeholderImage = UIImage(named: "cup")
+                cell.customImage.kf.setImage(with: logoURL, placeholder: placeholderImage)
+            }else {
                 let number = (indexPath.row % 5) + 1
-                let imageName = "\(sport.rawValue)\(number)"
-                cell.customImage.image = UIImage(named: imageName)
+                var name : String
+                switch sport {
+                case .football:
+                    name = "football\(1)"
+                case .basketball:
+                    name = "basketball\(number)"
+                case .cricket:
+                    name = "cricket\(number)"
+                case .tennis:
+                    name = "tennis\(number)"
+                default:
+                    name = "football\(1)"
+                }
+                cell.customImage.image = UIImage(named: name)
             }
 
             return cell
