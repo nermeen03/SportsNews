@@ -13,8 +13,9 @@ protocol TeamDetailsViewProtocol{
 class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,TeamDetailsViewProtocol {
     var teamPresenter: TeamDetailsPresenterProtocol?
     
-    @IBOutlet weak var containerView: UIView!
     
+    
+    @IBOutlet weak var tableViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var teamName: UILabel!
     @IBOutlet weak var teamLogo: UIImageView!
     @IBOutlet weak var tableView: UITableView!
@@ -22,6 +23,7 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
     var team : FootballTeam?
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         let nib = UINib(nibName: "TeamsTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "playercell")
         tableView.delegate = self
@@ -36,6 +38,21 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
             teamPresenter?.translateNames(team: team)
             
         }
+        tableViewHeightConstraint.constant = tableView.contentSize.height
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.estimatedRowHeight = 0
+        tableView.estimatedSectionHeaderHeight = 0
+        tableView.estimatedSectionFooterHeight = 0
+        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.layoutIfNeeded()
+            self.tableViewHeightConstraint.constant = self.tableView.contentSize.height
+        }
+        print("Row count: \(tableView.numberOfRows(inSection: 0))")
+        print("Total content height: \(tableView.contentSize.height)")
+//        tableViewHeightConstraint.constant = tableView.contentSize.height
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         5
@@ -120,5 +137,21 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
         self.team = team
         teamName.text = team.teamName
         tableView.reloadData()
+        tableView.layoutIfNeeded()
+        tableViewHeightConstraint.constant = tableView.contentSize.height
+        print("Row count: \(tableView.numberOfRows(inSection: 0))")
+        print("Total content height: \(tableView.contentSize.height)")
+    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableViewHeightConstraint.constant = tableView.contentSize.height
+    }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.reloadData()
+            self.tableView.layoutIfNeeded()
+            self.tableViewHeightConstraint.constant = self.tableView.contentSize.height
+        })
     }
 }
