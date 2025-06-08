@@ -51,7 +51,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         if let index = leagues.firstIndex(where: { $0.leagueKey == league.leagueKey }) {
             leagues[index] = league
         }
-        
+        self.local.saveLeague(league: league, sportType: sportName,sportName: league.leagueName)
         self.getLeagueNameTranslated(league: league, sportName: sportName)
     }
     
@@ -142,13 +142,13 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         if isEnglish() || sportName != .football{
             network.translateText(text: savedLeague.leagueName,sourceLang: "en",targetLang: "ar"){[weak self] result in
                 print(result)
-            self?.local.saveLeague(league: league, sportType: sportName,sportName: result)
+                self?.local.updateLeagueArabicName(leagueId: league.leagueKey, name: result)
         }
         }else{
             network.translateText(text: savedLeague.leagueName,sourceLang: "ar",targetLang: "en"){[weak self] result in
                 print(result)
                 savedLeague.leagueName = result
-                self?.local.saveLeague(league: savedLeague, sportType: sportName,sportName: league.leagueName)
+                self?.local.updateLeagueEnglishName(leagueId: league.leagueKey, name: result)
             }
             
         }
