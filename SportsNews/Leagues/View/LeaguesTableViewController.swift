@@ -27,7 +27,7 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
         tableView.dataSource = self
         tableView.delegate = self
         searchBar.delegate = self
-        searchBar.placeholder = "Search Leagues"
+        searchBar.placeholder = "Search Leagues".localized
         setupConnectivity()
         title = isEnglish() ? "\(sportName.rawValue.localized) \("Leagues".localized)" : "\("Leagues".localized) \(sportName.rawValue.localized)" 
         
