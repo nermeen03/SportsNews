@@ -78,7 +78,7 @@ class NetworkServices {
     
     func translate(texts: [String], sourceLang: String, targetLang: String,
         completion: @escaping ([String]) -> Void) {
-        guard let url = URL(string: "https://libretranslate-production-22bd.up.railway.app/translate") else {
+        guard let url = URL(string: "https://libretranslate-production-04e3.up.railway.app/translate") else {
                 completion(texts)
                 return
             }

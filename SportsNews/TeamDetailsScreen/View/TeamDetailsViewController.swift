@@ -50,8 +50,8 @@ class TeamDetailsViewController: UIViewController, UITableViewDelegate, UITableV
             self.tableView.layoutIfNeeded()
             self.tableViewHeightConstraint.constant = self.tableView.contentSize.height
         }
-        print("Row count: \(tableView.numberOfRows(inSection: 0))")
-        print("Total content height: \(tableView.contentSize.height)")
+//        print("Row count: \(tableView.numberOfRows(inSection: 0))")
+//        print("Total content height: \(tableView.contentSize.height)")
 //        tableViewHeightConstraint.constant = tableView.contentSize.height
     }
     func numberOfSections(in tableView: UITableView) -> Int {

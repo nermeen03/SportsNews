@@ -219,6 +219,6 @@ class FavTableViewController: UITableViewController, FavViewProtocol, UISearchBa
         if favPresenter?.sortedSports.count == 0 {
             return nil
         }
-        return favPresenter?.sortedSports[section].rawValue.capitalized
+        return favPresenter?.sortedSports[section].rawValue.capitalized.localized
     }
 }

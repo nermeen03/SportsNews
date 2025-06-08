@@ -53,7 +53,7 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
         guard let leagueKey = league?.leagueKey else{
             return
         }
-        print(presenter?.checkFav(leagueID: leagueKey))
+//        print(presenter?.checkFav(leagueID: leagueKey))
         if presenter?.checkFav(leagueID: leagueKey) == true{
             rightBarButton?.image = UIImage(systemName: "heart.fill")
             league?.isFav = true
@@ -64,12 +64,13 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
     }
     
     deinit {
-            stopConnectivity()
-        }
+        stopConnectivity()
+        NotificationCenter.default.removeObserver(self)
+    }
     @objc func didTapNavBarButton() {
         if var league = league {
             league.isFav?.toggle()
-            self.league = league  // reassign the updated struct back
+            self.league = league  
             if league.isFav ?? false {
                 if let sportName = sportName {
                     rightBarButton?.image = UIImage(systemName: "heart.fill")

@@ -91,12 +91,12 @@ class LeaguesDetailsPresenter : LeaguesDetailsPresenterProtocol{
         var savedLeague = league
         if isEnglish() || sportName != .football{
             network.translateText(text: savedLeague.leagueName,sourceLang: "en",targetLang: "ar"){[weak self] result in
-                print(result)
+//                print(result)
                 self?.local.updateLeagueArabicName(leagueId: league.leagueKey, name: result)
         }
         }else{
             network.translateText(text: savedLeague.leagueName,sourceLang: "ar",targetLang: "en"){[weak self] result in
-                print(result)
+//                print(result)
                 savedLeague.leagueName = result
                 self?.local.updateLeagueEnglishName(leagueId: league.leagueKey, name: result)
             }

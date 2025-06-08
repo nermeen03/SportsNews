@@ -27,7 +27,6 @@ class LocalDataSource:LocalDataSourceProtocol{
     }
     
     func saveLeague(league: any LeagueModel, sportType: SportType,sportName:String) {
-        print(sportName)
         let entity = NSEntityDescription.entity(forEntityName: "FavLeagues", in: context!)
         let newsObject = NSManagedObject(entity: entity!, insertInto: context)
         newsObject.setValue(league.leagueName, forKey: "leagueName")
@@ -167,6 +166,7 @@ class LocalDataSource:LocalDataSourceProtocol{
         }
     }
     func updateLeagueEnglishName(leagueId : Int , name : String){
+        print("name is \(name)")
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavLeagues")
         fetchRequest.predicate = NSPredicate(format: "leagueKey == %d", leagueId)
 

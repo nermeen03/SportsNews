@@ -27,8 +27,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.navigationItem.title = "Sports News".localized
     }
     deinit {
-            stopConnectivity()
-        }
+        stopConnectivity()
+        NotificationCenter.default.removeObserver(self)
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         

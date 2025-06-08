@@ -46,8 +46,9 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
         
     }
     deinit {
-            stopConnectivity()
-        }
+        stopConnectivity()
+        NotificationCenter.default.removeObserver(self)
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -159,7 +160,6 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
                 
             }else{
                 details.league = self.presenter?.getLeagues()[indexPath.row]
-                print("value = \(self.presenter?.getLeagues()[indexPath.row].leagueLogo)")
             }
             navigationController?.pushViewController(details, animated: true)
         }else{
