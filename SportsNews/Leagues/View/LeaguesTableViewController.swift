@@ -52,9 +52,13 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        print("back")
         navigationItem.largeTitleDisplayMode = .never
-        presenter?.checkFav(sportName: sportName, leagueList: presenter?.getLeagues() ?? [])
+        if presenter?.isFiltering ?? false || !(presenter?.getLeagues().isEmpty ?? true){
+            presenter?.checkFav(sportName: sportName)
+        }else{
+            presenter?.getData(sportName: sportName, leagueList: presenter?.getLeagues() ?? [])
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -127,6 +131,9 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
                 if data.isFav == true {
                     presenter?.saveLeagueToLocal(league: data, sportName: self.sportName)
                     leagues?[indexPath.row].isFav = data.isFav
+                    if presenter?.isFiltering ?? false{
+                        presenter?.filterLeagues(with: searchBar.text ?? "")
+                    }
 //                    tableView.reloadData()
                 } else {
                     let alert = UIAlertController(title: "Delete League".localized, message: "Are you sure you want to remove this league from your favorites?".localized, preferredStyle: .alert)
@@ -138,6 +145,9 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
                         }
                         presenter?.deleteLeagueFromLocal(league: data)
                         leagues?[indexPath.row].isFav = data.isFav
+                        if presenter?.isFiltering ?? false{
+                            presenter?.filterLeagues(with: searchBar.text ?? "")
+                        }
                         tableView.reloadData()
                     }))
                     alert.addAction(UIAlertAction(title: "Cancel".localized, style: .default, handler: nil))
@@ -155,6 +165,7 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
             let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
             let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
             details.sportName = self.sportName
+            details.secondName = self.presenter?.getSecondName(index: indexPath.row)
             if presenter?.isFiltering ?? false{
                 details.league = self.presenter?.filteredLeagues[indexPath.row]
                 
