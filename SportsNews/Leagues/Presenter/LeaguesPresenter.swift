@@ -29,6 +29,8 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
     let network = NetworkServices()
     let local = LocalDataSource.shared
     var localArr:[LeagueModel]?
+    var englishArr:[LeagueModel]?
+    var arabicArr:[LeagueModel]?
     var leagues:[LeagueModel]
     var shouldCancelTranslation = false
     
@@ -40,8 +42,18 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
     }
     
     func getLeaguesFromNetwork(sportName : SportType){
-        network.getAllSportLeagues(sportName: sportName,lang: !isEnglish()) {[weak self] data in
-            self?.getData(sportName: sportName, leagueList: data)
+        network.getAllSportLeagues(sportName: sportName,lang: false) {[weak self] data in
+            self?.englishArr = data
+            if sportName != .football{
+                self?.getData(sportName: sportName, leagueList: data)
+            }
+        }
+        if sportName == .football{ // arabic
+            network.getAllSportLeagues(sportName: sportName,lang: true) {[weak self] data in
+                self?.arabicArr = data
+                self?.getData(sportName: sportName, leagueList: data)
+                
+            }
         }
     }
     func getLeaguesFromLocal(sportName: SportType) {
@@ -52,9 +64,19 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         shouldCancelTranslation = true
         if let index = leagues.firstIndex(where: { $0.leagueKey == league.leagueKey }) {
             leagues[index] = league
+            
         }
-        self.local.saveLeague(league: league, sportType: sportName,sportName: league.leagueName)
-        self.getLeagueNameTranslated(league: league, sportName: sportName)
+        if isEnglish(){
+            self.local.saveLeague(league: league, sportType: sportName,sportName: league.leagueName)
+            self.getLeagueNameTranslated(league: league, sportName: sportName)
+        }else{ // arabic
+            var league = league
+            let arabicName = league.leagueName
+            league.leagueName = englishArr!.filter({$0.leagueKey == league.leagueKey})[0].leagueName
+            print(league.leagueName + "eng" + arabicName)
+            self.local.saveLeague(league: league, sportType: sportName,sportName: arabicName)
+        }
+        
     }
     
     func deleteLeagueFromLocal(league:LeagueModel) {
@@ -82,18 +104,18 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         if isEnglish() || sportName == .football{
             self.leagues = updatedData
             self.leaguesView.showLeagues()
-        }else if !isEnglish() && sportName != .football{
+        }else {
             translateLeaguesInChunks(updatedData, chunkSize: 10,
-                onBatchComplete: { translatedSoFar in
-                    self.leagues += translatedSoFar
-                    self.leaguesView.showLeagues()
-                },
-                onAllComplete: {
-//                for league in self.leagues{
-//                    print(league.leagueName)
-//                }
-                    print("All league names translated to Arabic")
-                }
+                                     onBatchComplete: { translatedSoFar in
+                self.leagues += translatedSoFar
+                self.leaguesView.showLeagues()
+            },
+                                     onAllComplete: {
+                //                for league in self.leagues{
+                //                    print(league.leagueName)
+                //                }
+                print("All league names translated to Arabic")
+            }
             )
         }
     }
@@ -102,7 +124,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         var updatedData = filteredLeagues
         getLeaguesFromLocal(sportName: sportName)
         for i in 0..<updatedData.count {
-            if self.localArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
+            if self.englishArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
                 updatedData[i].isFav = true
             }else{
                 if (updatedData[i].isFav == true){
@@ -113,7 +135,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         self.filteredLeagues = updatedData
         updatedData = leagues
         for i in 0..<updatedData.count {
-            if self.localArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
+            if self.englishArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
                 updatedData[i].isFav = true
             }else{
                 if (updatedData[i].isFav == true){
@@ -167,17 +189,16 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
 
     
     func getLeagueNameTranslated(league:LeagueModel,sportName:SportType) {
-        if isEnglish(){
+        if sportName != .football{
             network.translateText(text: league.leagueName,sourceLang: "en",targetLang: "ar"){[weak self] result in
 //                print(result)
                 self?.local.updateLeagueArabicName(leagueId: league.leagueKey, name: result)
             }
         }else{
-            network.translateText(text: league.leagueName,sourceLang: "ar",targetLang: "en"){[weak self] result in
-//                print(result)
-                self?.local.updateLeagueEnglishName(leagueId: league.leagueKey, name: result)
-            }
-            
+            network.getAllSportLeagues(sportName: sportName, lang: true, completion: { [weak self] leagues in
+                let league = leagues.filter({$0.leagueKey == league.leagueKey})[0]
+                self?.local.updateLeagueArabicName(leagueId: league.leagueKey, name: league.leagueName)
+            })
         }
     }
     
