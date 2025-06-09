@@ -165,6 +165,7 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
             let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
             let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
             details.sportName = self.sportName
+            details.secondName = self.presenter?.getSecondName(index: indexPath.row)
             if presenter?.isFiltering ?? false{
                 details.league = self.presenter?.filteredLeagues[indexPath.row]
                 

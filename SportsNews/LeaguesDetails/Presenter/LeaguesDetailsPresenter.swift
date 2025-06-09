@@ -10,9 +10,10 @@ import UIKit
 protocol LeaguesDetailsPresenterProtocol{
     func getDataFromNetwork(sportName: SportType, leagueId: Int)
     func calcDate(sportType: SportType) -> (String, String, String)
-    func saveLeagueToLocal(league:LeagueModel, sportName : SportType)
+    func saveLeagueToLocal(league:LeagueModel, sportName : SportType, secondName: String)
     func deleteLeagueFromLocal(league:LeagueModel)
     func checkFav(leagueID:Int)->Bool
+    
 }
 
 class LeaguesDetailsPresenter : LeaguesDetailsPresenterProtocol{
@@ -78,8 +79,19 @@ class LeaguesDetailsPresenter : LeaguesDetailsPresenterProtocol{
         }
         return(today,today,today)
     }
-    func saveLeagueToLocal(league:LeagueModel, sportName : SportType) {
-        self.local.saveLeague(league: league, sportType: sportName,sportName: league.leagueName)
+    func saveLeagueToLocal(league:LeagueModel, sportName : SportType, secondName: String) {
+        
+        
+        if isEnglish(){
+            self.local.saveLeague(league: league, sportType: sportName,sportName: secondName)
+        }else{
+            var league = league
+            let arabicName = league.leagueName
+            league.leagueName = secondName
+            self.local.saveLeague(league: league, sportType: sportName,sportName: arabicName)
+        }
+        
+        
         self.getLeagueNameTranslated(league: league, sportName: sportName)
     }
     
