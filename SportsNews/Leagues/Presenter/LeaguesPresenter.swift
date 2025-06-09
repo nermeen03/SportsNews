@@ -57,7 +57,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         }
     }
     func getLeaguesFromLocal(sportName: SportType) {
-        localArr = local.getLeaguesBySport(sportType: sportName)
+        englishArr = local.getLeaguesBySport(sportType: sportName)
     }
     
     func saveLeagueToLocal(league:LeagueModel, sportName : SportType) {
@@ -93,7 +93,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         var updatedData = leagueList
         getLeaguesFromLocal(sportName: sportName)
         for i in 0..<updatedData.count {
-            if self.localArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
+            if self.englishArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
                 updatedData[i].isFav = true
             }else{
                 if (updatedData[i].isFav == true){
