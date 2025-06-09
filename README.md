@@ -1,7 +1,7 @@
 
 # 🏆 SportsNews – iOS Sports App
 
-**SportsNews** is a feature-rich iOS application that provides users with comprehensive information on various sports leagues and events. Built using Swift, this app delivers a seamless and intuitive user experience with support for multiple languages, dark mode, and robust offline handling.
+**SportsNews** is a feature-rich iOS application that provides users comprehensive information on various sports leagues and events. Built using Swift, this app delivers a seamless and intuitive user experience with support for multiple languages, dark mode, and robust offline handling.
 
 ## 📱 Features
 
@@ -62,12 +62,12 @@
 ## 🧰 Technologies Used
 
 * **Language**: Swift
-* **Architecture**: MVC / MVVM (depending on implementation)
+* **Architecture**: MVP
 * **Persistence**: Core Data, UserDefaults
-* **Networking**: URLSession or custom API layer
-* **UI**: UIKit (or SwiftUI if applicable)
+* **Networking**: Alamofire
+* **UI**: UIKit 
 * **Localization**: NSLocalizedString, base localization
-* **Connectivity**: Reachability / NWPathMonitor
+* **Connectivity**: Connectivity
 
 ## 🚀 Getting Started
 
