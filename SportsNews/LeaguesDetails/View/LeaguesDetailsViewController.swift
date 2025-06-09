@@ -12,6 +12,7 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
     @IBOutlet weak var collectionView: UICollectionView!
     
     var sportName : SportType?
+    var secondName: String?
     var league : LeagueModel?
     var pastFixture : [FixtureModel]?
     var upcomingFixture : [FixtureModel]?
@@ -74,7 +75,7 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
             if league.isFav ?? false {
                 if let sportName = sportName {
                     rightBarButton?.image = UIImage(systemName: "heart.fill")
-                    presenter?.saveLeagueToLocal(league: league, sportName: sportName)
+                    presenter?.saveLeagueToLocal(league: league, sportName: sportName,secondName: secondName ?? "")
                 }
             } else {
                 let alert = UIAlertController(

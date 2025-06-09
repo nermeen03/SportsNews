@@ -20,6 +20,7 @@ protocol LeaguesPresenterProtocol{
     func getData(sportName : SportType, leagueList: [LeagueModel])
     func cancelApiCallings()
     func filterLeagues(with searchText: String)
+    func getSecondName(index:Int) -> String
 }
 class LeaguesPresenter: LeaguesPresenterProtocol{
 
@@ -28,6 +29,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
     let leaguesView: LeaguesProtocol
     let network = NetworkServices()
     let local = LocalDataSource.shared
+    var localArr:[LeagueModel]?
     var englishArr:[LeagueModel]?
     var arabicArr:[LeagueModel]?
     var leagues:[LeagueModel]
@@ -56,7 +58,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         }
     }
     func getLeaguesFromLocal(sportName: SportType) {
-        englishArr = local.getLeaguesBySport(sportType: sportName)
+        localArr = local.getLeaguesBySport(sportType: sportName)
     }
     
     func saveLeagueToLocal(league:LeagueModel, sportName : SportType) {
@@ -71,7 +73,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         }else{ // arabic
             var league = league
             let arabicName = league.leagueName
-            league.leagueName = arabicArr!.filter({$0.leagueKey == league.leagueKey})[0].leagueName
+            league.leagueName = englishArr!.filter({$0.leagueKey == league.leagueKey})[0].leagueName
             print(league.leagueName + "eng" + arabicName)
             self.local.saveLeague(league: league, sportType: sportName,sportName: arabicName)
         }
@@ -92,7 +94,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         var updatedData = leagueList
         getLeaguesFromLocal(sportName: sportName)
         for i in 0..<updatedData.count {
-            if self.englishArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
+            if self.localArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
                 updatedData[i].isFav = true
             }else{
                 if (updatedData[i].isFav == true){
@@ -123,7 +125,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         var updatedData = filteredLeagues
         getLeaguesFromLocal(sportName: sportName)
         for i in 0..<updatedData.count {
-            if self.englishArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
+            if self.localArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
                 updatedData[i].isFav = true
             }else{
                 if (updatedData[i].isFav == true){
@@ -134,7 +136,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         self.filteredLeagues = updatedData
         updatedData = leagues
         for i in 0..<updatedData.count {
-            if self.englishArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
+            if self.localArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
                 updatedData[i].isFav = true
             }else{
                 if (updatedData[i].isFav == true){
@@ -216,5 +218,12 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
             }
         }
         leaguesView.showLeagues()
+    }
+    func getSecondName(index:Int) -> String{
+        if isEnglish(){
+            return self.arabicArr?[index].leagueName ?? ""
+        }else{
+            return self.englishArr?[index].leagueName ?? ""
+        }
     }
 }
