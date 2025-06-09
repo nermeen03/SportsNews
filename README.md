@@ -71,6 +71,7 @@
 
 ## Demo  
 ![SportsNews Demo](video.gif)
+
 ## 🚀 Getting Started
 
 ### Prerequisites
