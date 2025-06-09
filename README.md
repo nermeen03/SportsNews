@@ -69,6 +69,8 @@
 * **Localization**: NSLocalizedString, base localization
 * **Connectivity**: Connectivity
 
+## Demo  
+![SportsNews Demo](video.gif)
 ## 🚀 Getting Started
 
 ### Prerequisites
