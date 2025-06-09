@@ -16,7 +16,8 @@ protocol LeaguesPresenterProtocol{
     func saveLeagueToLocal(league:LeagueModel, sportName : SportType)
     func deleteLeagueFromLocal(league:LeagueModel)
     func getLeagues() -> [LeagueModel]
-    func checkFav(sportName : SportType, leagueList: [LeagueModel])
+    func checkFav(sportName : SportType)
+    func getData(sportName : SportType, leagueList: [LeagueModel])
     func cancelApiCallings()
     func filterLeagues(with searchText: String)
 }
@@ -40,7 +41,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
     
     func getLeaguesFromNetwork(sportName : SportType){
         network.getAllSportLeagues(sportName: sportName,lang: !isEnglish()) {[weak self] data in
-            self?.checkFav(sportName: sportName, leagueList: data)
+            self?.getData(sportName: sportName, leagueList: data)
         }
     }
     func getLeaguesFromLocal(sportName: SportType) {
@@ -66,7 +67,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         return leagues
     }
     
-    func checkFav(sportName : SportType, leagueList: [LeagueModel]){
+    func getData(sportName : SportType, leagueList: [LeagueModel]){
         var updatedData = leagueList
         getLeaguesFromLocal(sportName: sportName)
         for i in 0..<updatedData.count {
@@ -95,6 +96,33 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
                 }
             )
         }
+    }
+    
+    func checkFav(sportName : SportType){
+        var updatedData = filteredLeagues
+        getLeaguesFromLocal(sportName: sportName)
+        for i in 0..<updatedData.count {
+            if self.localArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
+                updatedData[i].isFav = true
+            }else{
+                if (updatedData[i].isFav == true){
+                    updatedData[i].isFav = false
+                }
+            }
+        }
+        self.filteredLeagues = updatedData
+        updatedData = leagues
+        for i in 0..<updatedData.count {
+            if self.localArr?.contains(where: { $0.leagueKey == updatedData[i].leagueKey }) ?? false {
+                updatedData[i].isFav = true
+            }else{
+                if (updatedData[i].isFav == true){
+                    updatedData[i].isFav = false
+                }
+            }
+        }
+        leagues = updatedData
+        self.leaguesView.showLeagues()
     }
     
     func translateLeaguesInChunks(_ leagues: [LeagueModel],
