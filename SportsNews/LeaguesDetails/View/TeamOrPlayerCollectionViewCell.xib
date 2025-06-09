@@ -23,8 +23,8 @@
                             <constraint firstAttribute="height" constant="100" id="StR-Jf-VI5"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJW-C5-913">
-                        <rect key="frame" x="4" y="116" width="160" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJW-C5-913">
+                        <rect key="frame" x="0.0" y="116" width="168" height="20.333333333333343"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -34,10 +34,10 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
                 <constraint firstItem="AwU-zq-d7a" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="2aS-U6-ajk"/>
-                <constraint firstAttribute="trailing" secondItem="eJW-C5-913" secondAttribute="trailing" constant="4" id="6eh-nc-wqi"/>
+                <constraint firstAttribute="trailing" secondItem="eJW-C5-913" secondAttribute="trailing" id="6eh-nc-wqi"/>
                 <constraint firstItem="AwU-zq-d7a" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="7RF-ve-UlE"/>
                 <constraint firstItem="eJW-C5-913" firstAttribute="top" secondItem="AwU-zq-d7a" secondAttribute="bottom" constant="8" id="uMC-j3-p7l"/>
-                <constraint firstItem="eJW-C5-913" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="4" id="wfx-Dt-TyP"/>
+                <constraint firstItem="eJW-C5-913" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="wfx-Dt-TyP"/>
             </constraints>
             <size key="customSize" width="168" height="151"/>
             <connections>

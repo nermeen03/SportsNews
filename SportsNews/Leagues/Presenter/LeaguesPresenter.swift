@@ -48,10 +48,11 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
     }
     
     func saveLeagueToLocal(league:LeagueModel, sportName : SportType) {
+        shouldCancelTranslation = true
         if let index = leagues.firstIndex(where: { $0.leagueKey == league.leagueKey }) {
             leagues[index] = league
         }
-        
+        self.local.saveLeague(league: league, sportType: sportName,sportName: league.leagueName)
         self.getLeagueNameTranslated(league: league, sportName: sportName)
     }
     
@@ -83,10 +84,13 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
         }else if !isEnglish() && sportName != .football{
             translateLeaguesInChunks(updatedData, chunkSize: 10,
                 onBatchComplete: { translatedSoFar in
-                    self.leagues = translatedSoFar
-                self.leaguesView.showLeagues()
+                    self.leagues += translatedSoFar
+                    self.leaguesView.showLeagues()
                 },
                 onAllComplete: {
+//                for league in self.leagues{
+//                    print(league.leagueName)
+//                }
                     print("All league names translated to Arabic")
                 }
             )
@@ -98,7 +102,7 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
                                   onBatchComplete: @escaping ([LeagueModel]) -> Void,
                                   onAllComplete: @escaping () -> Void) {
         
-        var allTranslated: [LeagueModel] = leagues
+        var allTranslated: [LeagueModel] = []
 
         func processChunk(startIndex: Int) {
             
@@ -120,9 +124,10 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
                 var translatedChunk = chunk
                 for i in 0..<translatedNames.count {
                     translatedChunk[i].leagueName = translatedNames[i]
+//                    print(translatedNames[i])
                 }
 
-                allTranslated += translatedChunk
+                allTranslated = translatedChunk
                 onBatchComplete(allTranslated)
                 processChunk(startIndex: endIndex)
             }
@@ -134,17 +139,15 @@ class LeaguesPresenter: LeaguesPresenterProtocol{
 
     
     func getLeagueNameTranslated(league:LeagueModel,sportName:SportType) {
-        var savedLeague = league
-        if isEnglish() || sportName != .football{
-            network.translateText(text: savedLeague.leagueName,sourceLang: "en",targetLang: "ar"){[weak self] result in
-                print(result)
-            self?.local.saveLeague(league: league, sportType: sportName,sportName: result)
-        }
+        if isEnglish(){
+            network.translateText(text: league.leagueName,sourceLang: "en",targetLang: "ar"){[weak self] result in
+//                print(result)
+                self?.local.updateLeagueArabicName(leagueId: league.leagueKey, name: result)
+            }
         }else{
-            network.translateText(text: savedLeague.leagueName,sourceLang: "ar",targetLang: "en"){[weak self] result in
-                print(result)
-                savedLeague.leagueName = result
-                self?.local.saveLeague(league: savedLeague, sportType: sportName,sportName: league.leagueName)
+            network.translateText(text: league.leagueName,sourceLang: "ar",targetLang: "en"){[weak self] result in
+//                print(result)
+                self?.local.updateLeagueEnglishName(leagueId: league.leagueKey, name: result)
             }
             
         }

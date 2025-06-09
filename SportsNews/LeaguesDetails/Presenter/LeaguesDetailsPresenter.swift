@@ -79,25 +79,28 @@ class LeaguesDetailsPresenter : LeaguesDetailsPresenterProtocol{
         return(today,today,today)
     }
     func saveLeagueToLocal(league:LeagueModel, sportName : SportType) {
+        self.local.saveLeague(league: league, sportType: sportName,sportName: league.leagueName)
         self.getLeagueNameTranslated(league: league, sportName: sportName)
     }
     
     func deleteLeagueFromLocal(league:LeagueModel) {
         local.deleteLeague(leagueId: league.leagueKey)
     }
+    
     func getLeagueNameTranslated(league:LeagueModel,sportName:SportType) {
         var savedLeague = league
         if isEnglish() || sportName != .football{
             network.translateText(text: savedLeague.leagueName,sourceLang: "en",targetLang: "ar"){[weak self] result in
-                print(result)
-            self?.local.saveLeague(league: league, sportType: sportName,sportName: result)
+//                print(result)
+                self?.local.updateLeagueArabicName(leagueId: league.leagueKey, name: result)
         }
         }else{
             network.translateText(text: savedLeague.leagueName,sourceLang: "ar",targetLang: "en"){[weak self] result in
-                print(result)
+//                print(result)
                 savedLeague.leagueName = result
-                self?.local.saveLeague(league: savedLeague, sportType: sportName,sportName: league.leagueName)
+                self?.local.updateLeagueEnglishName(leagueId: league.leagueKey, name: result)
             }
+            
         }
     }
     func checkFav(leagueID:Int)->Bool{

@@ -27,7 +27,7 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
         tableView.dataSource = self
         tableView.delegate = self
         searchBar.delegate = self
-        searchBar.placeholder = "Search Leagues"
+        searchBar.placeholder = "Search Leagues".localized
         setupConnectivity()
         title = isEnglish() ? "\(sportName.rawValue.localized) \("Leagues".localized)" : "\("Leagues".localized) \(sportName.rawValue.localized)" 
         
@@ -46,8 +46,9 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
         
     }
     deinit {
-            stopConnectivity()
-        }
+        stopConnectivity()
+        NotificationCenter.default.removeObserver(self)
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -89,10 +90,11 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CellNib
         var leagues = (presenter?.isFiltering ?? false) ? presenter?.filteredLeagues : presenter?.getLeagues()
         if var data = leagues?[indexPath.row] {
-            if let logoURL = URL(string: data.leagueLogo ?? "") {
-                cell.customImage.kf.setImage(with: logoURL)
+            if let logo = data.leagueLogo , let logoURL = URL(string: logo) {
+                let placeholderImage = UIImage(named: "cup")
+                cell.customImage.kf.setImage(with: logoURL, placeholder: placeholderImage)
             } else {
-                var name : String?
+                var name : String
                 let number = (indexPath.row % 5) + 1
                 switch sportName {
                 case .football:
@@ -106,7 +108,7 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
                 default:
                     name = "football\(1)"
                 }
-                cell.customImage.image = UIImage(named: name!)
+                cell.customImage.image = UIImage(named: name)
             }
             cell.customLabel.text = data.leagueName
             
@@ -155,6 +157,7 @@ class LeaguesTableViewController: UIViewController,UITableViewDelegate,UITableVi
             details.sportName = self.sportName
             if presenter?.isFiltering ?? false{
                 details.league = self.presenter?.filteredLeagues[indexPath.row]
+                
             }else{
                 details.league = self.presenter?.getLeagues()[indexPath.row]
             }

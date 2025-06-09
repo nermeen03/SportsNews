@@ -53,7 +53,7 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
         guard let leagueKey = league?.leagueKey else{
             return
         }
-        print(presenter?.checkFav(leagueID: leagueKey))
+//        print(presenter?.checkFav(leagueID: leagueKey))
         if presenter?.checkFav(leagueID: leagueKey) == true{
             rightBarButton?.image = UIImage(systemName: "heart.fill")
             league?.isFav = true
@@ -64,12 +64,13 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
     }
     
     deinit {
-            stopConnectivity()
-        }
+        stopConnectivity()
+        NotificationCenter.default.removeObserver(self)
+    }
     @objc func didTapNavBarButton() {
         if var league = league {
             league.isFav?.toggle()
-            self.league = league  // reassign the updated struct back
+            self.league = league  
             if league.isFav ?? false {
                 if let sportName = sportName {
                     rightBarButton?.image = UIImage(systemName: "heart.fill")
@@ -210,19 +211,19 @@ class LeaguesDetailsViewController: UIViewController,UICollectionViewDelegate, U
 
     func teamsSection()-> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(200),
-            heightDimension: .absolute(150)
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .absolute(170)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(150),
+            widthDimension: .fractionalWidth(0.33),
             heightDimension: .absolute(170)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize
         , subitems: [item])
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0
-        , bottom: 0, trailing: 0)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8
+        , bottom: 0, trailing: 8)
 
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5

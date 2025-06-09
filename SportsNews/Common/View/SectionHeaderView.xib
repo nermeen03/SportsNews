@@ -13,15 +13,20 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0t-xo-Zd1">
-                    <rect key="frame" x="16" y="0.0" width="288" height="50"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0t-xo-Zd1">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="v0t-xo-Zd1" secondAttribute="bottom" id="5bv-QY-oc8"/>
+                <constraint firstItem="v0t-xo-Zd1" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="HsX-Uq-8Pa"/>
+                <constraint firstAttribute="trailing" secondItem="v0t-xo-Zd1" secondAttribute="trailing" id="Iyz-MN-eBH"/>
+                <constraint firstItem="v0t-xo-Zd1" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="cVQ-lo-aid"/>
+            </constraints>
             <connections>
                 <outlet property="titleLabel" destination="v0t-xo-Zd1" id="OEJ-YH-uPA"/>
             </connections>

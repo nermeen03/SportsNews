@@ -21,24 +21,19 @@ class FavTableViewController: UITableViewController, FavViewProtocol, UISearchBa
         title = "Favorite".localized
         searchBar.delegate = self
         setupConnectivity()
-        activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator.center = tableView.center
-        activityIndicator.hidesWhenStopped = true
-        tableView.addSubview(activityIndicator)
-
-        activityIndicator.startAnimating()
+        setupActivityIndicator()
         tableView.isUserInteractionEnabled = false
         let nib = UINib(nibName: "CellNib", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "cell")
         
     }
     deinit {
-            stopConnectivity()
-        }
+        stopConnectivity()
+        NotificationCenter.default.removeObserver(self)
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         favPresenter?.getLeaguesFromLocal()
-        tableView.reloadData()
         checkSearchBar()
         NotificationCenter.default.addObserver(self,selector: #selector(appWillEnterForeground),name: UIApplication.willEnterForegroundNotification,object: nil)
     }
@@ -56,11 +51,20 @@ class FavTableViewController: UITableViewController, FavViewProtocol, UISearchBa
         favPresenter?.filterLocalArray(searchText: searchBar.text ?? "")
     }
     
+    fileprivate func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = tableView.center
+        activityIndicator.hidesWhenStopped = true
+        tableView.addSubview(activityIndicator)
+        
+        activityIndicator.startAnimating()
+    }
+    
     func checkSearchBar() {
-        if favPresenter?.getLocalArray()?.count ?? 0 == 0 && searchBar.text?.isEmpty ?? true{
+        if favPresenter?.getleaguesCount() ?? 0 == 0 && searchBar.text?.isEmpty ?? true{
             searchBar.isHidden = true
             tableView.isUserInteractionEnabled = false
-        }else if favPresenter?.getLocalArray()?.count ?? 0 == 0 {
+        }else if favPresenter?.getleaguesCount() ?? 0 == 0 {
             searchBar.isHidden = false
             tableView.isUserInteractionEnabled = true
         }else{
@@ -70,28 +74,23 @@ class FavTableViewController: UITableViewController, FavViewProtocol, UISearchBa
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        guard (favPresenter?.getLocalArray()) != nil else {
-            return 0
+        if favPresenter?.getleaguesCount( ) ?? 0 == 0 {
+            return 1
         }
-
-        return 1
+        return favPresenter?.getleaguesCount() ?? 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        guard let array = favPresenter?.getLocalArray() else {
-            return 0
-        }
-        
-        if array.count == 0 {
+        if favPresenter?.sortedSports.count ?? 0 == 0 {
             return 1
         }
-        return array.count
+        guard let sport = favPresenter?.sortedSports[section] else {return 1}
+        return favPresenter?.getleaguesBySportDict()[sport]?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let array = favPresenter?.getLocalArray() else {
-            return 0
+        guard let array = favPresenter?.sortedSports else {
+            return tableView.frame.height
         }
         if array.count == 0 {
             return tableView.frame.height
@@ -101,20 +100,29 @@ class FavTableViewController: UITableViewController, FavViewProtocol, UISearchBa
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let array = favPresenter?.getLocalArray(){
-            if array.count == 0 {
+        
+        if favPresenter?.sortedSports.count == 0 {
+            return createEmptyCell()
+        }
+
+        guard let sport = favPresenter?.sortedSports[indexPath.section] else{
+            return createEmptyCell()
+        }
+        guard let leagueItem = favPresenter?.getleaguesBySportDict()[sport]?[indexPath.row] else {
                 return createEmptyCell()
             }
-            
+
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CellNib
-            cell.customLabel.text = array[indexPath.item].league.leagueName
+            cell.customLabel.text = leagueItem.league.leagueName
             cell.favBtn?.isHidden = true
-            if let logoURL = URL(string: array[indexPath.item].league.leagueLogo ?? "") {
-                cell.customImage.kf.setImage(with: logoURL)
-            } else {
-                var name : String?
+
+            if let logo = leagueItem.league.leagueLogo , let logoURL = URL(string: logo) {
+                let placeholderImage = UIImage(named: "cup")
+                cell.customImage.kf.setImage(with: logoURL, placeholder: placeholderImage)
+            }else {
                 let number = (indexPath.row % 5) + 1
-                switch array[indexPath.item].sportType {
+                var name : String
+                switch sport {
                 case .football:
                     name = "football\(1)"
                 case .basketball:
@@ -123,37 +131,41 @@ class FavTableViewController: UITableViewController, FavViewProtocol, UISearchBa
                     name = "cricket\(number)"
                 case .tennis:
                     name = "tennis\(number)"
-                case .none:
-                    name = "nil"
+                default:
+                    name = "football\(1)"
                 }
-                cell.customImage.image = UIImage(named: name!)
+                cell.customImage.image = UIImage(named: name)
             }
+
             return cell
-        }else{
-            return createEmptyCell()
-        }
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let array = favPresenter?.getLocalArray() else {
+        if favPresenter?.sortedSports.count == 0 {
             return
         }
-        if isConnected{
-            let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
-            let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
-            details.sportName = array[indexPath.row].sportType
-            details.league = array[indexPath.row].league
-            navigationController?.pushViewController(details, animated: true)
-        }else{
-            showAlert(title: "No Internet Connection".localized, message: "Please check your internet connection".localized, view: self)
+        guard let sport = favPresenter?.sortedSports[indexPath.section] else{
+            return
         }
+        guard let leagueItem = favPresenter?.getleaguesBySportDict()[sport]?[indexPath.row] else { return }
+
+            if isConnected {
+                let storyBoard = UIStoryboard(name: "LeaguesDetails", bundle: nil)
+                let details = storyBoard.instantiateViewController(identifier: "leaguesDetailsID") as! LeaguesDetailsProtocol
+                details.sportName = leagueItem.sportType
+                details.league = leagueItem.league
+                navigationController?.pushViewController(details, animated: true)
+            } else {
+                showAlert(title: "No Internet Connection".localized, message: "Please check your internet connection".localized, view: self)
+            }
     }
     
     func showLeagues() {
         self.activityIndicator.stopAnimating()
-        let isEmpty = favPresenter?.getLocalArray()?.isEmpty ?? true
-        self.tableView.isUserInteractionEnabled = !isEmpty
-        self.tableView.allowsSelection = !isEmpty
-        self.tableView.isScrollEnabled = !isEmpty
+//        let isEmpty = favPresenter?.isEmpty() ?? true
+//        self.tableView.isUserInteractionEnabled = !isEmpty
+//        self.tableView.allowsSelection = !isEmpty
+//        self.tableView.isScrollEnabled = !isEmpty
+        checkSearchBar()
         tableView.reloadData()
     }
 
@@ -187,56 +199,26 @@ class FavTableViewController: UITableViewController, FavViewProtocol, UISearchBa
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let alert = UIAlertController(title: "Delete League".localized, message: "Are you sure you want to remove this league from your favorites?".localized, preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: "Delete".localized, style: .destructive, handler: {[weak self] _ in
-                guard let self = self,
-                      let favPresenter = self.favPresenter,
-                      let array = favPresenter.getLocalArray()
-                else {
-                    return
-                }
+            guard let sport = favPresenter?.sortedSports[indexPath.section] else {
+                return }
+            guard let leagueItem = favPresenter?.getleaguesBySportDict()[sport]?[indexPath.row] else { return }
 
-                let league = array[indexPath.row].league
-                favPresenter.deleteLeagueFromLocal(league: league)
-                
-                let newArray = favPresenter.getLocalArray()
-                if newArray?.isEmpty ?? true {
-                    self.tableView.reloadData()
-                } else {
-                    self.tableView.deleteRows(at: [indexPath], with: .fade)
+                    let alert = UIAlertController(title: "Delete League".localized, message: "Are you sure you want to remove this league from your favorites?".localized, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Delete".localized, style: .destructive, handler: {[weak self] _ in
+                        guard let self = self else { return }
+
+                        self.favPresenter?.deleteLeagueFromLocal(league: leagueItem)
+                        self.showLeagues()
+                    }))
+                    alert.addAction(UIAlertAction(title: "Cancel".localized, style: .cancel))
+                    present(alert, animated: true)
                 }
-            }))
-            alert.addAction(UIAlertAction(title: "Cancel".localized, style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+        
+    }
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if favPresenter?.sortedSports.count == 0 {
+            return nil
         }
+        return favPresenter?.sortedSports[section].rawValue.capitalized.localized
     }
-
-    
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

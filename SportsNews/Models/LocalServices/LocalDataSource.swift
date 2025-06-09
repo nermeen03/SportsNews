@@ -27,7 +27,6 @@ class LocalDataSource:LocalDataSourceProtocol{
     }
     
     func saveLeague(league: any LeagueModel, sportType: SportType,sportName:String) {
-        print(sportName)
         let entity = NSEntityDescription.entity(forEntityName: "FavLeagues", in: context!)
         let newsObject = NSManagedObject(entity: entity!, insertInto: context)
         newsObject.setValue(league.leagueName, forKey: "leagueName")
@@ -151,5 +150,35 @@ class LocalDataSource:LocalDataSourceProtocol{
         return newsArr
     }
     
-    
+    func updateLeagueArabicName(leagueId : Int , name : String){
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavLeagues")
+        fetchRequest.predicate = NSPredicate(format: "leagueKey == %d", leagueId)
+
+        do {
+            if let results = try context?.fetch(fetchRequest) {
+                for object in results {
+                    object.setValue(name, forKey: "arabicName")
+                }
+                try context?.save()
+            }
+        } catch {
+            print("Failed to update league: \(error.localizedDescription)")
+        }
+    }
+    func updateLeagueEnglishName(leagueId : Int , name : String){
+        print("name is \(name)")
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavLeagues")
+        fetchRequest.predicate = NSPredicate(format: "leagueKey == %d", leagueId)
+
+        do {
+            if let results = try context?.fetch(fetchRequest) {
+                for object in results {
+                    object.setValue(name, forKey: "leagueName")
+                }
+                try context?.save()
+            }
+        } catch {
+            print("Failed to update league: \(error.localizedDescription)")
+        }
+    }
 }

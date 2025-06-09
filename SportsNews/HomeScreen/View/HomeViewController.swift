@@ -25,12 +25,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView.delegate = self
         collectionView.dataSource = self
         self.navigationItem.title = "Sports News".localized
-//        navigationController?.navigationBar.prefersLargeTitles = true
-        // Do any additional setup after loading the view.
     }
     deinit {
-            stopConnectivity()
-        }
+        stopConnectivity()
+        NotificationCenter.default.removeObserver(self)
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -115,6 +114,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             showAlert(title: "No Internet Connection".localized, message: "Please check your internet connection".localized, view: self)
         }
     }
-    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { _ in
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }, completion: nil)
+    }
 }
 

@@ -17,8 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8hj-HJ-fye">
-                                <rect key="frame" x="16" y="78" width="361" height="722"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8hj-HJ-fye">
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="F0w-dp-SVu">
                                     <size key="itemSize" width="128" height="128"/>
@@ -28,10 +28,10 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="nCx-bS-V5e">
-                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="TH7-zQ-ADN">
-                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </collectionViewCellContentView>
                                     </collectionViewCell>
@@ -41,10 +41,10 @@
                         <viewLayoutGuide key="safeArea" id="Z7o-Un-gIp"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Z7o-Un-gIp" firstAttribute="top" secondItem="8hj-HJ-fye" secondAttribute="top" constant="40" id="7M9-pC-Uw8"/>
-                            <constraint firstItem="Z7o-Un-gIp" firstAttribute="trailing" secondItem="8hj-HJ-fye" secondAttribute="trailing" constant="16" id="97Q-Xu-OiZ"/>
-                            <constraint firstItem="8hj-HJ-fye" firstAttribute="bottom" secondItem="Z7o-Un-gIp" secondAttribute="bottom" constant="16" id="Wjl-MB-v4O"/>
-                            <constraint firstItem="8hj-HJ-fye" firstAttribute="leading" secondItem="Z7o-Un-gIp" secondAttribute="leading" constant="16" id="c4S-5A-bi1"/>
+                            <constraint firstItem="Z7o-Un-gIp" firstAttribute="top" secondItem="8hj-HJ-fye" secondAttribute="top" id="7M9-pC-Uw8"/>
+                            <constraint firstItem="Z7o-Un-gIp" firstAttribute="trailing" secondItem="8hj-HJ-fye" secondAttribute="trailing" id="97Q-Xu-OiZ"/>
+                            <constraint firstItem="8hj-HJ-fye" firstAttribute="bottom" secondItem="Z7o-Un-gIp" secondAttribute="bottom" id="Wjl-MB-v4O"/>
+                            <constraint firstItem="8hj-HJ-fye" firstAttribute="leading" secondItem="Z7o-Un-gIp" secondAttribute="leading" id="c4S-5A-bi1"/>
                         </constraints>
                     </view>
                     <connections>

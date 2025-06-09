@@ -11,6 +11,10 @@
 "basketball" = "كرة السلة";
 "tennis" = "التنس";
 "cricket" = "الكريكيت";
+"Football" = "كرة القدم";
+"Basketball" = "كرة السلة";
+"Tennis" = "التنس";
+"Cricket" = "الكريكيت";
 "Leagues" = "دوريات";
 "Leagues Details" = "تفاصيل الدوريات";
 "Upcoming Events" = "الأحداث القادمة";
@@ -33,3 +37,5 @@
 "You're connected to the internet" = "أنت متصل بالإنترنت";
 "No Internet!" = "لا يوجد إنترنت!";
 "Please check your connection" = "يرجى التحقق من الاتصال";
+"OK" = "حسنًا";
+"Search Leagues" = "البحث عن الدوريات";
