@@ -70,7 +70,7 @@
 * **Connectivity**: Connectivity
 
 ## Demo  
-![SportsNews Demo](https://www.dropbox.com/scl/fi/gfkfa8g2rspssb1p7ibl6/video.mp4?rlkey=0ik3iycgn2y98i3b7njobmcd6&st=vjzihmbw&dl=0)
+![SportsNews Demo](https://www.dropbox.com/scl/fo/tlobgywznlp6nllpaeoyq/AB_jbpm-FZDV4RyQBBXuJTQ?rlkey=16osja50e4ul5km811ogl8vfa&st=5yzp3t85&dl=0)
 
 ## 🚀 Getting Started
 
